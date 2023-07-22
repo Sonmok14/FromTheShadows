@@ -149,9 +149,11 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
                event.resetCurrentAnimation();
             }
             if (attackID == 2 && !isRight()) {
+                event.getController().setAnimationSpeed(1D);
                 return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.nehemoth.left_punch"));
             }
             if (attackID == 2 && isRight()) {
+                event.getController().setAnimationSpeed(1D);
                 return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.nehemoth.right_punch"));
             }
             if (attackID == SMASH_ATTACK && onGround() && this.attacktick < 15) {
@@ -175,9 +177,8 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
 
                         { if (event.isMoving() && this.walkAnimation.speed() > 0.35F && attackID == 0) {
                             return event.setAndContinue(RawAnimation.begin().thenLoop("animation.nehemoth.run"));
-
                         }
-                        if (isClimbing()) {
+                        if (isClimbing() && attackID == 0) {
                             return event.setAndContinue(RawAnimation.begin().thenLoop("animation.nehemoth.climb"));
                         }
                         if (attackID == ROAR_ATTACK) {
@@ -227,20 +228,12 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
 
                         }
                     }
-
                         if (isImmobile() && isAlive()) {
                             return event.setAndContinue(RawAnimation.begin().thenLoop("animation.nehemoth.stun"));
 
                         }
-
-                        if (event.isMoving()) {
+                        if (event.isMoving() && attackID == 0) {
                             return event.setAndContinue(RawAnimation.begin().thenLoop("animation.nehemoth.walk"));
-
-                        }
-
-                        if (!event.isMoving() && attackID == 0) {
-                            return event.setAndContinue(RawAnimation.begin().thenLoop("animation.nehemoth.idle"));
-
                         }
                     } else if (isStone()) {
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.nehemoth.none"));
@@ -426,7 +419,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
     @Override
     public boolean doHurtTarget(Entity p_85031_1_) {
         setYRot(yBodyRot);
-        if (!this.level().isClientSide && this.attackID == 0) {
+        if (!this.level().isClientSide) {
                 this.attackID = MELEE_ATTACK;
         }
         return true;
@@ -960,20 +953,20 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
 
         @Override
         public boolean canContinueToUse() {
-            return nehemoth.attacktick < 35;
+            return nehemoth.attacktick < 27;
         }
 
 
         public void tick() {
             setYRot(yBodyRot);
-            if (attacktick == 23) {
+            if (attacktick == 12) {
                 yBodyRot = yHeadRot;
                 float f1 = (float) Math.cos(Math.toRadians(getYRot() + 90));
                 float f2 = (float) Math.sin(Math.toRadians(getYRot() + 90));
 
                 push(f1 * 0.8, 0, f2 * 0.8);
             }
-            if (attacktick == 27) {
+            if (attacktick == 14) {
                 punch();
             }
             getNavigation().recomputePath();
