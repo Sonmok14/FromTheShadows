@@ -94,8 +94,6 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
-
-
         if (this.mumbleProgress > 0) {
             --this.mumbleProgress;
         }
@@ -112,4 +110,6 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
         this.goalSelector.addGoal(11, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
     }
+
+
 }

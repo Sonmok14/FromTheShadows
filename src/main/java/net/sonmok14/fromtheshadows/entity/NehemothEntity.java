@@ -1073,7 +1073,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
 
         public boolean canUse() {
             this.attackTarget = this.nehemoth.getTarget();
-            return attackTarget != null && this.nehemoth.attackID == 0 && (distanceTo(attackTarget) > 5.0D || (nehemoth.getY() < attackTarget.getY() + 3.0D && attackTarget.onGround())) && onGround() && random.nextInt(2) == 0 && smashCooldown == 0;
+            return attackTarget != null && this.nehemoth.attackID == 0 && (distanceTo(attackTarget) > 5.0D || (nehemoth.getY() < attackTarget.getY() + 3.0D && attackTarget.onGround())) && onGround() && random.nextInt(2) == 0 && smashCooldown == 0 && !horizontalCollision ;
         }
 
         public void start() {

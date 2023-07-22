@@ -752,8 +752,6 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
         return p_32829_.isUnobstructed(this);
     }
 
-
-
     class BulldrogiothMeleeAttackGoal extends Goal {
 
         private LivingEntity attackTarget;
@@ -832,9 +830,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
     }
 
     class RightClawAttackGoal extends Goal {
-
         private LivingEntity attackTarget;
-
         public RightClawAttackGoal() {
             this.setFlags(EnumSet.of(Flag.JUMP, Flag.LOOK, Flag.MOVE));
         }
@@ -843,28 +839,23 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             this.attackTarget = getTarget();
             return attackTarget != null && attackID == 2;
         }
-
         @Override
         public void start() {
             setRight(random.nextInt(2) != 0);
             setAttackID(2);
         }
-
         @Override
         public void stop() {
             setAttackID(0);
             this.attackTarget = null;
         }
-
         public boolean requiresUpdateEveryTick() {
             return true;
         }
-
         @Override
         public boolean canContinueToUse() {
             return attacktick < 36;
         }
-
         @Override
         public void tick() {
             double dist = distanceTo(attackTarget);
@@ -902,13 +893,11 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             this.attackTarget = getTarget();
             return  attackTarget != null && attackID == 0 && distanceTo(attackTarget) <= 1024 && random.nextInt(16) == 0 && coralthorncomboCooldown == 0 && mob.getHealth() <= mob.getMaxHealth() / 2;
         }
-
         @Override
         public void start() {
             setRight(random.nextInt(2) != 0);
             setAttackID(6);
         }
-
         @Override
         public void stop() {
             setAttackID(0);
@@ -917,12 +906,10 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
         public boolean requiresUpdateEveryTick() {
             return true;
         }
-
         @Override
         public boolean canContinueToUse() {
             return attacktick < 65;
         }
-
         @Override
         public void tick() {
             if (attacktick == 20) {
@@ -933,8 +920,6 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             if (attacktick == 23) {
                 coralThornFive();
             }
-
-
             if (attacktick == 39) {
                 float f1 = (float) Math.cos(Math.toRadians(getYRot() + 90));
                 float f2 = (float) Math.sin(Math.toRadians(getYRot() + 90));
@@ -943,9 +928,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             if (attacktick == 42) {
                 coralThornFive();
             }
-
         }
-
     }
 
     class CoralThornGoal extends Goal {
@@ -960,13 +943,11 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             this.attackTarget = getTarget();
             return  attackTarget != null && attackID == 0 && distanceTo(attackTarget) <= 1024 && random.nextInt(8) == 0 && coralthornCooldown == 0;
         }
-
         @Override
         public void start() {
             setRight(random.nextInt(2) != 0);
             setAttackID(5);
         }
-
         @Override
         public void stop() {
             setAttackID(0);
@@ -975,12 +956,10 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
         public boolean requiresUpdateEveryTick() {
             return true;
         }
-
         @Override
         public boolean canContinueToUse() {
             return attacktick < 45;
         }
-
         @Override
         public void tick() {
             if (attacktick == 20) {
@@ -991,12 +970,8 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             if (attacktick == 23) {
                 coralThorn();
                 }
-
         }
-
     }
-
-
 
     class ComboAttackGoal extends Goal {
         private LivingEntity attackTarget;
@@ -1008,13 +983,11 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             this.attackTarget = getTarget();
             return  attackTarget != null && attackID == 0 && distanceTo(attackTarget) <= 4.5 && random.nextInt(4) == 0 && comboCooldown == 0;
         }
-
         @Override
         public void start() {
             setRight(random.nextInt(2) != 0);
             setAttackID(3);
         }
-
         @Override
         public void stop() {
             setAttackID(0);
@@ -1023,12 +996,10 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
         public boolean requiresUpdateEveryTick() {
             return true;
         }
-
         @Override
         public boolean canContinueToUse() {
             return attacktick < 60;
         }
-
         @Override
         public void tick() {
             double dist = distanceTo(attackTarget);
@@ -1057,9 +1028,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 attackTarget.hurt(damageSources().mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 2);
             }
         }
-
         }
-
 
     class BiteAttackGoal extends Goal {
         private LivingEntity attackTarget;
@@ -1071,28 +1040,23 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             this.attackTarget = getTarget();
             return  attackTarget != null && attackID == 0 && distanceTo(attackTarget) <= 6 && random.nextInt(2) == 0 && biteCooldown == 0;
         }
-
         @Override
         public void start() {
             setRight(random.nextInt(2) != 0);
             setAttackID(4);
         }
-
         @Override
         public void stop() {
             setAttackID(0);
             attackTarget = null;
         }
-
         public boolean requiresUpdateEveryTick() {
             return true;
         }
-
         @Override
         public boolean canContinueToUse() {
             return attacktick < 36;
         }
-
         @Override
         public void tick() {
                 if (attacktick == 20) {
@@ -1109,36 +1073,28 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 attackTarget.hurt(damageSources().mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 3);
             }
         }
-
     }
-
 
     static class BulldrogiothGoToBeachGoal extends MoveToBlockGoal {
         private final BulldrogiothEntity bulldrogiothEntity;
-
         public BulldrogiothGoToBeachGoal(BulldrogiothEntity p_32409_, double p_32410_) {
             super(p_32409_, p_32410_, 8, 2);
             this.bulldrogiothEntity = p_32409_;
         }
-
         public boolean canUse() {
             return super.canUse() && this.bulldrogiothEntity.level().isRaining() && this.bulldrogiothEntity.isInWater() && this.bulldrogiothEntity.getY() >= (double)(this.bulldrogiothEntity.level().getSeaLevel() - 3);
         }
-
         public boolean canContinueToUse() {
             return super.canContinueToUse();
         }
-
         protected boolean isValidTarget(LevelReader p_32413_, BlockPos p_32414_) {
             BlockPos blockpos = p_32414_.above();
             return p_32413_.isEmptyBlock(blockpos) && p_32413_.isEmptyBlock(blockpos.above()) ? p_32413_.getBlockState(p_32414_).entityCanStandOn(p_32413_, p_32414_, this.bulldrogiothEntity) : false;
         }
-
         public void start() {
             this.bulldrogiothEntity.setSearchingForLand(false);
             super.start();
         }
-
         public void stop() {
             super.stop();
         }
@@ -1149,21 +1105,17 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
         private final double speedModifier;
         private final int seaLevel;
         private boolean stuck;
-
         public BulldrogiothSwimUpGoal(BulldrogiothEntity p_32440_, double p_32441_, int p_32442_) {
             this.bulldrogiothEntity = p_32440_;
             this.speedModifier = p_32441_;
             this.seaLevel = p_32442_;
         }
-
         public boolean canUse() {
             return (this.bulldrogiothEntity.level().isRaining() || this.bulldrogiothEntity.isInWater())&& this.bulldrogiothEntity.getY() < (double)(this.seaLevel - 2);
         }
-
         public boolean canContinueToUse() {
             return this.canUse() && !this.stuck;
         }
-
         public void tick() {
             if (this.bulldrogiothEntity.getY() < (double)(this.seaLevel - 1) && (this.bulldrogiothEntity.getNavigation().isDone() || this.bulldrogiothEntity.closeToNextPos())) {
                 Vec3 vec3 = DefaultRandomPos.getPosTowards(this.bulldrogiothEntity, 4, 8, new Vec3(this.bulldrogiothEntity.getX(), (double)(this.seaLevel - 1), this.bulldrogiothEntity.getZ()), (double)((float)Math.PI / 2F));
@@ -1171,18 +1123,13 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                     this.stuck = true;
                     return;
                 }
-
                 this.bulldrogiothEntity.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, this.speedModifier);
             }
-
         }
-
-
         public void start() {
             this.bulldrogiothEntity.setSearchingForLand(true);
             this.stuck = false;
         }
-
         public void stop() {
             this.bulldrogiothEntity.setSearchingForLand(false);
         }
@@ -1202,30 +1149,25 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 }
             }
         }
-
         return false;
     }
 
     static class BulldrogiothMoveControl extends MoveControl {
         private final BulldrogiothEntity bulldrogiothEntity;
-
         public BulldrogiothMoveControl(BulldrogiothEntity p_32433_) {
             super(p_32433_);
             this.bulldrogiothEntity = p_32433_;
         }
-
         public void tick() {
             LivingEntity livingentity = this.bulldrogiothEntity.getTarget();
             if (this.bulldrogiothEntity.wantsToSwim() && this.bulldrogiothEntity.isInWater()) {
                 if (livingentity != null && livingentity.getY() > this.bulldrogiothEntity.getY() || this.bulldrogiothEntity.searchingForLand) {
                     this.bulldrogiothEntity.setDeltaMovement(this.bulldrogiothEntity.getDeltaMovement().add(0.0D, 0.002D, 0.0D));
                 }
-
                 if (this.operation != MoveControl.Operation.MOVE_TO || this.bulldrogiothEntity.getNavigation().isDone()) {
                     this.bulldrogiothEntity.setSpeed(0.0F);
                     return;
                 }
-
                 double d0 = this.wantedX - this.bulldrogiothEntity.getX();
                 double d1 = this.wantedY - this.bulldrogiothEntity.getY();
                 double d2 = this.wantedZ - this.bulldrogiothEntity.getZ();
@@ -1242,10 +1184,8 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 if (!this.bulldrogiothEntity.onGround()) {
                     this.bulldrogiothEntity.setDeltaMovement(this.bulldrogiothEntity.getDeltaMovement().add(0.0D, -0.008D, 0.0D));
                 }
-
                 super.tick();
             }
-
         }
     }
 
