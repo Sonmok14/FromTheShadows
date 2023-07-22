@@ -12,6 +12,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -745,6 +746,14 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
         } else {
             this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
+        }
+    }
+
+    public void checkDespawn() {
+        if (this.level().getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
+            this.discard();
+        } else {
+            this.noActionTime = 0;
         }
     }
 

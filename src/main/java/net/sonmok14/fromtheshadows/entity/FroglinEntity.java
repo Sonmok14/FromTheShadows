@@ -289,6 +289,14 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
         }
     }
 
+    public void checkDespawn() {
+        if (this.level().getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
+            this.discard();
+        } else {
+            this.noActionTime = 0;
+        }
+    }
+
     @Override
     public boolean doHurtTarget(Entity p_85031_1_) {
         if (!this.level().isClientSide && this.attackID == 0) {
