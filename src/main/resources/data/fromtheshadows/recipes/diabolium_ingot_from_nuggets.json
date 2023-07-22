@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "fromtheshadows:diabolium_ingot",
+  "key": {
+    "#": {
+      "item": "fromtheshadows:diabolium_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "item": "fromtheshadows:diabolium_ingot"
+  },
+  "show_notification": true
+}

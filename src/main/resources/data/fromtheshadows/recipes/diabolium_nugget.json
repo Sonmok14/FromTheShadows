@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "fromtheshadows:diabolium_ingot"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "fromtheshadows:diabolium_nugget"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "fromtheshadows:diabolium_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "fromtheshadows:diabolium_ingot"
+  }
+}

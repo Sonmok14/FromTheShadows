@@ -1,0 +1,19 @@
+{
+	"name": "디아볼리움",
+	"icon": "fromtheshadows:textures/item/diabolium_ingot.png",
+	"category": "fromtheshadows:item_recipes",
+	"secret":false,
+	"read_by_default":true,
+	"border": true,
+	"text": "금속입니다. 그런데 이제 불맛과 피를 곁들인",
+	"pages": [
+		{
+			"type": "text",
+			"text": "디아볼리움은 다양한 가능성을 가진 금속이며 악마의 피와 다양한 금속을 섞어서 만듭니다. 이 금속은 다른 금속들과 달리 차갑다는 느낌이 들지 않습니다. 악마의 피가 들어간 이 금속을 사용한 장비들은 불, 용암과 같은 뜨거운 것들에 빠져도 타지 않는 강력한 성능을 보여줍니다."
+		},
+		{
+			"type": "crafting",
+			"recipe": "fromtheshadows:diabolium_ingot"
+		}
+	]
+}

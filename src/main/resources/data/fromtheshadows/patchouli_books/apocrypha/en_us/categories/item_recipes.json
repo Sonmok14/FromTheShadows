@@ -1,0 +1,6 @@
+{
+  "name": "Item",
+  "description": "These are descriptions of the items added to the mod.",
+  "icon": "fromtheshadows:textures/item/bottle_of_blood.png",
+  "sortnum":7
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "iii",
+    "i i"
+  ],
+  "key": {
+    "i": {
+      "item": "fromtheshadows:diabolium_ingot"
+    }
+  },
+  "result": {
+    "item": "fromtheshadows:diabolium_helmet",
+    "count": 1
+  }
+}

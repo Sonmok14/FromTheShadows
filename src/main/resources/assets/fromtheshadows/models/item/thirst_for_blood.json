@@ -1,0 +1,90 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "builtin/entity",
+  "texture_size": [
+    64,
+    64
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        0,
+        -66,
+        0
+      ],
+      "translation": [
+        0,
+        -11.75,
+        1.5
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        86,
+        0
+      ],
+      "translation": [
+        0,
+        -11.75,
+        1.5
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -20,
+        -72,
+        0
+      ],
+      "translation": [
+        0,
+        -17,
+        -7.75
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        -20,
+        83,
+        0
+      ],
+      "translation": [
+        9.25,
+        -19,
+        -9
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -39,
+        -3,
+        -37
+      ],
+      "translation": [
+        -5.75,
+        -5.75,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "fixed": {
+      "translation": [
+        0,
+        -19,
+        0
+      ]
+    }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "using": 1
+      },
+      "model": "fromtheshadows:item/thirst_for_blood_using"
+    }
+  ]
+}

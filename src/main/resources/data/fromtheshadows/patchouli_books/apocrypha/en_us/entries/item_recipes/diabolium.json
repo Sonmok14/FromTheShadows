@@ -1,0 +1,31 @@
+{
+	"name": "Diabolium",
+	"icon": "fromtheshadows:textures/item/diabolium_ingot.png",
+	"category": "fromtheshadows:item_recipes",
+	"secret":false,
+	"read_by_default":true,
+	"border": true,
+	"text": "Metal from hell",
+	"pages": [
+		{
+			"type": "text",
+			"text": "Diabolium is a metal with various possibilities and is made by mixing demon blood with various metals. Unlike other metals, this metal does not feel cold. Equipment using these metal with demon blood shows strong performance that does not burn even when immersed in hot things such as fire and lava."
+		},
+		{
+			"type": "crafting",
+			"recipe": "fromtheshadows:diabolium_ingot"
+		},
+		{
+			"type": "crafting",
+			"recipe": "fromtheshadows:diabolium_helmet"
+		},
+		{
+			"type": "crafting",
+			"recipe": "fromtheshadows:diabolium_chest"
+		},
+		{
+			"type": "crafting",
+			"recipe": "fromtheshadows:diabolium_leggings"
+		}
+	]
+}

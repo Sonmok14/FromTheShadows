@@ -1,0 +1,18 @@
+{
+	"name": "네헤모스",
+	"icon": "fromtheshadows:book/nehemoth.png",
+	"category": "fromtheshadows:monster_dictionary",
+	"secret":false,
+	"read_by_default":true,
+
+	"pages": [
+		{
+			"type": "text",
+			"text": "네헤모스는 깊은 심연에서 나타나는 흉폭한 악마입니다. 그들은 인간의 형태를 지닌 모든 것들을 보는 족족 파괴하려 들 것 입니다. 그들은 매우 단단한 피부를 가졌으며 투사체에 데미지를 거의 받지 않도록 축복 받았습니다. 화살은 그들의 피부를 뚫지 못할 것입니다. 그들의 약점은 햇빛으로 그들은 햇빛에 노출되면 돌처럼 굳어버립니다. 물론 돌처럼 굳는 것일 뿐이며 밤이 되거나 햇빛이 차단된다면 다시 움직일 것 입니다. 동굴에서 그들을 목격했다면... 도망치십시오."
+		},
+		{
+			"type": "entity",
+			"entity": "fromtheshadows:nehemoth"
+		}
+	]
+}

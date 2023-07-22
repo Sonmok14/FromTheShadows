@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "  #",
+        " / ",
+        "n  "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:nether_star"
+        },
+        "/": {
+            "item": "minecraft:blaze_rod"
+        },
+        "n": {
+            "item": "fromtheshadows:diabolium_ingot"
+        }
+    },
+    "result": {
+        "item": "fromtheshadows:thirst_for_blood",
+        "count": 1
+    }
+}

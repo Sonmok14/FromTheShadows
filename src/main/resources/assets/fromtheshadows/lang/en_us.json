@@ -1,0 +1,72 @@
+{
+
+  "fromtheshadows.book.landing_text": "Apocrypa is a guide for players who play From the Shadows Mod.",
+
+  "entity.fromtheshadows.cultist": "Cultist",
+  "entity.fromtheshadows.nehemoth": "Nehemoth",
+  "entity.fromtheshadows.froglin": "Froglin",
+  "entity.fromtheshadows.bulldrogioth": "Bulldrogioth",
+  "entity.fromtheshadows.coral_thorn": "Coral Thorn",
+
+  "item.fromtheshadows.cultist_spawn_egg": "Cultist spawn egg",
+  "item.fromtheshadows.froglin_spawn_egg": "Froglin spawn egg",
+  "item.fromtheshadows.nehemoth_spawn_egg": "Nehemoth spawn egg",
+  "item.fromtheshadows.bulldrogioth_spawn_egg": "Bulldrogioth spawn egg",
+  "item.fromtheshadows.froglin_leg": "Froglin Leg",
+  "item.fromtheshadows.bottle_of_blood": "Bottle of blood",
+  "item.fromtheshadows.crystallized_blood": "Crystallized Blood",
+  "item.fromtheshadows.diabolium_nugget": "Diabolium Nugget",
+  "item.fromtheshadows.diabolium_ingot": "Diabolium Ingot",
+  "item.fromtheshadows.crust_helmet": "Crust Helmet",
+  "item.fromtheshadows.crust_chest": "Crust Chestplate",
+  "item.fromtheshadows.crust_leggings": "Crust Leggings",
+  "item.fromtheshadows.crimson_shell": "Crimson Shell",
+  "item.fromtheshadows.diabolium_helmet": "Diabolium Helmet",
+  "item.fromtheshadows.diabolium_chest": "Diabolium Chestplate",
+  "item.fromtheshadows.diabolium_leggings": "Diabolium Leggings",
+  "item.fromtheshadows.thirst_for_blood": "Thirst for Blood",
+
+  "item.minecraft.potion.effect.frenzy": "Potion of the Frenzy",
+  "item.minecraft.splash_potion.effect.frenzy": "Splash Potion of Frenzy",
+  "item.minecraft.lingering_potion.effect.frenzy": "Lingering Potion of Frenzy",
+  "item.minecraft.tipped_arrow.effect.frenzy": "Arrow of Bulldrogioth",
+  "item.minecraft.potion.effect.bulldrogioth": "Potion of the Bulldrogioth",
+  "item.minecraft.splash_potion.effect.bulldrogioth": "Splash Potion of Bulldrogioth",
+  "item.minecraft.lingering_potion.effect.bulldrogioth": "Lingering Potion of Bulldrogioth",
+  "item.minecraft.tipped_arrow.effect.bulldrogioth": "Arrow of Bulldrogioth",
+
+
+
+  "item.fromtheshadows.plague_doctor_mask": "Plague Doctor Mask",
+
+  "block.fromtheshadows.diabolium_block": "Diabolium Block",
+
+  "effect.fromtheshadows.heal_block": "Heal Block",
+  "effect.fromtheshadows.bleeding": "Bleeding",
+
+  "death.attack.bleeding.player": "%s died of excessive bleeding.",
+  "death.attack.incinerate.player": "%s has been incinerated.",
+
+  "itemGroup.fromtheshadows.item": "From the shadows Items",
+
+
+  "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_stomp": "stomps",
+  "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_idle": "Nehemoth growls",
+  "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_hurt": "Nehemoth whines",
+  "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_death": "Nehemoth screams",
+  "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_roar": "Nehemoth roars",
+
+  "fromtheshadows.sound.subtitle.fromtheshadows.bulldrogioth_idle": "Bulldrogioth growls",
+  "fromtheshadows.sound.subtitle.fromtheshadows.bulldrogioth_hurt": "Bulldrogioth whines",
+  "fromtheshadows.sound.subtitle.fromtheshadows.bulldrogioth_death": "Bulldrogioth screams",
+  "fromtheshadows.sound.subtitle.fromtheshadows.bulldrogioth_attack": "Bulldrogioth attacked",
+
+  "fromtheshadows.sound.subtitle.fromtheshadows.goresound": "injured",
+  "fromtheshadows.sound.subtitle.fromtheshadows.soul_laser": "Nehemoth beam shot",
+  "fromtheshadows.sound.subtitle.fromtheshadows.soul_laser_ready": "Nehemoth Charging",
+
+  "fromtheshadows.thirst_for_blood.text": "When you kill the enemy with melee attack, the laser is loaded one by one.",
+  "fromtheshadows.thirst_for_blood.text2": "Use the right-click to fire a laser that incinerates the enemy",
+  "fromtheshadows.diablium_armor.text": "If you wear all the armor and damage the enemy,",
+  "fromtheshadows.diablium_armor.text2": "you will recover as much health as part of the damage."
+}

@@ -1,0 +1,39 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.coral_thorn",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "head",
+					"parent": "root",
+					"pivot": [0, 29, 0],
+					"rotation": [0, 45, 0],
+					"cubes": [
+						{"origin": [-2, 0, 0], "size": [4, 31, 0], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "head2",
+					"parent": "root",
+					"pivot": [0, 29, 0],
+					"rotation": [0, -45, 0],
+					"cubes": [
+						{"origin": [-2, 0, 0], "size": [4, 31, 0], "uv": [8, 0]}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,18 @@
+{
+	"name": "Nehemoth",
+	"icon": "fromtheshadows:book/nehemoth.png",
+	"category": "fromtheshadows:monster_dictionary",
+	"secret":false,
+	"read_by_default":true,
+
+	"pages": [
+		{
+			"type": "text",
+			"text": "Nehemoth is a violent demon that appears in a deep abyss. They will try to destroy everything that sees in human form. They have very hard skin and are blessed with little damage to the projectiles. Arrows will not pierce their skin. Their weakness is sunlight, and when exposed to sunlight, they harden like stones. Of course, it only hardens like a stone, and if it's night or sunlight is blocked, it'll move again."
+		},
+		{
+			"type": "entity",
+			"entity": "fromtheshadows:nehemoth"
+		}
+	]
+}

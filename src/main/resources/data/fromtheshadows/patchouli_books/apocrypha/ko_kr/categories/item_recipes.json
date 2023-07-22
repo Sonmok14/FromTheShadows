@@ -1,0 +1,6 @@
+{
+  "name": "아이템",
+  "description": "모드에 추가되는 아이템에 대한 설명들 입니다.",
+  "icon": "fromtheshadows:textures/item/bottle_of_blood.png",
+  "sortnum":7
+}

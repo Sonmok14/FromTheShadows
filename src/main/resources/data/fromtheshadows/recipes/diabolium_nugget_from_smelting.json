@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": [
+    {
+      "item": "fromtheshadows:diabolium_helmet"
+    },
+    {
+      "item": "fromtheshadows:diabolium_chest"
+    },
+    {
+      "item": "fromtheshadows:diabolium_leggings"
+    }
+  ],
+  "result": "fromtheshadows:diabolium_nugget"
+}

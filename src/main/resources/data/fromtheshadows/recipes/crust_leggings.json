@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "iii",
+    "i i",
+    "i i"
+  ],
+  "key": {
+    "i": {
+      "item": "fromtheshadows:crimson_shell"
+    }
+  },
+  "result": {
+    "item": "fromtheshadows:crust_leggings",
+    "count": 1
+  }
+}

@@ -1,0 +1,71 @@
+{
+
+  "fromtheshadows.book.landing_text": "아포크리파는 From the shadows를 플레이하는 유저들을 위한 가이드입니다.",
+
+
+  "entity.fromtheshadows.cultist": "광신도",
+  "entity.fromtheshadows.nehemoth": "네헤모스",
+  "entity.fromtheshadows.froglin": "프로글린",
+  "entity.fromtheshadows.bulldrogioth": "불드로지어스",
+  "entity.fromtheshadows.coral_thorn": "산호 가시",
+
+  "item.fromtheshadows.bottle_of_blood": "혈액이 담긴 병",
+  "item.fromtheshadows.diabolium_ingot": "디아볼리움 주괴",
+  "item.fromtheshadows.diabolium_helmet": "디아볼리움 투구",
+  "item.fromtheshadows.diabolium_chest": "디아볼리움 흉갑",
+  "item.fromtheshadows.diabolium_leggings": "디아볼리움 각반",
+  "item.fromtheshadows.crust_helmet": "갑각 투구",
+  "item.fromtheshadows.crust_chest": "갑각 흉갑",
+  "item.fromtheshadows.crust_leggings": "갑각 각반",
+  "item.fromtheshadows.crimson_shell": "진홍빛 갑각",
+  "item.fromtheshadows.froglin_spawn_egg": "프로글린 생성 알",
+  "item.fromtheshadows.nehemoth_spawn_egg": "네헤모스 생성 알",
+  "item.fromtheshadows.froglin_leg": "프로글린 다리",
+  "item.fromtheshadows.diabolium_nugget": "디아볼리움 조각",
+  "item.fromtheshadows.bulldrogioth_spawn_egg": "불드로지어스 생성 알",
+  "item.fromtheshadows.cultist_spawn_egg": "광신도 생성 알",
+  "item.fromtheshadows.plague_doctor_mask": "역병 의사 마스크",
+  "item.fromtheshadows.crystallized_blood": "결정화된 혈액",
+  "item.fromtheshadows.thirst_for_blood": "피의 갈증",
+
+  "item.minecraft.potion.effect.frenzy": "광폭의 물약",
+  "item.minecraft.splash_potion.effect.frenzy": "투척용 광폭의 물약",
+  "item.minecraft.lingering_potion.effect.frenzy": "잔류형 광폭의 물약",
+  "item.minecraft.tipped_arrow.effect.frenzy": "광폭의 화살",
+  "item.minecraft.potion.effect.bulldrogioth": "불드로지어스의 물약",
+  "item.minecraft.splash_potion.effect.bulldrogioth": "투척용 불드로지어스의 물약",
+  "item.minecraft.lingering_potion.effect.bulldrogioth": "잔류형 불드로지어스의 물약",
+  "item.minecraft.tipped_arrow.effect.bulldrogioth": "불드로지어스의 화살",
+
+  "block.fromtheshadows.diabolium_block": "디아볼리움 블럭",
+
+  "effect.fromtheshadows.heal_block": "회복 봉인",
+  "effect.fromtheshadows.bleeding": "출혈",
+
+  "death.attack.bleeding.player": "%s 이(가) 과다 출혈로 사망했습니다.",
+  "death.attack.incinerate.player": "%s 이(가) 소각당했습니다.",
+
+  "itemGroup.fromtheshadows.item": "From the shadows 아이템",
+
+
+  "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_stomp": "무언가가 쿵쾅거림",
+  "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_idle": "네헤모스가 으르렁거림",
+  "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_hurt": "네헤모스가 신음을 냄",
+  "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_death": "네헤모스가 쓰러짐",
+  "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_roar": "네헤모스가 포효함",
+
+
+  "fromtheshadows.sound.subtitle.fromtheshadows.bulldrogioth_idle": "불드로지어스가 으르렁거림",
+  "fromtheshadows.sound.subtitle.fromtheshadows.bulldrogioth_hurt": "불드로지어스가 신음을 냄",
+  "fromtheshadows.sound.subtitle.fromtheshadows.bulldrogioth_death": "불드로지어스가 쓰러짐",
+  "fromtheshadows.sound.subtitle.fromtheshadows.bulldrogioth_attack": "불드로지어스가 공격함",
+
+  "fromtheshadows.sound.subtitle.fromtheshadows.goresound": "네헤모스가 상처를 냄",
+  "fromtheshadows.sound.subtitle.fromtheshadows.soul_laser": "네헤모스가 광선을 발사함",
+  "fromtheshadows.sound.subtitle.fromtheshadows.soul_laser_ready": "네헤모스가 광선을 충전함",
+
+  "fromtheshadows.thirst_for_blood.text": "근접 공격으로 적을 처치시 레이저가 하나씩 장전됩니다.",
+  "fromtheshadows.thirst_for_blood.text2": "마우스 오른쪽 클릭으로 적을 소각하는 레이저를 발사합니다.",
+  "fromtheshadows.diablium_armor.text": "갑옷 세트를 전부 장착하고 적에게 피해를 줄 경우",
+  "fromtheshadows.diablium_armor.text2": "피해를 준 만큼 체력의 일부를 회복합니다."
+}
