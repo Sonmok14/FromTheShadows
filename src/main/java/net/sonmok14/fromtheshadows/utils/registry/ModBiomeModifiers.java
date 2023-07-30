@@ -10,5 +10,5 @@ import net.sonmok14.fromtheshadows.world.biome.FTSBiomeModifier;
 
 public class ModBiomeModifiers {
     public static final DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Fromtheshadows.MODID);
-    public static final RegistryObject<Codec<FTSBiomeModifier>> FTS_ENTITY_MODIFIER_TYPE = BIOME_MODIFIER_SERIALIZERS.register("fromtheshadows_entity_modifier", () -> Codec.unit(FTSBiomeModifier.INSTANCE));
+    public static final RegistryObject<Codec<FTSBiomeModifier>> FTS_ENTITY_MODIFIER_TYPE = BIOME_MODIFIER_SERIALIZERS.register("fts_entity_modifier", () -> Codec.unit(FTSBiomeModifier.INSTANCE));
 }

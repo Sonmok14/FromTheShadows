@@ -32,12 +32,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.Tags;
 import net.sonmok14.fromtheshadows.FTSConfig;
 import net.sonmok14.fromtheshadows.entity.ai.*;
 import net.sonmok14.fromtheshadows.entity.projectiles.FrogVomit;
@@ -193,12 +195,18 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
         this.attacktick = 0;
         this.level().broadcastEntityEvent(this, (byte) -id);
     }
+    private static boolean isBiomeSwamp(LevelAccessor worldIn, BlockPos position) {
+        return worldIn.getBiome(position).is(Tags.Biomes.IS_SWAMP);
+    }
 
     public static boolean checkMonsterSpawnRules(EntityType<? extends Monster> p_33018_, ServerLevelAccessor p_33019_, MobSpawnType p_33020_, BlockPos p_33021_, RandomSource p_33022_) {
         return p_33019_.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(p_33018_, p_33019_, p_33020_, p_33021_, p_33022_);
     }
     public static <T extends Mob> boolean canFroglinSpawn(EntityType<FroglinEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-
+        if(isBiomeSwamp(iServerWorld, pos))
+        {
+            return reason == MobSpawnType.SPAWNER || checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && random.nextInt(2) == 0;
+        }
             return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
     }
     @Override

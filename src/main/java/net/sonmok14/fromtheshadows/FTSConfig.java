@@ -68,9 +68,9 @@ public class FTSConfig {
             builder.pop();
             builder.push("SpawnRate");
             nehemothSpawnRate = builder.comment("Changed Nehemoth SpawnRate. [0 ~ 100]")
-                    .defineInRange("Nehemoth SpawnRate", 4, 0, 100);
+                    .defineInRange("Nehemoth SpawnRate", 6, 0, 100);
             bulldrogiothSpawnRate = builder.comment("Changed Bulldrogioth SpawnRate. [0 ~ 100]")
-                    .defineInRange("Bulldrogioth SpawnRate", 10, 0, 100);
+                    .defineInRange("Bulldrogioth SpawnRate", 8, 0, 100);
             froglinSpawnRate = builder.comment("Changed Froglin SpawnRate. [0 ~ 100]")
                     .defineInRange("Froglin SpawnRate", 15, 0, 100);
         }
