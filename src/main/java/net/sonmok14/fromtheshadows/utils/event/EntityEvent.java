@@ -27,8 +27,8 @@ public class EntityEvent {
         }
 
         if (event.getEntity() instanceof Chicken) {
-            Chicken abstractVillager = (Chicken) event.getEntity();
-            abstractVillager.goalSelector.addGoal(1, new AvoidEntityGoal(abstractVillager, FroglinEntity.class, 16.0F, 0.8F, 1.4D));
+            Chicken chicken = (Chicken) event.getEntity();
+            chicken.goalSelector.addGoal(1, new AvoidEntityGoal(chicken, FroglinEntity.class, 16.0F, 0.8F, 1.4D));
         }
 
 

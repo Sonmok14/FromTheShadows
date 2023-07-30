@@ -16,7 +16,6 @@ public class FTSConfig {
         public final ConfigValue<Double> nehemoth_melee_damage;
 
 
-
         public final ConfigValue<Double> froglin_health;
         public final ConfigValue<Double> froglin_vomit_damage;
         public final ConfigValue<Double> froglin_melee_damage;
@@ -28,8 +27,12 @@ public class FTSConfig {
         public final ConfigValue<Double> cleric_projectile_damage;
         public final ConfigValue<Double> cleric_melee_damage;
         public final ConfigValue<Double> cleric_health;
+        public final ForgeConfigSpec.IntValue nehemothSpawnRate;
+        public final ForgeConfigSpec.IntValue bulldrogiothSpawnRate;
+        public final ForgeConfigSpec.IntValue froglinSpawnRate;
+        public static class Common {
 
-
+        }
         public Server(ForgeConfigSpec.Builder builder) {
             builder.push("Nehemoth");
             this.nehemoth_health = builder.translation("text.fromtheshadows.config.nehemoth_health")
@@ -63,6 +66,13 @@ public class FTSConfig {
             this.cleric_melee_damage = builder.translation("text.fromtheshadows.config.cleric_melee_damage")
                     .defineInRange("Sets Cleric Melee Damage", 1, 1, Double.MAX_VALUE);
             builder.pop();
+            builder.push("SpawnRate");
+            nehemothSpawnRate = builder.comment("Changed Nehemoth SpawnRate. [0 ~ 100]")
+                    .defineInRange("Nehemoth SpawnRate", 4, 0, 100);
+            bulldrogiothSpawnRate = builder.comment("Changed Bulldrogioth SpawnRate. [0 ~ 100]")
+                    .defineInRange("Bulldrogioth SpawnRate", 10, 0, 100);
+            froglinSpawnRate = builder.comment("Changed Froglin SpawnRate. [0 ~ 100]")
+                    .defineInRange("Froglin SpawnRate", 15, 0, 100);
         }
     }
     public static final Server SERVER;

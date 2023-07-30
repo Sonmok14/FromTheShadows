@@ -596,6 +596,11 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             return false;
     }
 
+    @Override
+    public boolean dampensVibrations() {
+        return true;
+    }
+
     public void coralThorn()
     {
        if(this.getTarget() != null) {

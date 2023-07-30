@@ -59,6 +59,7 @@ public class Fromtheshadows
         EffectRegistry.EFFECT.register(modEventBus);
         EffectRegistry.POTION.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
+        ModBiomeModifiers.BIOME_MODIFIER_SERIALIZERS.register(modEventBus);
         FTSCreativeTabRegistry.TABS.register(modEventBus);
         final DeferredRegister<Codec<? extends BiomeModifier>> serializers = DeferredRegister
                 .create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, MODID);

@@ -11,6 +11,9 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.sonmok14.fromtheshadows.Fromtheshadows;
 
 public class TagRegistry {
+    public static final TagKey<Biome> NEHEMOTH_SPAWN = registerBiomeTag("nehemoth_spawn.json");
+    public static final TagKey<Biome> BULLDROGIOTH_SPAWN = registerBiomeTag("bulldrogioth_spawn");
+    public static final TagKey<Biome> FROGLIN_SPAWN = registerBiomeTag("froglin_spawn");
 
     public static final TagKey<Item> CAN_HIT_NEHEMOTH_STATUE = registerItemTag("can_hit_nehemoth_statue");
     public static final TagKey<Item> NEHEMOTH_STATUE_LOOT = registerItemTag("nehemoth_statue_loot");

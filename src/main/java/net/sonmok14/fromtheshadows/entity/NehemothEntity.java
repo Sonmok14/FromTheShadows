@@ -824,6 +824,10 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         return p_33019_.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(p_33018_, p_33019_, p_33020_, p_33021_, p_33022_);
     }
 
+    @Override
+    public boolean dampensVibrations() {
+        return true;
+    }
     public void checkDespawn() {
         if (this.level().getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
             this.discard();
