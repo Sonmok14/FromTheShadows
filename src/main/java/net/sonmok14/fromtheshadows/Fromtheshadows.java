@@ -40,7 +40,7 @@ public class Fromtheshadows
     public Fromtheshadows()
     {
         FTSConfig.loadConfig(FTSConfig.SERVER_SPEC,
-                FMLPaths.CONFIGDIR.get().resolve("fromtheshadows-newconfig.toml").toString());
+                FMLPaths.CONFIGDIR.get().resolve("fromtheshadows-config.toml").toString());
         instance = this;
 
         GeckoLib.initialize();

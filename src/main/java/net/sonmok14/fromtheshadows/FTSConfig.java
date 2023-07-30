@@ -9,6 +9,14 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.io.File;
 
 public class FTSConfig {
+    public static final Server SERVER;
+    public static final ForgeConfigSpec SERVER_SPEC;
+
+    static {
+        Pair<Server, ForgeConfigSpec> commonSpecPair = new ForgeConfigSpec.Builder().configure(Server::new);
+        SERVER = commonSpecPair.getLeft();
+        SERVER_SPEC = commonSpecPair.getRight();
+    }
     public static class Server {
         public final ConfigValue<Double> nehemoth_health;
         public final ConfigValue<Double> nehemoth_laser_damage;
@@ -30,9 +38,6 @@ public class FTSConfig {
         public final ForgeConfigSpec.IntValue nehemothSpawnRate;
         public final ForgeConfigSpec.IntValue bulldrogiothSpawnRate;
         public final ForgeConfigSpec.IntValue froglinSpawnRate;
-        public static class Common {
-
-        }
         public Server(ForgeConfigSpec.Builder builder) {
             builder.push("Nehemoth");
             this.nehemoth_health = builder.translation("text.fromtheshadows.config.nehemoth_health")
@@ -74,14 +79,6 @@ public class FTSConfig {
             froglinSpawnRate = builder.comment("Changed Froglin SpawnRate. [0 ~ 100]")
                     .defineInRange("Froglin SpawnRate", 15, 0, 100);
         }
-    }
-    public static final Server SERVER;
-    public static final ForgeConfigSpec SERVER_SPEC;
-
-    static {
-        Pair<Server, ForgeConfigSpec> commonSpecPair = new ForgeConfigSpec.Builder().configure(Server::new);
-        SERVER = commonSpecPair.getLeft();
-        SERVER_SPEC = commonSpecPair.getRight();
     }
 
     public static void loadConfig(ForgeConfigSpec config, String path) {
