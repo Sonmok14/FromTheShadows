@@ -21,6 +21,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.sonmok14.fromtheshadows.Fromtheshadows;
 import net.sonmok14.fromtheshadows.effect.EffectHealblock;
 import net.sonmok14.fromtheshadows.effect.EffectHemorrhage;
+import net.sonmok14.fromtheshadows.effect.EffectPlague;
 import net.sonmok14.fromtheshadows.misc.ProperBrewingRecipe;
 
 public class EffectRegistry {
@@ -30,7 +31,7 @@ public class EffectRegistry {
     public static final DeferredRegister<Potion> POTION = DeferredRegister.create(ForgeRegistries.POTIONS, Fromtheshadows.MODID);
     public static final DeferredRegister<MobEffect> EFFECT = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Fromtheshadows.MODID);
 
-
+    public static final RegistryObject<MobEffect> PLAGUE = EFFECT.register("plague", ()-> new EffectPlague(MobEffectCategory.HARMFUL, 0X534D50));
     public static final RegistryObject<MobEffect> HEAL_BLOCK = EFFECT.register("heal_block", ()-> new EffectHealblock(MobEffectCategory.HARMFUL, 0X78828E));
     public static final RegistryObject<MobEffect> BLEEDING = EFFECT.register("bleeding", ()-> new EffectHemorrhage(MobEffectCategory.HARMFUL, 0XCA2D2D));
     public static final RegistryObject<Potion> FRENZY_POTION = POTION.register("frenzy", ()-> new Potion(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1200, 0),(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 1))));

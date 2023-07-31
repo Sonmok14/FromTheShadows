@@ -11,6 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sonmok14.fromtheshadows.Fromtheshadows;
 import net.sonmok14.fromtheshadows.entity.BulldrogiothEntity;
+import net.sonmok14.fromtheshadows.entity.ClericEntity;
 import net.sonmok14.fromtheshadows.entity.FroglinEntity;
 import net.sonmok14.fromtheshadows.entity.NehemothEntity;
 
@@ -21,6 +22,7 @@ public class EntityEvent {
     public static void addSpawn(EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof Villager) {
             Villager abstractVillager = (Villager) event.getEntity();
+            abstractVillager.goalSelector.addGoal(1, new AvoidEntityGoal(abstractVillager, ClericEntity.class, 16.0F, 0.8F, 0.85F));
             abstractVillager.goalSelector.addGoal(2, new AvoidEntityGoal(abstractVillager, BulldrogiothEntity.class, 32.0F, 0.8F, 0.85F));
             abstractVillager.goalSelector.addGoal(1, new AvoidEntityGoal(abstractVillager, NehemothEntity.class, 16.0F, 0.8F, 0.85F));
             abstractVillager.goalSelector.addGoal(2, new AvoidEntityGoal(abstractVillager, FroglinEntity.class, 16.0F, 0.8F, 0.85F));
@@ -34,6 +36,8 @@ public class EntityEvent {
 
         if (event.getEntity() instanceof WanderingTrader) {
             WanderingTrader wanderingTraderEntity = (WanderingTrader) event.getEntity();
+            wanderingTraderEntity.goalSelector.addGoal(1, new AvoidEntityGoal(wanderingTraderEntity, ClericEntity.class, 16.0F, 0.8F, 0.85F));
+            wanderingTraderEntity.goalSelector.addGoal(2, new AvoidEntityGoal(wanderingTraderEntity, BulldrogiothEntity.class, 16.0F, 0.8F, 0.85F));
             wanderingTraderEntity.goalSelector.addGoal(1, new AvoidEntityGoal(wanderingTraderEntity, NehemothEntity.class, 16.0F, 0.8F, 0.85F));
             wanderingTraderEntity.goalSelector.addGoal(2, new AvoidEntityGoal(wanderingTraderEntity, FroglinEntity.class, 16.0F, 0.8F, 0.85F));
         }

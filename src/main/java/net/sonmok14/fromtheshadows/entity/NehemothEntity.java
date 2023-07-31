@@ -98,7 +98,6 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
     public NehemothEntity(EntityType<? extends NehemothEntity> type, Level world) {
         super(type, world);
         xpReward = 5;
-
     }
     //animation
 

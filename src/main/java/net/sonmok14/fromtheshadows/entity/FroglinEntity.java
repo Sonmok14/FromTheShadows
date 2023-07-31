@@ -14,6 +14,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -43,6 +46,7 @@ import net.minecraftforge.common.Tags;
 import net.sonmok14.fromtheshadows.FTSConfig;
 import net.sonmok14.fromtheshadows.entity.ai.*;
 import net.sonmok14.fromtheshadows.entity.projectiles.FrogVomit;
+import net.sonmok14.fromtheshadows.utils.registry.EffectRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -265,6 +269,8 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
         }
 
     }
+
+
     @Override
     public void handleEntityEvent(byte id) {
         if (id <= 0) {
@@ -424,6 +430,11 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
     @Override
     public void tick() {
         super.tick();
+
+        if (!level().isClientSide) {
+            this.removeEffect(MobEffects.POISON);
+        }
+
         this.setMaxUpStep(1.0F);
         if(attackID == 0)
         {
@@ -535,7 +546,10 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
             this.froglinEntity.setAttackID(0);
             this.attackTarget = null;
         }
-
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
 
         @Override
         public boolean canContinueToUse() {
@@ -577,6 +591,10 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
         public void stop() {
             this.froglinEntity.setAttackID(0);
             this.attackTarget = null;
+        }
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
         }
         @Override
         public boolean canContinueToUse() {

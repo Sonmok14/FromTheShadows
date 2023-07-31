@@ -32,10 +32,20 @@ public class ClericModel extends GeoModel<ClericEntity> {
     public void setCustomAnimations(ClericEntity animatable, long instanceId, AnimationState<ClericEntity> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
         CoreGeoBone head = this.getAnimationProcessor().getBone("head");
+        CoreGeoBone arms = this.getAnimationProcessor().getBone("arms");
         CoreGeoBone right_arm = this.getAnimationProcessor().getBone("right_arm");
         CoreGeoBone left_arm = this.getAnimationProcessor().getBone("left_arm");
-        right_arm.setHidden(true);
-        left_arm.setHidden(true);
+        if(animatable.isAggressive() || animatable.attackID != 0)
+        {
+            arms.setHidden(true);
+            right_arm.setHidden(false);
+            left_arm.setHidden(false);
+        }
+        else {
+            arms.setHidden(false);
+            right_arm.setHidden(true);
+            left_arm.setHidden(true);
+        }
         EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
         head.setRotX(entityData.headPitch() * 0.01F);
         head.setRotY(entityData.netHeadYaw() * 0.01F);

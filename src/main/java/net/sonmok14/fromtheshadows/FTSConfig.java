@@ -70,6 +70,7 @@ public class FTSConfig {
                     .defineInRange("Sets Cleric Projectile Damage", 5, 1, Double.MAX_VALUE);
             this.cleric_melee_damage = builder.translation("text.fromtheshadows.config.cleric_melee_damage")
                     .defineInRange("Sets Cleric Melee Damage", 1, 1, Double.MAX_VALUE);
+
             builder.pop();
             builder.push("SpawnRate");
             nehemothSpawnRate = builder.comment("Changed Nehemoth SpawnRate. [0 ~ 100]")

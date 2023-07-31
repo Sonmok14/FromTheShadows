@@ -27,7 +27,6 @@ public class EntityRegistry {
                     .clientTrackingRange(9).build(new ResourceLocation(Fromtheshadows.MODID, "bulldrogioth").toString()));
     public static final RegistryObject<EntityType<ClericEntity>> CLERIC = ENTITY_TYPES.register("cleric",
             () -> EntityType.Builder.of(ClericEntity::new, MobCategory.MONSTER).sized(0.6F, 1.95F)
-                    .noSummon()
                     .clientTrackingRange(9).build(new ResourceLocation(Fromtheshadows.MODID, "cleric").toString()));
     public static final RegistryObject<EntityType<ScreenShakeEntity>> SCREEN_SHAKE = ENTITY_TYPES.register("screen_shake", () -> EntityType.Builder.<ScreenShakeEntity>of(ScreenShakeEntity::new, MobCategory.MISC)
             .noSummon()
@@ -58,6 +57,11 @@ public class EntityRegistry {
             .noSummon()
             .setUpdateInterval(Integer.MAX_VALUE)
             .build(Fromtheshadows.MODID + ":coral_thorn"));
+    public static final RegistryObject<EntityType<ThrowingDaggerEntity>> THROWING_DAGGER = ENTITY_TYPES.register("throwing_dagger", () -> EntityType.Builder.<ThrowingDaggerEntity>of(ThrowingDaggerEntity::new, MobCategory.MISC)
+            .sized(1.0f, 1.0f)
+            .noSummon()
+            .setUpdateInterval(Integer.MAX_VALUE)
+            .build(Fromtheshadows.MODID + ":throwing_dagger"));
     public static final RegistryObject<EntityType<FrogVomit>> FROGLIN_VOMIT = ENTITY_TYPES.register("froglin_vomit", () -> EntityType.Builder.<FrogVomit>of(FrogVomit::new, MobCategory.MISC)
             .noSummon()
             .sized(1.0f, 1.0f)

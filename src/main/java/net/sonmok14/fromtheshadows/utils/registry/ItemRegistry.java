@@ -53,7 +53,8 @@ public class ItemRegistry {
 
     public static final RegistryObject<Item> DIABOLIUM_BLOCK = ITEMS.register("diabolium_block", () -> new BlockItem(BlockRegistry.DIABOLIUM_BLOCK.get(), new Item.Properties().fireResistant()));
 
-
+    public static final RegistryObject<Item> CLERIC_SPAWN_EGG = ITEMS.register("cleric_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.CLERIC, 0xFC2C48,0xF7D7BA, new Item.Properties()));
     public static final RegistryObject<Item> BULLDROGIOTH_SPAWN_EGG = ITEMS.register("bulldrogioth_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.BULLDROGIOTH, 0xFC2C48,0xF7D7BA, new Item.Properties()));
     public static final RegistryObject<Item> FROGLIN_SPAWN_EGG = ITEMS.register("froglin_spawn_egg",

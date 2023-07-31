@@ -18,6 +18,7 @@ public class ClientModEventSubscriber {
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
 
+        event.registerEntityRenderer(EntityRegistry.THROWING_DAGGER.get(), ThrowingDaggerRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CORAL_THORN.get(), CoralThornRenderer::new);
         event.registerEntityRenderer(EntityRegistry.BULLDROGIOTH.get(), BulldrogiothRenderer::new);
         event.registerEntityRenderer(EntityRegistry.FROGLIN_VOMIT.get(), FroglinVomitRenderer::new);
