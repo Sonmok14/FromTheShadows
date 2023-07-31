@@ -12,10 +12,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.sonmok14.fromtheshadows.client.models.ClericModel;
-import net.sonmok14.fromtheshadows.client.renderer.layer.BulldrogiothLayerRenderer;
 import net.sonmok14.fromtheshadows.client.renderer.layer.ClericLayerRenderer;
 import net.sonmok14.fromtheshadows.entity.ClericEntity;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -27,7 +25,7 @@ public class ClericRenderer extends GeoEntityRenderer<ClericEntity> {
     ResourceLocation text;
     public ClericRenderer(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ClericModel());
-        shadowRadius = 1f;
+        shadowRadius = 0.5f;
         this.addRenderLayer(new ClericLayerRenderer(this));
     }
 

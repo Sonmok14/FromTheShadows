@@ -83,6 +83,7 @@ public class ThrowingDaggerEntity extends AbstractArrow implements GeoEntity {
     }
 
     protected void onHitEntity(EntityHitResult p_37573_) {
+
         boolean flag;
         SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
         Entity entity = this.getOwner();
@@ -93,7 +94,7 @@ public class ThrowingDaggerEntity extends AbstractArrow implements GeoEntity {
                 if (entity.isAlive() && entity2 != null) {
                     this.playSound(soundevent, 0.5f, 1.0F);
                     livingEntity2.invulnerableTime = 0;
-                    livingEntity2.addEffect(new MobEffectInstance(EffectRegistry.PLAGUE.get(), 100), this);
+                    livingEntity2.addEffect(new MobEffectInstance(EffectRegistry.PLAGUE.get(), 300), this);
                     discard();
                 }
             }

@@ -4,7 +4,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.AbstractIllager;
 import net.sonmok14.fromtheshadows.utils.registry.EffectRegistry;
 
 public class EffectPlague extends MobEffect {
@@ -21,7 +20,7 @@ public class EffectPlague extends MobEffect {
         for (LivingEntity livingentity : p_19467_.level().getEntitiesOfClass(LivingEntity.class, p_19467_.getBoundingBox().inflate(2D))) {
             if (livingentity != p_19467_) {
                 if(!livingentity.hasEffect(EffectRegistry.PLAGUE.get()))
-                livingentity.addEffect(new MobEffectInstance(EffectRegistry.PLAGUE.get(), 100), p_19467_);
+                livingentity.addEffect(new MobEffectInstance(EffectRegistry.PLAGUE.get(), 200), p_19467_);
             }
         }
         super.applyEffectTick(p_19467_, p_19468_);

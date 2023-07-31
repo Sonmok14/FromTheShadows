@@ -65,7 +65,7 @@ public class FTSConfig {
             builder.pop();
             builder.push("Cleric");
             this.cleric_health = builder.translation("text.fromtheshadows.config.cleric_health")
-                    .defineInRange("Sets Cleric Max Health", 25, 1, Double.MAX_VALUE);
+                    .defineInRange("Sets Cleric Max Health", 30, 1, Double.MAX_VALUE);
             this.cleric_projectile_damage = builder.translation("text.fromtheshadows.config.cleric_projectile_damage")
                     .defineInRange("Sets Cleric Projectile Damage", 5, 1, Double.MAX_VALUE);
             this.cleric_melee_damage = builder.translation("text.fromtheshadows.config.cleric_melee_damage")

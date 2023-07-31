@@ -9,6 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.sonmok14.fromtheshadows.Fromtheshadows;
 import net.sonmok14.fromtheshadows.items.CrustArmorItem;
 import net.sonmok14.fromtheshadows.items.DiaboliumArmorItem;
+import net.sonmok14.fromtheshadows.items.PlagueDoctorMaskItem;
 import net.sonmok14.fromtheshadows.items.ThirstforBloodItem;
 
 public class ItemRegistry {
@@ -28,6 +29,7 @@ public class ItemRegistry {
     public static final RegistryObject<DiaboliumArmorItem> DIABOLIUM_LEGGINGS = ITEMS.register("diabolium_leggings",
             () -> new DiaboliumArmorItem(DIABOLIUM_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
 
+
     public static final RegistryObject<CrustArmorItem> CRUST_HEAD = ITEMS.register("crust_helmet",
             () -> new CrustArmorItem(CRUST_ARMOR_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<CrustArmorItem> CRUST_CHEST = ITEMS.register("crust_chest",
@@ -41,7 +43,10 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> BOTTLE_OF_BLOOD = ITEMS.register("bottle_of_blood",
             () -> new Item(new Item.Properties()));
-
+    public static final RegistryObject<Item> SUSPICIOUS_CLOTH = ITEMS.register("suspicious_cloth",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<PlagueDoctorMaskItem> PLAGUE_DOCTOR_MASK = ITEMS.register("plague_doctor_mask",
+            () -> new PlagueDoctorMaskItem(PLAGUE_ARMOR_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> CRYSTALLIZED_BLOOD = ITEMS.register("crystallized_blood",
             () -> new Item(new Item.Properties()));
 
@@ -52,9 +57,8 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> DIABOLIUM_BLOCK = ITEMS.register("diabolium_block", () -> new BlockItem(BlockRegistry.DIABOLIUM_BLOCK.get(), new Item.Properties().fireResistant()));
-
     public static final RegistryObject<Item> CLERIC_SPAWN_EGG = ITEMS.register("cleric_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityRegistry.CLERIC, 0xFC2C48,0xF7D7BA, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(EntityRegistry.CLERIC, 0x95A5A6,0xE74C3C, new Item.Properties()));
     public static final RegistryObject<Item> BULLDROGIOTH_SPAWN_EGG = ITEMS.register("bulldrogioth_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.BULLDROGIOTH, 0xFC2C48,0xF7D7BA, new Item.Properties()));
     public static final RegistryObject<Item> FROGLIN_SPAWN_EGG = ITEMS.register("froglin_spawn_egg",

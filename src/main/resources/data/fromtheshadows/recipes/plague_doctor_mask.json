@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "iii",
+    "i i"
+  ],
+  "key": {
+    "i": {
+      "item": "fromtheshadows:suspicious_cloth"
+    }
+  },
+  "result": {
+    "item": "fromtheshadows:plague_doctor_mask",
+    "count": 1
+  }
+}

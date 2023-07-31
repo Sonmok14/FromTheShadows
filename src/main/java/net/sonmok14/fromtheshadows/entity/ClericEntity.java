@@ -2,15 +2,13 @@ package net.sonmok14.fromtheshadows.entity;
 
 import com.google.common.collect.Maps;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -18,12 +16,13 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.ai.util.GoalUtils;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.entity.raid.Raider;
-import net.minecraft.world.item.HoneyBottleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -47,15 +46,17 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.function.Predicate;
 
-public class ClericEntity extends Raider implements GeoEntity {
-
+public class ClericEntity extends AbstractIllager implements GeoEntity {
+    static final Predicate<Difficulty> DOOR_BREAKING_PREDICATE = (p_34082_) -> {
+        return p_34082_ == Difficulty.NORMAL || p_34082_ == Difficulty.HARD;
+    };
     public int throwingdaggercooldown;
     public int attackID;
     public int attacktick;
     public float mumbleProgress;
     public static final byte MELEE_ATTACK = 1;
-
     public static final byte THROWING_ATTACK = 2;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -68,7 +69,7 @@ public class ClericEntity extends Raider implements GeoEntity {
     public static AttributeSupplier.Builder createAttributes() {
         return LivingEntity.createLivingAttributes()
                 .add(Attributes.ATTACK_KNOCKBACK, 1D)
-                .add(Attributes.FOLLOW_RANGE, 16.0D)
+                .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3D)
                 .add(Attributes.MAX_HEALTH, FTSConfig.SERVER.cleric_health.get())
                 .add(Attributes.ATTACK_DAMAGE, FTSConfig.SERVER.cleric_melee_damage.get())
@@ -79,6 +80,16 @@ public class ClericEntity extends Raider implements GeoEntity {
     public SoundEvent getCelebrateSound() {
         return null;
     }
+
+    protected void customServerAiStep() {
+        if (!this.isNoAi() && GoalUtils.hasGroundPathNavigation(this)) {
+            boolean flag = ((ServerLevel)this.level()).isRaided(this.blockPosition());
+            ((GroundPathNavigation)this.getNavigation()).setCanOpenDoors(flag);
+        }
+
+        super.customServerAiStep();
+    }
+
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
@@ -99,6 +110,10 @@ public class ClericEntity extends Raider implements GeoEntity {
                     }
                     if(this.attackID == 0)
                     if (this.walkAnimation.speed() > 0.35F && isAggressive()) {
+                        event.getController().setAnimationSpeed(1D);
+                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.cultist.run"));
+                    }
+                    if (this.walkAnimation.speed() > 0.35F) {
                         event.getController().setAnimationSpeed(1D);
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.cultist.run"));
                     }
@@ -134,7 +149,7 @@ public class ClericEntity extends Raider implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
-
+        this.xpReward = 10;
         if (!level().isClientSide) {
             this.removeEffect(EffectRegistry.PLAGUE.get());
         }
@@ -143,7 +158,7 @@ public class ClericEntity extends Raider implements GeoEntity {
             --this.throwingdaggercooldown;
         }
         if (this.throwingdaggercooldown == 0 && this.attackID == 2) {
-            this.throwingdaggercooldown = 400;
+            this.throwingdaggercooldown = 200;
         }
         if (this.attackID != 0) {
             yBodyRot = yHeadRot;
@@ -254,6 +269,8 @@ public class ClericEntity extends Raider implements GeoEntity {
         this.setItemSlot(EquipmentSlot.MAINHAND, itemstack);
     }
 
+
+
     public void throwDagger()
     {
         if(this.getTarget() != null) {
@@ -282,13 +299,28 @@ public class ClericEntity extends Raider implements GeoEntity {
             }
         }
     }
+
+    @Override
+    protected int calculateFallDamage(float p_21237_, float p_21238_) {
+        if(attackID == THROWING_ATTACK)
+        {
+            return 0;
+        }
+        return super.calculateFallDamage(p_21237_, p_21238_);
+    }
+
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new ClericBreakDoorGoal(this));
+        this.goalSelector.addGoal(2, new AbstractIllager.RaiderOpenDoorGoal(this));
+        this.goalSelector.addGoal(3, new Raider.HoldGroundAttackGoal(this, 10.0F));
         this.goalSelector.addGoal(0, new ThrowingAttackGoal(this));
         this.goalSelector.addGoal(0, new AxeMeleeAttackGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, false));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.7D, 25, true));
@@ -399,6 +431,28 @@ public class ClericEntity extends Raider implements GeoEntity {
                 throwDagger();
             }
             getNavigation().recomputePath();
+        }
+    }
+
+    static class ClericBreakDoorGoal extends BreakDoorGoal {
+        public ClericBreakDoorGoal(Mob p_34112_) {
+            super(p_34112_, 6, ClericEntity.DOOR_BREAKING_PREDICATE);
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        public boolean canContinueToUse() {
+            ClericEntity clericEntity = (ClericEntity)this.mob;
+            return clericEntity.hasActiveRaid() && super.canContinueToUse();
+        }
+
+        public boolean canUse() {
+            ClericEntity clericEntity = (ClericEntity)this.mob;
+            return clericEntity.hasActiveRaid() && clericEntity.random.nextInt(reducedTickDelay(10)) == 0 && super.canUse();
+        }
+
+        public void start() {
+            super.start();
+            this.mob.setNoActionTime(0);
         }
     }
 }

@@ -1,5 +1,5 @@
 {
-  "entity.fromtheshadows.cultist": "Cultist",
+  "entity.fromtheshadows.cleric": "Cleric",
   "entity.fromtheshadows.nehemoth": "Nehemoth",
   "entity.fromtheshadows.froglin": "Froglin",
   "entity.fromtheshadows.bulldrogioth": "Bulldrogioth",
@@ -9,11 +9,13 @@
   "item.fromtheshadows.froglin_spawn_egg": "Froglin spawn egg",
   "item.fromtheshadows.nehemoth_spawn_egg": "Nehemoth spawn egg",
   "item.fromtheshadows.bulldrogioth_spawn_egg": "Bulldrogioth spawn egg",
+  "item.fromtheshadows.cleric_spawn_egg": "Cleric spawn egg",
   "item.fromtheshadows.froglin_leg": "Froglin Leg",
   "item.fromtheshadows.bottle_of_blood": "Bottle of blood",
   "item.fromtheshadows.crystallized_blood": "Crystallized Blood",
   "item.fromtheshadows.diabolium_nugget": "Diabolium Nugget",
   "item.fromtheshadows.diabolium_ingot": "Diabolium Ingot",
+  "item.fromtheshadows.plague_doctor_mask": "Plague Doctor Mask",
   "item.fromtheshadows.crust_helmet": "Crust Helmet",
   "item.fromtheshadows.crust_chest": "Crust Chestplate",
   "item.fromtheshadows.crust_leggings": "Crust Leggings",
@@ -22,6 +24,8 @@
   "item.fromtheshadows.diabolium_chest": "Diabolium Chestplate",
   "item.fromtheshadows.diabolium_leggings": "Diabolium Leggings",
   "item.fromtheshadows.thirst_for_blood": "Thirst for Blood",
+  "item.fromtheshadows.suspicious_cloth": "Suspicious Cloth",
+
 
   "item.minecraft.potion.effect.frenzy": "Potion of the Frenzy",
   "item.minecraft.splash_potion.effect.frenzy": "Splash Potion of Frenzy",
@@ -30,7 +34,11 @@
   "item.minecraft.potion.effect.bulldrogioth": "Potion of the Bulldrogioth",
   "item.minecraft.splash_potion.effect.bulldrogioth": "Splash Potion of Bulldrogioth",
   "item.minecraft.lingering_potion.effect.bulldrogioth": "Lingering Potion of Bulldrogioth",
-  "item.minecraft.tipped_arrow.effect.bulldrogioth": "Arrow of Bulldrogioth",
+  "item.minecraft.tipped_arrow.effect.bulldrogioth": "Arrow of Terrible Plague",
+  "item.minecraft.potion.effect.terrible_plague": "Potion of the Terrible Plague",
+  "item.minecraft.splash_potion.effect.terrible_plague": "Splash Potion of Terrible Plague",
+  "item.minecraft.lingering_potion.effect.terrible_plague": "Lingering Potion of Terrible Plague",
+  "item.minecraft.tipped_arrow.effect.terrible_plague": "Arrow of Terrible Plague",
 
 
 
@@ -38,6 +46,7 @@
 
   "block.fromtheshadows.diabolium_block": "Diabolium Block",
 
+  "effect.fromtheshadows.plague": "Spreading Plague",
   "effect.fromtheshadows.heal_block": "Heal Block",
   "effect.fromtheshadows.bleeding": "Bleeding",
 

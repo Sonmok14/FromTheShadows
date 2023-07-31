@@ -35,6 +35,8 @@ public class EffectRegistry {
     public static final RegistryObject<MobEffect> HEAL_BLOCK = EFFECT.register("heal_block", ()-> new EffectHealblock(MobEffectCategory.HARMFUL, 0X78828E));
     public static final RegistryObject<MobEffect> BLEEDING = EFFECT.register("bleeding", ()-> new EffectHemorrhage(MobEffectCategory.HARMFUL, 0XCA2D2D));
     public static final RegistryObject<Potion> FRENZY_POTION = POTION.register("frenzy", ()-> new Potion(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1200, 0),(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 1))));
+
+    public static final RegistryObject<Potion> TERRIBLE_PLAGUE_POTION = POTION.register("terrible_plague", ()-> new Potion(new MobEffectInstance(EffectRegistry.PLAGUE.get(), 600, 0),(new MobEffectInstance(MobEffects.HUNGER, 300, 1)),(new MobEffectInstance(MobEffects.WEAKNESS, 300, 1))));
     public static final RegistryObject<Potion> BULLDROGIOTH_POTION = POTION.register("bulldrogioth", ()-> new Potion(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 3),(new MobEffectInstance(MobEffects.HUNGER, 200, 2))));
     public static ItemStack createPotion(RegistryObject<Potion> potion){
         return  PotionUtils.setPotion(new ItemStack(Items.POTION), potion.get());
@@ -46,6 +48,7 @@ public class EffectRegistry {
 
 
     public static void init() {
+        BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.of(createPotion(Potions.STRONG_POISON)), Ingredient.of(ItemRegistry.SUSPICIOUS_CLOTH.get()), createPotion(EffectRegistry.TERRIBLE_PLAGUE_POTION)));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.of(createPotion(Potions.MUNDANE)), Ingredient.of(ItemRegistry.CRIMSON_SHELL.get()), createPotion(EffectRegistry.BULLDROGIOTH_POTION)));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.of(createPotion(Potions.STRENGTH)), Ingredient.of(ItemRegistry.BOTTLE_OF_BLOOD.get()), createPotion(EffectRegistry.FRENZY_POTION)));
         BrewingRecipeRegistry.addRecipe(Ingredient.of(Items.IRON_INGOT), Ingredient.of(ItemRegistry.BOTTLE_OF_BLOOD.get()), new ItemStack(ItemRegistry.DIABOLIUM_INGOT.get()));

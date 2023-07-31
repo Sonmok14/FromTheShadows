@@ -3,6 +3,8 @@ package net.sonmok14.fromtheshadows;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.raid.Raid;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -75,6 +77,9 @@ public class Fromtheshadows
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            Raid.RaiderType.create("fromtheshadows", EntityRegistry.CLERIC.get(), new int[]{1, 1, 2, 3, 2, 2, 2, 3});
+        });
         EffectRegistry.init();
     }
 
