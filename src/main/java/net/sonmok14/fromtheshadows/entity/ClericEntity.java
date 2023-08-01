@@ -113,10 +113,6 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
                         event.getController().setAnimationSpeed(1D);
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.cultist.run"));
                     }
-                    if (this.walkAnimation.speed() > 0.35F) {
-                        event.getController().setAnimationSpeed(1D);
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.cultist.run"));
-                    }
                     if (event.isMoving()) {
                         event.getController().setAnimationSpeed(1D);
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.cultist.walk"));
