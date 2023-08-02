@@ -4,11 +4,13 @@ import com.google.common.collect.Maps;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -76,10 +78,6 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
                 .add(Attributes.ARMOR, 2.0D);
     }
 
-    @Override
-    public SoundEvent getCelebrateSound() {
-        return null;
-    }
 
     protected void customServerAiStep() {
         if (!this.isNoAi() && GoalUtils.hasGroundPathNavigation(this)) {
@@ -139,6 +137,9 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
         return cache;
     }
 
+    public boolean canBeAffected(MobEffectInstance p_31495_) {
+        return p_31495_.getEffect() == EffectRegistry.PLAGUE.get() ? false : super.canBeAffected(p_31495_);
+    }
     public MobType getMobType() {
         return MobType.ILLAGER;
     }
@@ -234,6 +235,11 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
     @Override
     protected SoundEvent getDeathSound() {
         return SoundRegistry.CULTIST_DEATH.get();
+    }
+
+    @Override
+    public SoundEvent getCelebrateSound() {
+        return SoundEvents.EVOKER_CELEBRATE;
     }
 
 

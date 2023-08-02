@@ -16,7 +16,7 @@ public class ItemRegistry {
 
     public static net.sonmok14.fromtheshadows.items.ArmorMaterials CRUST_ARMOR_MATERIAL = new net.sonmok14.fromtheshadows.items.ArmorMaterials("crust", 40, new int[]{3, 5, 7, 3}, 12, SoundEvents.ARMOR_EQUIP_NETHERITE, 6, 0.4f);
     public static net.sonmok14.fromtheshadows.items.ArmorMaterials DIABOLIUM_ARMOR_MATERIAL = new net.sonmok14.fromtheshadows.items.ArmorMaterials("diabolium", 24, new int[]{3, 6, 8, 3}, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, 3, 0.2f);
-    public static net.sonmok14.fromtheshadows.items.ArmorMaterials PLAGUE_ARMOR_MATERIAL = new net.sonmok14.fromtheshadows.items.ArmorMaterials("plague", 18, new int[]{2, 3, 3, 2}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0, 0f);
+    public static net.sonmok14.fromtheshadows.items.ArmorMaterials PLAGUE_ARMOR_MATERIAL = new net.sonmok14.fromtheshadows.items.ArmorMaterials("plague", 8, new int[]{2, 3, 3, 2}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0, 0f);
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Fromtheshadows.MODID);
 

@@ -5,6 +5,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,7 +37,11 @@ public class ServerEvents {
                 if (isWearingAll) {
                 if(!attacker.level().isClientSide)
                 {
-                    attacker.removeEffect(EffectRegistry.PLAGUE.get());
+                    boolean flag = attacker.removeEffect(EffectRegistry.PLAGUE.get());
+                    if(flag) {
+                        final ItemStack itemStack = attacker.getItemBySlot(EquipmentSlot.HEAD);
+                        itemStack.hurtAndBreak(1, attacker, p -> p.broadcastBreakEvent(EquipmentSlot.HEAD));
+                    }
                 }
                 }
             }

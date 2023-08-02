@@ -78,7 +78,7 @@ public class Fromtheshadows
 
     private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            Raid.RaiderType.create("fromtheshadows", EntityRegistry.CLERIC.get(), new int[]{1, 1, 2, 3, 2, 2, 2, 3});
+            Raid.RaiderType.create("fromtheshadows", EntityRegistry.CLERIC.get(), new int[]{0, 1, 2, 3, 0, 2, 0, 4});
         });
         EffectRegistry.init();
     }

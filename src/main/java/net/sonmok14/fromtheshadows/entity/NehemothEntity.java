@@ -29,7 +29,6 @@ import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.piglin.Piglin;
@@ -105,17 +104,13 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
         data.add(
                 new AnimationController<>(this, "growl", 15, event -> {
-                    if (this.growlProgress <= 30 && isAlive() && !isStone() && this.getTarget() == null)
+                    if (this.growlProgress <= 50 && isAlive() && !isStone() && this.getTarget() == null)
                     {
                         event.getController().setAnimationSpeed(0.7D);
-                        return event.setAndContinue(RawAnimation.begin().thenPlay("animation.nehemoth.growl"));
+                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.nehemoth.growl"));
                     }
                     event.resetCurrentAnimation();
                     return PlayState.STOP;
-                }).setSoundKeyframeHandler(event -> {
-                    if (event.getKeyframeData().getSound().matches("growlkey"))
-                        if (this.level().isClientSide)
-                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.NEHEMOTH_IDLE.get(), SoundSource.HOSTILE, 1F, 0.5F, true);
                 }));
 
         data.add(new AnimationController<>(this, "stone", 50,  event -> {
@@ -433,6 +428,11 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
     public void tick() {
         super.tick();
         this.setMaxUpStep(1.0F);
+
+        if (this.growlProgress == 80 && isAlive() && !isStone() && this.getTarget() == null)
+        {
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.NEHEMOTH_IDLE.get(),SoundSource.HOSTILE, 1F, 0.5F + this.getRandom().nextFloat() * 0.1F);
+        }
         if (!this.level().isClientSide ) {
             this.setClimbing(this.horizontalCollision && this.getTarget() != null && this.getTarget().isAlive());
         }
@@ -477,7 +477,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
             this.roarCooldown = 600;
         }
         if (this.growlProgress == 0) {
-            this.growlProgress = 120;
+            this.growlProgress = 250;
         }
         if (this.growlProgress > 0) {
             --this.growlProgress;
@@ -749,7 +749,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
             super.playStepSound(p_33350_, p_33351_);
         }
         else
-            this.playSound(SoundRegistry.STOMP.get(), 0.5F, 0.4F);
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(),SoundSource.HOSTILE, 1F, 0.5F + this.getRandom().nextFloat() * 0.1F);
     }
 
     @Override
@@ -1195,8 +1195,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
                 }
                 roar();
                 if (attacktick == 1) {
-
-                    playSound(SoundRegistry.NEHEMOTH_ROAR.get(), 1.4f, 1F + getRandom().nextFloat() * 0.1F);
+                    nehemoth.level().playSound(null, nehemoth.getX(), nehemoth.getY(), nehemoth.getZ(), SoundRegistry.NEHEMOTH_ROAR.get(),SoundSource.HOSTILE, 2f, 0.7F + getRandom().nextFloat() * 0.1F);
                     ScreenShakeEntity.ScreenShake(level(), position(), 20, 0.2f, 20, 10);
                 }
 
@@ -1336,4 +1335,4 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
             getNavigation().recomputePath();
         }
     }
-    }
+}

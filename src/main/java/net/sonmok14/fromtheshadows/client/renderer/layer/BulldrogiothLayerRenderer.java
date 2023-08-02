@@ -26,7 +26,7 @@ public class BulldrogiothLayerRenderer extends GeoRenderLayer<BulldrogiothEntity
 
     @Override
     public void render(PoseStack poseStack, BulldrogiothEntity animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-        RenderType normal = FTSRenderType.getghost(LAYER);
+        RenderType normal = FTSRenderType.eyes(LAYER);
 
                     getRenderer().reRender(getDefaultBakedModel(animatable), poseStack, bufferSource, animatable, normal,
                             bufferSource.getBuffer(normal), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
