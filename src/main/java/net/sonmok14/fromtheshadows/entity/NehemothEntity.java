@@ -788,7 +788,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
     @Override
     public boolean hurt(DamageSource p_21016_, float p_21017_) {
         Entity entity = p_21016_.getEntity();
-        LivingEntity livingEntity = (LivingEntity) entity;
+
         if (this.attackID == GUARD) {
             return false;
         }
@@ -799,22 +799,10 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
             if (p_21016_.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
                 return super.hurt(p_21016_, p_21017_);
             }
-            if(livingEntity != null)
-                if (livingEntity.getMainHandItem().is(TagRegistry.CAN_HIT_NEHEMOTH_STATUE)) {
-                    BlockState block = Blocks.STONE.defaultBlockState();
-                    Vec3 vec3 = this.getBoundingBox().getCenter();
-                    for (int i = 0; i < 40; ++i) {
-                        double d0 = this.getRandom().nextGaussian() * 3D;
-                        double d1 = this.getRandom().nextGaussian() * 3D;
-                        double d2 = this.getRandom().nextGaussian() * 3D;
-                        this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), vec3.x, vec3.y, vec3.z, d0, d1, d2);
+                else {
+                        return false;
                     }
-                    return super.hurt(p_21016_, 20);
-            }
-            else
-            {
-                return false;
-            }
+
         }
         return super.hurt(p_21016_, p_21017_);
     }
