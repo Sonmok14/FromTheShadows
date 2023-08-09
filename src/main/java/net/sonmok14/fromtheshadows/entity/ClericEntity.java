@@ -1,11 +1,14 @@
 package net.sonmok14.fromtheshadows.entity;
 
 import com.google.common.collect.Maps;
+import net.minecraft.advancements.critereon.EntityTypePredicate;
+import net.minecraft.client.renderer.entity.layers.SpinAttackEffectLayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -20,6 +23,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.util.GoalUtils;
 import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -36,6 +40,7 @@ import net.minecraft.world.phys.Vec3;
 import net.sonmok14.fromtheshadows.FTSConfig;
 import net.sonmok14.fromtheshadows.entity.projectiles.ThrowingDaggerEntity;
 import net.sonmok14.fromtheshadows.utils.registry.EffectRegistry;
+import net.sonmok14.fromtheshadows.utils.registry.EnchantmentRegistry;
 import net.sonmok14.fromtheshadows.utils.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -146,6 +151,7 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
+
         this.xpReward = 10;
         if (!level().isClientSide) {
             this.removeEffect(EffectRegistry.PLAGUE.get());
@@ -260,11 +266,10 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
         if (p_34079_ > raid.getNumGroups(Difficulty.NORMAL)) {
             i = 2;
         }
-
         boolean flag = this.random.nextFloat() <= raid.getEnchantOdds();
         if (flag) {
             Map<Enchantment, Integer> map = Maps.newHashMap();
-            map.put(Enchantments.SHARPNESS, i);
+            map.put(EnchantmentRegistry.FREEZING.get(), i);
             EnchantmentHelper.setEnchantments(map, itemstack);
         }
 

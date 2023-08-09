@@ -99,7 +99,6 @@ public class CrustArmorItem extends ArmorItem implements GeoItem {
     public boolean isValidRepairItem(ItemStack p_41134_, ItemStack p_41135_) {
         return p_41135_.is(ItemRegistry.CRIMSON_SHELL.get());
     }
-
     @Override
     public boolean isRepairable(ItemStack stack) {
         return super.isRepairable(stack);

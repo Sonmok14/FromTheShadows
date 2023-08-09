@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -92,7 +93,6 @@ public class ThirstforBloodItem extends SwordItem implements GeoItem {
         heldItemStack.hurtAndBreak(0, attacker, (p_43296_) -> {
             p_43296_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
         });
-
             if (!target.isAlive() && !(target.getMaxHealth() < 10)) {
                 heldItemStack.hurtAndBreak(-1, attacker, p -> p.broadcastBreakEvent(attacker.getUsedItemHand()));
             }
@@ -143,7 +143,6 @@ public class ThirstforBloodItem extends SwordItem implements GeoItem {
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return enchantment.category != EnchantmentCategory.BREAKABLE && enchantment.category == EnchantmentCategory.WEAPON;
     }
-
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {

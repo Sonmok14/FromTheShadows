@@ -3,7 +3,6 @@ package net.sonmok14.fromtheshadows;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.raid.Raid;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.BiomeModifier;
@@ -58,6 +57,7 @@ public class Fromtheshadows
         BlockRegistry.BLOCKS.register(modEventBus);
         ParticleRegistry.PARTICLES.register(modEventBus);
         SoundRegistry.MOD_SOUNDS.register(modEventBus);
+        EnchantmentRegistry.ENCHANTMENT.register(modEventBus);
         EffectRegistry.EFFECT.register(modEventBus);
         EffectRegistry.POTION.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);

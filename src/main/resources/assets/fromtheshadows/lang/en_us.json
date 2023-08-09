@@ -55,6 +55,9 @@
 
   "itemGroup.fromtheshadows.item": "From the shadows Items",
 
+  "enchantment.fromtheshadows.divinity": "Divinity",
+  "enchantment.fromtheshadows.freezing": "Freezing",
+  "enchantment.fromtheshadows.retribution": "Retribution",
 
   "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_stomp": "stomps",
   "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_idle": "Nehemoth growls",

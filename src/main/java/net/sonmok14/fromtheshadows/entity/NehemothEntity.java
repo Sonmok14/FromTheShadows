@@ -356,7 +356,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         {
             return MobType.UNDEAD;
         }
-        return super.getMobType();
+        return FTSMobType.DEMON;
     }
 
     @Override
