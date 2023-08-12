@@ -909,4 +909,6 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
 
         }
     }
+
+
 }

@@ -20,10 +20,18 @@ public class FreezingEnchantment extends Enchantment {
     }
 
     public int getMaxLevel() {
-        return 2;
+        return 3;
     }
 
     public boolean checkCompatibility(Enchantment p_45266_) {
         return super.checkCompatibility(p_45266_) && p_45266_ != Enchantments.FIRE_ASPECT;
+    }
+
+    public boolean isTradeable() {
+        return true;
+    }
+
+    public boolean isDiscoverable() {
+        return true;
     }
 }

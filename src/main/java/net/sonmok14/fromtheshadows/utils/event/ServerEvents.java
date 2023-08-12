@@ -20,6 +20,7 @@ import net.sonmok14.fromtheshadows.utils.registry.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ServerEvents {
     @SubscribeEvent
@@ -67,7 +68,7 @@ public class ServerEvents {
                     int i = EnchantmentHelper.getItemEnchantmentLevel(EnchantmentRegistry.FREEZING.get(), attacker.getMainHandItem());
                   if(i > 0 && target.getTicksFrozen() == 0)
                   {
-                      target.playSound(SoundEvents.PLAYER_HURT_FREEZE, 2f, 1F);
+                          target.playSound(SoundEvents.PLAYER_HURT_FREEZE, 2f, 1F);
                           int frozen = 250 * i;
                           target.setTicksFrozen(frozen);
                   }

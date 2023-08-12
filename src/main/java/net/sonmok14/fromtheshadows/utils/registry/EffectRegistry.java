@@ -22,6 +22,7 @@ import net.sonmok14.fromtheshadows.Fromtheshadows;
 import net.sonmok14.fromtheshadows.effect.EffectHealblock;
 import net.sonmok14.fromtheshadows.effect.EffectHemorrhage;
 import net.sonmok14.fromtheshadows.effect.EffectPlague;
+import net.sonmok14.fromtheshadows.effect.EffectSuppression;
 import net.sonmok14.fromtheshadows.misc.ProperBrewingRecipe;
 
 public class EffectRegistry {
@@ -30,12 +31,14 @@ public class EffectRegistry {
 ;
     public static final DeferredRegister<Potion> POTION = DeferredRegister.create(ForgeRegistries.POTIONS, Fromtheshadows.MODID);
     public static final DeferredRegister<MobEffect> EFFECT = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Fromtheshadows.MODID);
-
+    public static final RegistryObject<MobEffect> SUPPRESSION = EFFECT.register("suppression", ()-> new EffectSuppression(MobEffectCategory.HARMFUL, 0XA43CE7));
     public static final RegistryObject<MobEffect> PLAGUE = EFFECT.register("plague", ()-> new EffectPlague(MobEffectCategory.HARMFUL, 0X534D50));
     public static final RegistryObject<MobEffect> HEAL_BLOCK = EFFECT.register("heal_block", ()-> new EffectHealblock(MobEffectCategory.HARMFUL, 0X78828E));
     public static final RegistryObject<MobEffect> BLEEDING = EFFECT.register("bleeding", ()-> new EffectHemorrhage(MobEffectCategory.HARMFUL, 0XCA2D2D));
     public static final RegistryObject<Potion> FRENZY_POTION = POTION.register("frenzy", ()-> new Potion(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1200, 0),(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 1))));
 
+    public static final RegistryObject<Potion> LONG_SUPPRESSION_POTION = POTION.register("long_suppression", ()-> new Potion(new MobEffectInstance(EffectRegistry.SUPPRESSION.get(), 1200, 0)));
+    public static final RegistryObject<Potion> SUPPRESSION_POTION = POTION.register("short_suppression", ()-> new Potion(new MobEffectInstance(EffectRegistry.SUPPRESSION.get(), 600, 0)));
     public static final RegistryObject<Potion> TERRIBLE_PLAGUE_POTION = POTION.register("terrible_plague", ()-> new Potion(new MobEffectInstance(EffectRegistry.PLAGUE.get(), 600, 0),(new MobEffectInstance(MobEffects.HUNGER, 300, 1)),(new MobEffectInstance(MobEffects.WEAKNESS, 300, 1))));
     public static final RegistryObject<Potion> BULLDROGIOTH_POTION = POTION.register("bulldrogioth", ()-> new Potion(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 3),(new MobEffectInstance(MobEffects.HUNGER, 200, 2))));
     public static ItemStack createPotion(RegistryObject<Potion> potion){
@@ -48,6 +51,8 @@ public class EffectRegistry {
 
 
     public static void init() {
+        BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.of(createPotion(EffectRegistry.SUPPRESSION_POTION.get())), Ingredient.of(Items.REDSTONE), createPotion(EffectRegistry.LONG_SUPPRESSION_POTION)));
+        BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.of(createPotion(Potions.LONG_WEAKNESS)), Ingredient.of(ItemRegistry.BOTTLE_OF_BLOOD.get()), createPotion(EffectRegistry.SUPPRESSION_POTION)));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.of(createPotion(Potions.STRONG_POISON)), Ingredient.of(ItemRegistry.SUSPICIOUS_CLOTH.get()), createPotion(EffectRegistry.TERRIBLE_PLAGUE_POTION)));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.of(createPotion(Potions.MUNDANE)), Ingredient.of(ItemRegistry.CRIMSON_SHELL.get()), createPotion(EffectRegistry.BULLDROGIOTH_POTION)));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.of(createPotion(Potions.STRENGTH)), Ingredient.of(ItemRegistry.BOTTLE_OF_BLOOD.get()), createPotion(EffectRegistry.FRENZY_POTION)));

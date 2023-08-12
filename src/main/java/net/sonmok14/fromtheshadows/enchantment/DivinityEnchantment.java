@@ -34,4 +34,12 @@ public class DivinityEnchantment extends Enchantment {
         }
         return super.getDamageBonus(p_44635_, p_44636_);
     }
+
+    public boolean isTradeable() {
+        return true;
+    }
+
+    public boolean isDiscoverable() {
+        return true;
+    }
 }
