@@ -5,8 +5,6 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.living.LivingSwapItemsEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class EffectSuppression extends MobEffect {
@@ -14,21 +12,12 @@ public class EffectSuppression extends MobEffect {
     public EffectSuppression(MobEffectCategory p_19451_, int p_19452_) {
         super(MobEffectCategory.HARMFUL, 0XA43CE7);
         MinecraftForge.EVENT_BUS.addListener(this::chill);
-        MinecraftForge.EVENT_BUS.addListener(this::chill2);
     }
 
     @SubscribeEvent
     public void chill(LivingEntityUseItemEvent event) {
         LivingEntity e = event.getEntity();
         if (e.hasEffect(this) && !e.isUsingItem()) {
-            event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
-    public void chill2(LivingSwapItemsEvent event) {
-        LivingEntity e = event.getEntity();
-        if (e.hasEffect(this)) {
             event.setCanceled(true);
         }
     }
