@@ -1,7 +1,6 @@
 package net.sonmok14.fromtheshadows.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -53,7 +52,6 @@ import net.sonmok14.fromtheshadows.entity.projectiles.ScreenShakeEntity;
 import net.sonmok14.fromtheshadows.utils.registry.EffectRegistry;
 import net.sonmok14.fromtheshadows.utils.registry.EntityRegistry;
 import net.sonmok14.fromtheshadows.utils.registry.SoundRegistry;
-import net.sonmok14.fromtheshadows.utils.registry.TagRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -514,6 +512,24 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
                      }
     }
         }
+
+    private void flameParticle(float vec, float math) {
+
+        float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;
+        float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F)) ;
+        double theta = (yBodyRot) * (Math.PI / 180);
+        theta += Math.PI / 2;
+        double vecX = Math.cos(theta);
+        double vecZ = Math.sin(theta);
+        final int quakeCount = 48;
+        float angle = 360.0F / quakeCount;
+        double d0 = this.random.nextGaussian() * 0.5D;
+        double d1 = this.random.nextGaussian() * 0.5D;
+        double d2 = this.random.nextGaussian() * 0.5D;
+        for (int i = 0; i < quakeCount; i++) {
+            this.level().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + vec * vecX + f * math, this.getY(), getZ() + vec * vecZ + f1 * math, d0, d1, d2);
+        }
+    }
 
     protected PathNavigation createNavigation(Level p_33802_) {
         return new WallClimberNavigation(this, p_33802_);
