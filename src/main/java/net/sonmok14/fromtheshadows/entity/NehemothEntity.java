@@ -357,6 +357,10 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         return FTSMobType.DEMON;
     }
 
+    public boolean canBeSeenAsEnemy() {
+        return !isStone();
+    }
+
     @Override
     public boolean isPushedByFluid(FluidType type) {
         return false;
@@ -512,24 +516,6 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
                      }
     }
         }
-
-    private void flameParticle(float vec, float math) {
-
-        float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;
-        float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F)) ;
-        double theta = (yBodyRot) * (Math.PI / 180);
-        theta += Math.PI / 2;
-        double vecX = Math.cos(theta);
-        double vecZ = Math.sin(theta);
-        final int quakeCount = 48;
-        float angle = 360.0F / quakeCount;
-        double d0 = this.random.nextGaussian() * 0.5D;
-        double d1 = this.random.nextGaussian() * 0.5D;
-        double d2 = this.random.nextGaussian() * 0.5D;
-        for (int i = 0; i < quakeCount; i++) {
-            this.level().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + vec * vecX + f * math, this.getY(), getZ() + vec * vecZ + f1 * math, d0, d1, d2);
-        }
-    }
 
     protected PathNavigation createNavigation(Level p_33802_) {
         return new WallClimberNavigation(this, p_33802_);

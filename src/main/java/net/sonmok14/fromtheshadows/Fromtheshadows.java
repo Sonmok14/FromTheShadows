@@ -68,8 +68,6 @@ public class Fromtheshadows
                 .create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, MODID);
         serializers.register(modEventBus);
         serializers.register("mobspawns", EntitySpawnRegistry::makeCodec);
-
-
     }
 
 
@@ -79,7 +77,7 @@ public class Fromtheshadows
 
     private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            Raid.RaiderType.create("fromtheshadows", EntityRegistry.CLERIC.get(), new int[]{0, 1, 2, 3, 0, 2, 0, 4});
+            Raid.RaiderType.create("fromtheshadows", EntityRegistry.CLERIC.get(), new int[]{0, 1, 2, 2, 0, 2, 0, 4});
         });
         EffectRegistry.init();
     }

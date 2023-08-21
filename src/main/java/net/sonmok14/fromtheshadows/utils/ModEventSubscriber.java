@@ -15,6 +15,9 @@ public class ModEventSubscriber {
     @SubscribeEvent
     public static void entityAttributes(EntityAttributeCreationEvent event) {
 
+        event.put(EntityRegistry.ENDIGO.get(), EndigoEntity.createAttributes().build());
+
+
         event.put(EntityRegistry.NEHEMOTH.get(), NehemothEntity.createAttributes().build());
         SpawnPlacements.register(EntityRegistry.NEHEMOTH.get(), SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NehemothEntity::canNehemothSpawn);

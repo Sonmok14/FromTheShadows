@@ -15,7 +15,9 @@ public class EntityRegistry {
             Fromtheshadows.MODID);
 
 
-
+    public static final RegistryObject<EntityType<EndigoEntity>> ENDIGO = ENTITY_TYPES.register("endigo",
+            () -> EntityType.Builder.of(EndigoEntity::new, MobCategory.MONSTER).sized(0.6F, 3f)
+                    .clientTrackingRange(9).build(new ResourceLocation(Fromtheshadows.MODID, "endigo").toString()));
     public static final RegistryObject<EntityType<NehemothEntity>> NEHEMOTH = ENTITY_TYPES.register("nehemoth",
             () -> EntityType.Builder.of(NehemothEntity::new, MobCategory.MONSTER).sized(1.25f, 3.65f)
                     .fireImmune().clientTrackingRange(9).build(new ResourceLocation(Fromtheshadows.MODID, "nehemoth").toString()));

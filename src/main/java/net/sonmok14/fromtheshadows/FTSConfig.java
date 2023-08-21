@@ -18,6 +18,10 @@ public class FTSConfig {
         SERVER_SPEC = commonSpecPair.getRight();
     }
     public static class Server {
+        public final ConfigValue<Double> endigo_health;
+        public final ConfigValue<Double> endigo_projectile_damage;
+        public final ConfigValue<Double> endigo_melee_damage;
+
         public final ConfigValue<Double> nehemoth_health;
         public final ConfigValue<Double> nehemoth_laser_damage;
         public final ConfigValue<Double> nehemoth_ranged_damage;
@@ -70,7 +74,14 @@ public class FTSConfig {
                     .defineInRange("Sets Cleric Projectile Damage", 5, 1, Double.MAX_VALUE);
             this.cleric_melee_damage = builder.translation("text.fromtheshadows.config.cleric_melee_damage")
                     .defineInRange("Sets Cleric Melee Damage", 1, 1, Double.MAX_VALUE);
-
+            builder.pop();
+            builder.push("Endigo");
+            this.endigo_health = builder.translation("text.fromtheshadows.config.endigo_health")
+                    .defineInRange("Sets Endigo Max Health", 30, 1, Double.MAX_VALUE);
+            this.endigo_melee_damage = builder.translation("text.fromtheshadows.config.endigo_projectile_damage")
+                    .defineInRange("Sets Endigo Projectile Damage", 5, 1, Double.MAX_VALUE);
+            this.endigo_projectile_damage = builder.translation("text.fromtheshadows.config.endigo_melee_damage")
+                    .defineInRange("Sets Endigo Melee Damage", 1, 1, Double.MAX_VALUE);
             builder.pop();
             builder.push("SpawnRate");
             nehemothSpawnRate = builder.comment("Changed Nehemoth SpawnRate. [0 ~ 100]")

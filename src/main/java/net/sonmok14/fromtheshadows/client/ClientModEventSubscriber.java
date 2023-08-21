@@ -21,6 +21,7 @@ public class ClientModEventSubscriber {
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
 
+        event.registerEntityRenderer(EntityRegistry.ENDIGO.get(), EndigoRenderer::new);
         event.registerEntityRenderer(EntityRegistry.THROWING_DAGGER.get(), ThrowingDaggerRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CORAL_THORN.get(), CoralThornRenderer::new);
         event.registerEntityRenderer(EntityRegistry.BULLDROGIOTH.get(), BulldrogiothRenderer::new);
@@ -40,6 +41,8 @@ public class ClientModEventSubscriber {
 
         }
     }
+
+
 
     }
 
