@@ -89,7 +89,7 @@ public class FTSConfig {
             bulldrogiothSpawnRate = builder.comment("Changed Bulldrogioth SpawnRate. [0 ~ 100]")
                     .defineInRange("Bulldrogioth SpawnRate", 8, 0, 100);
             froglinSpawnRate = builder.comment("Changed Froglin SpawnRate. [0 ~ 100]")
-                    .defineInRange("Froglin SpawnRate", 15, 0, 100);
+                    .defineInRange("Froglin SpawnRate", 5, 0, 100);
         }
     }
 

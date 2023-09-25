@@ -46,9 +46,7 @@ public class Fromtheshadows
 
         GeckoLib.initialize();
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(this::setup);
-        modEventBus.addListener(ClientLayerRegistry::onAddLayers);
-        PROXY.init(modEventBus);
+        modEventBus.addListener(this::setup);        PROXY.init(modEventBus);
         modEventBus.addListener(this::setup);
         modEventBus.addListener(this::enqueueIMC);
         modEventBus.addListener(this::processIMC);

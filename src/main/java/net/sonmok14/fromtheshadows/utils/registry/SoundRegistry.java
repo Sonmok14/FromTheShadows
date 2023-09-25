@@ -14,6 +14,7 @@ public class SoundRegistry{
 
     public static final DeferredRegister<SoundEvent> MOD_SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Fromtheshadows.MODID);
 
+    public static final RegistryObject<SoundEvent> ENDIGO_IDLE = createSoundEvent("endigo_idle");
     public static final RegistryObject<SoundEvent> BULLDROGIOTH_HURT = createSoundEvent("bulldrogioth_hurt");
     public static final RegistryObject<SoundEvent> BULLDROGIOTH_IDLE = createSoundEvent("bulldrogioth_idle");
     public static final RegistryObject<SoundEvent> BULLDROGIOTH_ATTACK = createSoundEvent("bulldrogioth_attack");

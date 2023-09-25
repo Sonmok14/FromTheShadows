@@ -83,6 +83,10 @@
     "sounds": [{"name": "fromtheshadows:bulldrogioth_idle_1", "stream": true}],
     "subtitle": "fromtheshadows.sound.subtitle.fromtheshadows.bulldrogioth_idle"
   },
+  "endigo_idle": {
+    "sounds": [{"name": "fromtheshadows:endigo_idle", "stream": true}],
+    "subtitle": "fromtheshadows.sound.subtitle.fromtheshadows.endigo_idle"
+  },
 
   "bulldrogioth_hurt": {
     "sounds": [{"name": "fromtheshadows:bulldrogioth_hurt_1", "stream": true},

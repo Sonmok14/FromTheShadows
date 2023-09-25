@@ -1,17 +1,21 @@
 package net.sonmok14.fromtheshadows.items;
 
+import com.google.common.collect.ImmutableMultimap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.common.ForgeMod;
 import net.sonmok14.fromtheshadows.client.renderer.items.CrustArmorRenderer;
 import net.sonmok14.fromtheshadows.utils.registry.ItemRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +29,7 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class CrustArmorItem extends ArmorItem implements GeoItem {
@@ -82,9 +87,9 @@ public class CrustArmorItem extends ArmorItem implements GeoItem {
 
             // Check each of the pieces match our set
             boolean isFullSet = wornArmor.containsAll(ObjectArrayList.of(
-                  ItemRegistry.DIABOLIUM_LEGGINGS.get(),
-                    ItemRegistry.DIABOLIUM_CHEST.get(),
-                    ItemRegistry.DIABOLIUM_HEAD.get()));
+                  ItemRegistry.CRUST_LEGGINGS.get(),
+                    ItemRegistry.CRUST_CHEST.get(),
+                    ItemRegistry.CRUST_HEAD.get()));
 
             // Play the animation if the full set is being worn, otherwise stop
             return isFullSet ? PlayState.CONTINUE : PlayState.STOP;

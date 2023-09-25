@@ -29,8 +29,13 @@ public class EndigoModel extends GeoModel<EndigoEntity> {
     public void setCustomAnimations(EndigoEntity animatable, long instanceId, AnimationState<EndigoEntity> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
         CoreGeoBone head = this.getAnimationProcessor().getBone("head");
+        if (animationState == null)
+            return;
         EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
-        head.setRotX(entityData.headPitch() * 0.01F);
-        head.setRotY(entityData.netHeadYaw() * 0.01F);
+        if (head != null) {
+            head.setRotX(entityData.headPitch() * 0.010453292F);
+            head.setRotY(entityData.netHeadYaw() * 0.015453292F);
+            head.updateScale(0.9f,0.9f,0.9f);
+        }
     }
 }

@@ -31,11 +31,11 @@ public class ItemRegistry {
 
 
     public static final RegistryObject<CrustArmorItem> CRUST_HEAD = ITEMS.register("crust_helmet",
-            () -> new CrustArmorItem(CRUST_ARMOR_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
+            () -> new CrustArmorItem(CRUST_ARMOR_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<CrustArmorItem> CRUST_CHEST = ITEMS.register("crust_chest",
-            () -> new CrustArmorItem(CRUST_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
+            () -> new CrustArmorItem(CRUST_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<CrustArmorItem> CRUST_LEGGINGS = ITEMS.register("crust_leggings",
-            () -> new CrustArmorItem(CRUST_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
+            () -> new CrustArmorItem(CRUST_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> DIABOLIUM_INGOT = ITEMS.register("diabolium_ingot",
             () -> new Item(new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> THIRST_FOR_BLOOD = ITEMS.register("thirst_for_blood", () -> new ThirstforBloodItem(new Item.Properties().rarity(Rarity.UNCOMMON).fireResistant()));

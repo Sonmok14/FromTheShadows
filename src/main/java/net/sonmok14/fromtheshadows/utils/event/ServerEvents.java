@@ -5,11 +5,15 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -19,6 +23,7 @@ import net.sonmok14.fromtheshadows.utils.registry.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -43,14 +48,27 @@ public class ServerEvents {
                 boolean isWearingAll = armorList
                         .containsAll(Arrays.asList(ItemRegistry.PLAGUE_DOCTOR_MASK.get()));
                 if (isWearingAll) {
-                if(!attacker.level().isClientSide)
-                {
-                    boolean flag = attacker.removeEffect(EffectRegistry.PLAGUE.get());
-                    if(flag) {
-                        final ItemStack itemStack = attacker.getItemBySlot(EquipmentSlot.HEAD);
-                        itemStack.hurtAndBreak(1, attacker, p -> p.broadcastBreakEvent(EquipmentSlot.HEAD));
+                    if (!attacker.level().isClientSide) {
+                        Iterator<MobEffectInstance> itr = attacker.getActiveEffects().iterator();
+                        ArrayList<MobEffect> compatibleEffects = new ArrayList<>();
+
+                        while (itr.hasNext()) {
+                            MobEffectInstance effect = itr.next();
+                            if (effect.getEffect().getCategory().equals(MobEffectCategory.HARMFUL) && effect.isCurativeItem(new ItemStack(Items.MILK_BUCKET))) {
+                                compatibleEffects.add(effect.getEffect());
+                            }
+                        }
+                        if (compatibleEffects.size() > 0) {
+                            MobEffectInstance selectedEffect = attacker.getEffect(compatibleEffects.get(attacker.level().random.nextInt(compatibleEffects.size())));
+                            if (selectedEffect != null && !net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.living.MobEffectEvent.Remove(attacker, selectedEffect))) {
+                                boolean flag = attacker.removeEffect(selectedEffect.getEffect());
+                                if (flag) {
+                                    final ItemStack itemStack = attacker.getItemBySlot(EquipmentSlot.HEAD);
+                                    itemStack.hurtAndBreak(1, attacker, p -> p.broadcastBreakEvent(EquipmentSlot.HEAD));
+                                }
+                            }
+                        }
                     }
-                }
                 }
             }
         }

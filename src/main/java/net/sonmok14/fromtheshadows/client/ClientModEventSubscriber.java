@@ -4,14 +4,11 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.sonmok14.fromtheshadows.Fromtheshadows;
 import net.sonmok14.fromtheshadows.client.renderer.*;
 import net.sonmok14.fromtheshadows.client.renderer.BulldrogiothRenderer;
-import net.sonmok14.fromtheshadows.utils.registry.ClientLayerRegistry;
 import net.sonmok14.fromtheshadows.utils.registry.EntityRegistry;
 import net.sonmok14.fromtheshadows.utils.registry.ItemRegistry;
 
