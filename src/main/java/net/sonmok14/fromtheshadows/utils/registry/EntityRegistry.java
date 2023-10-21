@@ -14,10 +14,11 @@ public class EntityRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES,
             Fromtheshadows.MODID);
 
-
+    public static final RegistryObject<EntityType<UrnaxEntity>> URNAX = ENTITY_TYPES.register("urnax",
+            () -> EntityType.Builder.of(UrnaxEntity::new, MobCategory.MONSTER).sized(1.2F, 3f)
+                    .fireImmune().clientTrackingRange(9).build(new ResourceLocation(Fromtheshadows.MODID, "urnax").toString()));
     public static final RegistryObject<EntityType<EndigoEntity>> ENDIGO = ENTITY_TYPES.register("endigo",
             () -> EntityType.Builder.of(EndigoEntity::new, MobCategory.MONSTER).sized(0.6F, 3f)
-                    .noSummon()
                     .clientTrackingRange(9).build(new ResourceLocation(Fromtheshadows.MODID, "endigo").toString()));
     public static final RegistryObject<EntityType<NehemothEntity>> NEHEMOTH = ENTITY_TYPES.register("nehemoth",
             () -> EntityType.Builder.of(NehemothEntity::new, MobCategory.MONSTER).sized(1.25f, 3.65f)

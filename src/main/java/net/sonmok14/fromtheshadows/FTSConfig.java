@@ -45,7 +45,7 @@ public class FTSConfig {
         public Server(ForgeConfigSpec.Builder builder) {
             builder.push("Nehemoth");
             this.nehemoth_health = builder.translation("text.fromtheshadows.config.nehemoth_health")
-                    .defineInRange("Sets Nehemoth Max Health", 100, 1, Double.MAX_VALUE);
+                    .defineInRange("Sets Nehemoth Max Health", 120, 1, Double.MAX_VALUE);
             this.nehemoth_ranged_damage = builder.translation("text.fromtheshadows.config.nehemoth_ranged")
                     .defineInRange("Sets Nehemoth Ranged Damage", 3, 1, Double.MAX_VALUE);
             this.nehemoth_laser_damage = builder.translation("text.fromtheshadows.config.nehemoth_laser")
@@ -55,7 +55,7 @@ public class FTSConfig {
             builder.pop();
             builder.push("Froglin");
             this.froglin_health = builder.translation("text.fromtheshadows.config.froglin_health")
-                    .defineInRange("Sets Froglin Max Health", 35, 1, Double.MAX_VALUE);
+                    .defineInRange("Sets Froglin Max Health", 25, 1, Double.MAX_VALUE);
             this.froglin_vomit_damage = builder.translation("text.fromtheshadows.config.froglin_vomit")
                     .defineInRange("Sets Froglin Projetile Damage", 7, 1, Double.MAX_VALUE);
             this.froglin_melee_damage = builder.translation("text.fromtheshadows.config.froglin_melee")
@@ -63,7 +63,7 @@ public class FTSConfig {
             builder.pop();
             builder.push("Bulldrogioth");
             this.bulldrogioth_health = builder.translation("text.fromtheshadows.config.bulldrogioth_health")
-                    .defineInRange("Sets Bulldrogioth Max Health", 110, 1, Double.MAX_VALUE);
+                    .defineInRange("Sets Bulldrogioth Max Health", 130, 1, Double.MAX_VALUE);
             this.bulldrogioth_melee_damage = builder.translation("text.fromtheshadows.config.bulldrogioth_melee_damage")
                     .defineInRange("Sets Bulldrogioth Melee Damage", 15, 1, Double.MAX_VALUE);
             builder.pop();
@@ -85,11 +85,11 @@ public class FTSConfig {
             builder.pop();
             builder.push("SpawnRate");
             nehemothSpawnRate = builder.comment("Changed Nehemoth SpawnRate. [0 ~ 100]")
-                    .defineInRange("Nehemoth SpawnRate", 6, 0, 100);
+                    .defineInRange("Nehemoth SpawnRate", 4, 0, 100);
             bulldrogiothSpawnRate = builder.comment("Changed Bulldrogioth SpawnRate. [0 ~ 100]")
-                    .defineInRange("Bulldrogioth SpawnRate", 8, 0, 100);
+                    .defineInRange("Bulldrogioth SpawnRate", 9, 0, 100);
             froglinSpawnRate = builder.comment("Changed Froglin SpawnRate. [0 ~ 100]")
-                    .defineInRange("Froglin SpawnRate", 5, 0, 100);
+                    .defineInRange("Froglin SpawnRate", 2, 0, 100);
         }
     }
 

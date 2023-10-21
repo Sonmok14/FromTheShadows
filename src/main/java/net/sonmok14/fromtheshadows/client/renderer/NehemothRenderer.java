@@ -33,7 +33,6 @@ public class NehemothRenderer extends GeoEntityRenderer<NehemothEntity> {
        super.postRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
       if(!animatable.isStone())
      {
-
          if (model.getBone("rotate").isPresent()) {
              if (animatable.attackID == 3 && animatable.attacktick == 17) {
 

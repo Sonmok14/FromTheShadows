@@ -346,6 +346,10 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setVariant(this.getRandom().nextInt(3));
+        if(random.nextInt(2) == 0)
+        {
+            this.setFull(true);
+        }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
     public void setVariant(int variant) {

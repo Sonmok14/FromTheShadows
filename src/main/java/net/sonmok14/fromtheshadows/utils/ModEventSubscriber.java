@@ -17,6 +17,7 @@ public class ModEventSubscriber {
 
         event.put(EntityRegistry.ENDIGO.get(), EndigoEntity.createAttributes().build());
 
+        event.put(EntityRegistry.URNAX.get(), UrnaxEntity.createAttributes().build());
 
         event.put(EntityRegistry.NEHEMOTH.get(), NehemothEntity.createAttributes().build());
         SpawnPlacements.register(EntityRegistry.NEHEMOTH.get(), SpawnPlacements.Type.ON_GROUND,

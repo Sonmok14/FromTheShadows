@@ -19,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.sonmok14.fromtheshadows.FTSConfig;
 import net.sonmok14.fromtheshadows.utils.registry.*;
 
 import java.util.ArrayList;
@@ -75,7 +76,15 @@ public class ServerEvents {
     }
     @SubscribeEvent
     public void onLivingDamage(LivingHurtEvent event) {
-
+        if (event.getSource() instanceof DamageSource) {
+            if (event.getSource().getEntity() instanceof LivingEntity) {
+                LivingEntity attacker = (LivingEntity) event.getSource().getEntity();
+                LivingEntity target = event.getEntity();
+                if (target.hasEffect(EffectRegistry.SUPPRESSION.get())) {
+                    target.hurt(attacker.damageSources().mobAttack(attacker), (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) / 2);
+                }
+            }
+            }
         if (event.getSource() instanceof DamageSource) {
             if (event.getSource().getEntity() instanceof LivingEntity) {
                 LivingEntity attacker = (LivingEntity) event.getSource().getEntity();

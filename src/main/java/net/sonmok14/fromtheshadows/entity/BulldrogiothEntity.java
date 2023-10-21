@@ -572,7 +572,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
 
     public static <T extends Mob> boolean canBulldrogiothSpawn(EntityType<BulldrogiothEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
 
-        return reason == MobSpawnType.SPAWNER || checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+        return reason == MobSpawnType.SPAWNER || iServerWorld.canSeeSky(pos) && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
     }
 
     @Override
@@ -633,7 +633,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
     public void coralThornFive()
     {
         if(this.getTarget() != null) {
-            int count = 5;
+            int count = 6;
             double offsetangle = Math.toRadians(15);
 
             double d1 = getTarget().getX() - this.getX();

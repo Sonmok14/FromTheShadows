@@ -65,6 +65,10 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
+    }
+    maven {
         url 'https://www.cursemaven.com'
         content {
             includeGroup "curse.maven"
@@ -85,6 +89,7 @@ repositories {
 }
 
 dependencies {
+
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
 
@@ -97,11 +102,15 @@ dependencies {
     compileOnly fg.deobf("curse.maven:oculus-581495:4578741")
     runtimeOnly fg.deobf("curse.maven:oculus-581495:4578741")
 
+    implementation fg.deobf("curse.maven:citadel-331936:4744075")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${geckolib_version}")
     minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
 
 }
-
+mixin {
+    add sourceSets.main, "citadel.refmap.json"
+    config 'citadel.mixins.json'
+}
 
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [

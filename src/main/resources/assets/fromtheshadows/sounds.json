@@ -72,6 +72,11 @@
   "cultist_attack": {
     "sounds": [{"name": "fromtheshadows:cultistattack_1", "stream": true},{"name": "fromtheshadows:cultistattack_2", "stream": true}]
   },
+  "shock": {
+    "sounds": [{"name": "fromtheshadows:shock_1", "stream": true}
+    ,{"name": "fromtheshadows:shock_2", "stream": true}],
+    "subtitle": "fromtheshadows.sound.subtitle.fromtheshadows.shock"
+  },
   "nehemoth_stomp": {
   "sounds": [{"name": "fromtheshadows:stomp_1", "stream": true}
   ,{"name": "fromtheshadows:stomp_2", "stream": true}

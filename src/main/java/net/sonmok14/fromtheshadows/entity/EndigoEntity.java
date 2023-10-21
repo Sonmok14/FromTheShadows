@@ -17,7 +17,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.sonmok14.fromtheshadows.FTSConfig;
 import net.sonmok14.fromtheshadows.utils.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -88,6 +87,7 @@ public class EndigoEntity extends Monster implements Enemy, GeoEntity {
                     }
                     if(event.isMoving() && isAggressive())
                     {
+                        event.getController().setAnimationSpeed(0.8D);
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.endigo.run"));
                     }
                     if(event.isMoving())
@@ -101,15 +101,6 @@ public class EndigoEntity extends Monster implements Enemy, GeoEntity {
                     if(squeakyProgress < 50)
                     {
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.endigo.squeaky"));
-                    }
-                    return PlayState.STOP;
-                }));
-        controllerRegistrar.add(
-                new AnimationController<>(this, "leg", 5, event -> {
-                    event.getController().setAnimationSpeed(0.5D);
-                    if(attackID != 0 && event.isMoving())
-                    {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.endigo.leg"));
                     }
                     return PlayState.STOP;
                 }));
@@ -191,7 +182,7 @@ public class EndigoEntity extends Monster implements Enemy, GeoEntity {
         this.goalSelector.addGoal(1, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.4, false));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0, false));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.6D, 25, true));
         super.registerGoals();
     }
@@ -320,6 +311,7 @@ public class EndigoEntity extends Monster implements Enemy, GeoEntity {
 
 
         public void tick() {
+
             if(attacktick == 10)
             {
                 meleeattack();

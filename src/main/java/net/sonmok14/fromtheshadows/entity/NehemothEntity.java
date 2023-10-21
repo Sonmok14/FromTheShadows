@@ -34,6 +34,7 @@ import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -1045,7 +1046,6 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
                     if (nehemoth.attacktick == 17 && nehemoth.hasPassenger(attackTarget)) {
                         attackTarget.hurt(nehemoth.damageSources().mobAttack(nehemoth), (float) nehemoth.getAttributeValue(Attributes.ATTACK_DAMAGE));
                         if (!attackTarget.isBlocking()) {
-
                             nehemoth.level().playSound(null, nehemoth.getX(), nehemoth.getY(), nehemoth.getZ(), SoundEvents.STRIDER_EAT, nehemoth.getSoundSource(), 3F, 0.3F + (nehemoth.random.nextFloat() - nehemoth.random.nextFloat()) * 0.2F);
                             attackTarget.addEffect(new MobEffectInstance(EffectRegistry.HEAL_BLOCK.get(), 100), nehemoth);
                             heal((float) nehemoth.getAttributeValue(Attributes.ATTACK_DAMAGE)/2);
