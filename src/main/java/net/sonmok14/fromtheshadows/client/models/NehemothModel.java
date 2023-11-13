@@ -49,6 +49,6 @@ public class NehemothModel extends GeoModel<NehemothEntity> {
         head.setRotX(entityData.headPitch() * 0.01F);
         head.setRotY(entityData.netHeadYaw() * 0.01F);
         head.setRotX(-1F);
-
+        head.updateScale(0.9f,0.9f,0.9f);
     }
 }

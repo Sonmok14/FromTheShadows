@@ -15,16 +15,18 @@ public class EntityRegistry {
             Fromtheshadows.MODID);
 
     public static final RegistryObject<EntityType<UrnaxEntity>> URNAX = ENTITY_TYPES.register("urnax",
-            () -> EntityType.Builder.of(UrnaxEntity::new, MobCategory.MONSTER).sized(1.2F, 3f)
+            () -> EntityType.Builder.of(UrnaxEntity::new, MobCategory.MONSTER).sized(0.9F, 2.5f)
+                    .noSummon()
                     .fireImmune().clientTrackingRange(9).build(new ResourceLocation(Fromtheshadows.MODID, "urnax").toString()));
     public static final RegistryObject<EntityType<EndigoEntity>> ENDIGO = ENTITY_TYPES.register("endigo",
             () -> EntityType.Builder.of(EndigoEntity::new, MobCategory.MONSTER).sized(0.6F, 3f)
+                    .noSummon()
                     .clientTrackingRange(9).build(new ResourceLocation(Fromtheshadows.MODID, "endigo").toString()));
     public static final RegistryObject<EntityType<NehemothEntity>> NEHEMOTH = ENTITY_TYPES.register("nehemoth",
             () -> EntityType.Builder.of(NehemothEntity::new, MobCategory.MONSTER).sized(1.25f, 3.65f)
                     .fireImmune().clientTrackingRange(9).build(new ResourceLocation(Fromtheshadows.MODID, "nehemoth").toString()));
     public static final RegistryObject<EntityType<FroglinEntity>> FROGLIN = ENTITY_TYPES.register("froglin",
-            () -> EntityType.Builder.of(FroglinEntity::new, MobCategory.MONSTER).sized(1f, 2f)
+            () -> EntityType.Builder.of(FroglinEntity::new, MobCategory.MONSTER).sized(0.6F, 1.95F)
                    .clientTrackingRange(9).build(new ResourceLocation(Fromtheshadows.MODID, "froglin").toString()));
     public static final RegistryObject<EntityType<BulldrogiothEntity>> BULLDROGIOTH = ENTITY_TYPES.register("bulldrogioth",
             () -> EntityType.Builder.of(BulldrogiothEntity::new, MobCategory.MONSTER).sized(2.5f, 2.9f)

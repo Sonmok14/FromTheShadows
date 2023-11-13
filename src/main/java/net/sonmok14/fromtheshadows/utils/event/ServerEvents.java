@@ -112,7 +112,7 @@ public class ServerEvents {
                             .containsAll(Arrays.asList(ItemRegistry.DIABOLIUM_LEGGINGS.get(),
                                     ItemRegistry.DIABOLIUM_CHEST.get(), ItemRegistry.DIABOLIUM_HEAD.get()));
                     if (isWearingAll) {
-                           attacker.heal((float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) / 5);
+                           attacker.heal((float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) / 8);
                        }
                     }
                 }

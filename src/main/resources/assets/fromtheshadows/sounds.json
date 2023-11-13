@@ -33,14 +33,10 @@
   "nehemoth_idle": {
     "sounds": [{"name": "fromtheshadows:nehemoth_idle1", "stream": true}
     ,{"name": "fromtheshadows:nehemoth_idle2", "stream": true}
-    ,{"name": "fromtheshadows:nehemoth_idle3", "stream": true}
-    ,{"name": "fromtheshadows:nehemoth_idle4", "stream": true}
     ,{"name": "fromtheshadows:nehemoth_idle5", "stream": true}
     ,{"name": "fromtheshadows:nehemoth_idle6", "stream": true}
     ,{"name": "fromtheshadows:nehemoth_idle7", "stream": true}
     ,{"name": "fromtheshadows:nehemoth_idle8", "stream": true}
-    ,{"name": "fromtheshadows:nehemoth_idle9", "stream": true}
-    ,{"name": "fromtheshadows:nehemoth_idle10", "stream": true}
     ,{"name": "fromtheshadows:nehemoth_idle11", "stream": true}
     ,{"name": "fromtheshadows:nehemoth_idle12", "stream": true}
     ,{"name": "fromtheshadows:nehemoth_idle13", "stream": true}],

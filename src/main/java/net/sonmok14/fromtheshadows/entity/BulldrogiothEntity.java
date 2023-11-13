@@ -232,7 +232,6 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(
                 new AnimationController<>(this, "controller", 7, event -> {
-                    event.getController().setAnimationSpeed(0.5D);
                     if (dead || getHealth() < 0.01 || isDeadOrDying()) {
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.death"));
                     }
@@ -246,12 +245,11 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                             event.resetCurrentAnimation();
                         }
                         if (this.wasEyeInWater && this.walkAnimation.speed() > 0.35F && isAggressive() && attackID == 0) {
-                            event.getController().setAnimationSpeed(0.5D);
                             return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.swim"));
                         }
 
                         if (this.walkAnimation.speed() > 0.35F && isAggressive() && attackID == 0) {
-                            event.getController().setAnimationSpeed(1D);
+                            event.getController().setAnimationSpeed(1.25D);
                             return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.walk"));
                         }
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.idle"));
@@ -268,42 +266,35 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                             event.resetCurrentAnimation();
                         }
                         if (attackID == 1) {
-                            event.getController().setAnimationSpeed(0.5D);
+
                             return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.normal"));
                         }
                         if (attackID == 2 && !isRight()) {
-                            event.getController().setAnimationSpeed(0.5D);
                             return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.claw_left"));
                         }
                         if (attackID == 2 && isRight()) {
-                            event.getController().setAnimationSpeed(0.5D);
                             return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.claw_right"));
                         }
                         if (attackID == 5 && isRight()) {
-                            event.getController().setAnimationSpeed(0.5D);
                             return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.thorn_right"));
                         }
                         if (attackID == 5 && !isRight()) {
-                            event.getController().setAnimationSpeed(0.5D);
                             return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.thorn_left"));
                         }
 
                         if(this.attackID == 3) {
-                            event.getController().setAnimationSpeed(0.5D);
                             if(isRight()) {
                             return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.combo_right"));
                         }
                             return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.combo_left"));
                         }
                         if(this.attackID == 4) {
-                            event.getController().setAnimationSpeed(0.5D);
                             if(isRight()) {
                                 return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.bite_right"));
                             }
                             return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.bite_left"));
                         }
                         if(this.attackID == 6) {
-                            event.getController().setAnimationSpeed(0.5D);
                             if(isRight()) {
                                 return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.thorn_combo_right"));
                             }
@@ -323,8 +314,6 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
 
         controllerRegistrar.add(
                 new AnimationController<>(this, "growling", 20, event -> {
-                    event.getController().setAnimationSpeed(1D);
-
                     if (this.growlingProgress <= 30 && isAlive())
                     {
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.growl"));
@@ -339,7 +328,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 new AnimationController<>(this, "hurt", 20, event -> {
 
                     if (this.hurtTime > 0 && isAlive()) {
-                        event.getController().setAnimationSpeed(0.25D);
+                        event.getController().setAnimationSpeed(0.5D);
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.hurt"));
                     }
                     return PlayState.STOP;
@@ -518,7 +507,6 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             }
         }
 
-        ++this.tickCount;
         if (this.attackID != 0) {
             yBodyRot = yHeadRot;
             setYRot(yBodyRot);
@@ -714,7 +702,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Axolotl.class, true));
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.5, false));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(4, new RandomStrollGoal(this, 0.7D, 25, true));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(11, new LookAtPlayerGoal(this, Player.class, 6.0F));

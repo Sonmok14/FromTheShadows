@@ -1,18 +1,23 @@
 package net.sonmok14.fromtheshadows.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -63,11 +68,6 @@ public class UrnaxEntity extends Monster implements Enemy, GeoEntity {
                             return event.setAndContinue(RawAnimation.begin().thenLoop("animation.urnax.slam_ready"));
                         }
                     }
-                    if(event.isMoving() && isAggressive())
-                    {
-                        event.getController().setAnimationSpeed(1.2D);
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.urnax.run"));
-                    }
                     if(event.isMoving())
                     {
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.urnax.walk"));
@@ -76,7 +76,7 @@ public class UrnaxEntity extends Monster implements Enemy, GeoEntity {
                 }).setSoundKeyframeHandler(event -> {
                     if (event.getKeyframeData().getSound().matches("stompkey"))
                         if (this.level().isClientSide && !isInWater())
-                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(), SoundSource.HOSTILE, 0.1F, 0.5F + this.getRandom().nextFloat() * 0.1F, true);
+                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(), SoundSource.HOSTILE, 0.1F, 0.8F + this.getRandom().nextFloat() * 0.1F, true);
                 }));
         controllerRegistrar.add(
                 new AnimationController<>(this, "clench", 10, event -> {
@@ -105,7 +105,7 @@ public class UrnaxEntity extends Monster implements Enemy, GeoEntity {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new PunchAttackGoal(this));
         this.goalSelector.addGoal(0, new ThunderSlamGoal(this));
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.05, false));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.6D, false));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.6D, 25, true));
@@ -135,6 +135,12 @@ public class UrnaxEntity extends Monster implements Enemy, GeoEntity {
     }
     @Override
     public void handleEntityEvent(byte id) {
+        if (id == 25) {
+            Vec3 vec3 = this.getBoundingBox().getCenter();
+            for (int i = 0; i < 12; ++i) {
+                this.level().addParticle(ParticleRegistry.LIGHTNING.get(), vec3.x, vec3.y, vec3.z, getRandom().nextGaussian() * 8D, getRandom().nextGaussian() * 8D, getRandom().nextGaussian() * 8D);
+            }
+        }
         if (id <= 0) {
             this.attackID = Math.abs(id);
             this.attacktick = 0;
@@ -185,11 +191,6 @@ public class UrnaxEntity extends Monster implements Enemy, GeoEntity {
         if (this.growlProgress == 29) {
             this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.SHOCK.get(), SoundSource.HOSTILE, 1F, 0.2F + this.getRandom().nextFloat() * 0.2F);
         }
-    }
-    private void thunderEffect() {
-            for (int i = 0; i < 4; ++i) {
-                this.level().addParticle(ParticleRegistry.LIGHTNING.get(), this.getX(), this.getY(), this.getZ(), getRandom().nextGaussian() * 4D, getRandom().nextGaussian() * 4D, getRandom().nextGaussian() * 4D);
-            }
     }
     public void setAttackID(int id) {
         this.attackID = id;
@@ -255,7 +256,7 @@ public class UrnaxEntity extends Monster implements Enemy, GeoEntity {
         }
     }
 
-    private void slam(int distance) {
+    public void slam(int distance) {
         double perpFacing = this.yBodyRot * (Math.PI / 180);
         double facingAngle = perpFacing + Math.PI / 2;
         int hitY = Mth.floor(this.getBoundingBox().minY - 0.5);
@@ -278,7 +279,7 @@ public class UrnaxEntity extends Monster implements Enemy, GeoEntity {
                 if (level().getBlockState(pos) != Blocks.AIR.defaultBlockState()) {
                     FallingBlockEntity fallingBlockEntity = new FallingBlockEntity(level(), hitX + 0.5D, hitY + 0.5D, hitZ + 0.5D, block);
                     level().setBlock(pos, block.getFluidState().createLegacyBlock(), 3);
-                    fallingBlockEntity.push(getRandom().nextGaussian() * 4, 0.2D + getRandom().nextGaussian() * 0.5D, getRandom().nextGaussian() * 4);
+                    fallingBlockEntity.push(getRandom().nextGaussian() * 0.2D, 0.2D + getRandom().nextGaussian() * 0.5D, getRandom().nextGaussian() * 0.2D);
                     level().addFreshEntity(fallingBlockEntity);
                 }
 
@@ -318,18 +319,13 @@ public class UrnaxEntity extends Monster implements Enemy, GeoEntity {
 
         public void stop() {
             ScreenShakeEntity.ScreenShake(level(), position(), 15, 0.2f, 0, 10);
-                BlockPos blockpos = urnax.blockPosition();
                 slam(4);
-                if (urnax.level().canSeeSky(blockpos)) {
-                    LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(urnax.level());
-                    if (lightningbolt != null) {
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(blockpos));
-                        urnax.level().addFreshEntity(lightningbolt);
-                    }
-                }
             playSound(SoundEvents.GENERIC_EXPLODE, 2f, 0.2F + getRandom().nextFloat() * 0.1F);
             this.urnax.setAttackID(0);
             this.attackTarget = null;
+            if (!urnax.level().isClientSide) {
+                urnax.level().broadcastEntityEvent(urnax, (byte)25);
+            }
         }
 
         @Override
@@ -357,7 +353,7 @@ public class UrnaxEntity extends Monster implements Enemy, GeoEntity {
             }
 
             if (attacktick == 14) {
-                setDeltaMovement((attackTarget.getX() - getX()) * 0.21D, 0.8D, (attackTarget.getZ() - getZ()) * 0.21D);
+                setDeltaMovement((attackTarget.getX() - getX()) * 0.2D, 0.9D, (attackTarget.getZ() - getZ()) * 0.2D);
             }
        if(attacktick > 15 && urnax.onGround()){
           stop();

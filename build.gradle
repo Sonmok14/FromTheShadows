@@ -89,19 +89,13 @@ repositories {
 }
 
 dependencies {
-
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
 
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
-    compileOnly fg.deobf("curse.maven:rubidium-574856:4573226")
-    runtimeOnly fg.deobf("curse.maven:rubidium-574856:4573226")
-
-    compileOnly fg.deobf("curse.maven:oculus-581495:4578741")
-    runtimeOnly fg.deobf("curse.maven:oculus-581495:4578741")
-
+    implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:4689044")
     implementation fg.deobf("curse.maven:citadel-331936:4744075")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${geckolib_version}")
     minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"

@@ -1886,13 +1886,14 @@
 		},
 		"animation.nehemoth.walk": {
 			"loop": true,
+			"animation_length": 1.79167,
 			"bones": {
 				"root": {
 					"rotation": {
 						"vector": [19.5, 0, 0]
 					},
 					"position": {
-						"vector": [0, "2+math.sin(-50+query.anim_time*400)*-1", 0]
+						"vector": [0, "1.2+math.sin(-50+query.anim_time*400)*-1", 0]
 					}
 				},
 				"bottom": {
@@ -2090,12 +2091,23 @@
 				"top": {
 					"rotation": {
 						"vector": [-15, 0, 0]
+					},
+					"position": {
+						"vector": [0, "1+math.sin(-80+query.anim_time*200)*1", 0]
 					}
 				},
 				"right_shoulder": {
 					"rotation": {
 						"vector": [0, 0, -7.5]
 					}
+				}
+			},
+			"sound_effects": {
+				"0.4583": {
+					"effect": "stompkey"
+				},
+				"1.3333": {
+					"effect": "stompkey"
 				}
 			}
 		},
@@ -3101,7 +3113,7 @@
 			}
 		},
 		"animation.nehemoth.death": {
-			"animation_length": 2.5417,
+			"animation_length": 2.5,
 			"bones": {
 				"root": {
 					"rotation": {
@@ -3285,6 +3297,7 @@
 		},
 		"animation.nehemoth.run": {
 			"loop": true,
+			"animation_length": 0.91667,
 			"bones": {
 				"root": {
 					"rotation": {
@@ -3383,11 +3396,6 @@
 				"head": {
 					"rotation": {
 						"vector": [-15, 0, 0]
-					}
-				},
-				"jaw": {
-					"rotation": {
-						"vector": ["math.clamp(math.sin(-75+query.anim_time*200)*30,0,30)", 0, 0]
 					}
 				},
 				"bodytop": {
@@ -3524,6 +3532,14 @@
 					"position": {
 						"vector": ["-math.clamp(math.sin(-50+query.anim_time*400)*2,-2,2)", 0, 0]
 					}
+				}
+			},
+			"sound_effects": {
+				"0.2917": {
+					"effect": "stompkey"
+				},
+				"0.75": {
+					"effect": "stompkey"
 				}
 			}
 		},

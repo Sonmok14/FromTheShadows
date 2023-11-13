@@ -72,14 +72,14 @@ public class NehemothRenderer extends GeoEntityRenderer<NehemothEntity> {
        }
      }
      if (animatable.attackID == 1 || (animatable.attackID == 5 && !animatable.onGround())) {
-      if (model.getBone("righthandpart3").isPresent()) {
+      if (model.getBone("right_finger_part").isPresent()) {
           int flameDensity = 1;
        float flameRandomness = 0.15f;
            int numClouds = (int) Math.floor(1 * 1);
       for (int i = 0; i < numClouds; i++) {
-         double x = model.getBone("righthandpart3").get().getWorldPosition().x + i * (model.getBone("righthandpart3").get().getWorldPosition().x) / numClouds;
-             double y = model.getBone("righthandpart3").get().getWorldPosition().y + i * (model.getBone("righthandpart3").get().getWorldPosition().y) / numClouds;
-            double z = model.getBone("righthandpart3").get().getWorldPosition().z + i * (model.getBone("righthandpart3").get().getWorldPosition().z) / numClouds;
+         double x = model.getBone("right_finger_part").get().getWorldPosition().x + i * (model.getBone("right_finger_part").get().getWorldPosition().x) / numClouds;
+             double y = model.getBone("right_finger_part").get().getWorldPosition().y + i * (model.getBone("right_finger_part").get().getWorldPosition().y) / numClouds;
+            double z = model.getBone("right_finger_part").get().getWorldPosition().z + i * (model.getBone("right_finger_part").get().getWorldPosition().z) / numClouds;
            for (int j = 0; j < flameDensity; j++) {
             float xOffset = flameRandomness * (0.2f * animatable.getRandom().nextFloat() - 1);
            float yOffset = flameRandomness * (0.2f * animatable.getRandom().nextFloat() - 1);
@@ -93,14 +93,14 @@ public class NehemothRenderer extends GeoEntityRenderer<NehemothEntity> {
             }
             }
    }
-      if (model.getBone("lefthandpart5").isPresent()) {
+      if (model.getBone("left_finger_part").isPresent()) {
        int flameDensity = 1;
            float flameRandomness = 0.15f;
           int numClouds = (int) Math.floor(1 * 1);
         for (int i = 0; i < numClouds; i++) {
-           double x = model.getBone("lefthandpart5").get().getWorldPosition().x + i * (model.getBone("lefthandpart5").get().getWorldPosition().x) / numClouds;
-            double y = model.getBone("lefthandpart5").get().getWorldPosition().y + i * (model.getBone("lefthandpart5").get().getWorldPosition().y) / numClouds;
-            double z = model.getBone("lefthandpart5").get().getWorldPosition().z + i * (model.getBone("lefthandpart5").get().getWorldPosition().z) / numClouds;
+           double x = model.getBone("left_finger_part").get().getWorldPosition().x + i * (model.getBone("left_finger_part").get().getWorldPosition().x) / numClouds;
+            double y = model.getBone("left_finger_part").get().getWorldPosition().y + i * (model.getBone("left_finger_part").get().getWorldPosition().y) / numClouds;
+            double z = model.getBone("left_finger_part").get().getWorldPosition().z + i * (model.getBone("left_finger_part").get().getWorldPosition().z) / numClouds;
         for (int j = 0; j < flameDensity; j++) {
                float xOffset = flameRandomness * (0.2f * animatable.getRandom().nextFloat() - 0.6f);
               float yOffset = flameRandomness * (0.5f * animatable.getRandom().nextFloat() - 0.6f);

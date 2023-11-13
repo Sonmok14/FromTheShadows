@@ -1,4 +1,4 @@
-package net.sonmok14.fromtheshadows.client.models.items;
+package net.sonmok14.fromtheshadows.client.models;
 
 import net.minecraft.resources.ResourceLocation;
 import net.sonmok14.fromtheshadows.Fromtheshadows;

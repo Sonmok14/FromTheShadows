@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
-import net.sonmok14.fromtheshadows.client.models.items.UrnaxModel;
+import net.sonmok14.fromtheshadows.client.models.UrnaxModel;
 import net.sonmok14.fromtheshadows.client.renderer.layer.UrnaxLayerRenderer;
 import net.sonmok14.fromtheshadows.entity.UrnaxEntity;
 import net.sonmok14.fromtheshadows.utils.registry.ParticleRegistry;
@@ -57,14 +57,14 @@ public class UrnaxRenderer extends GeoEntityRenderer<UrnaxEntity> {
     @Override
     public void render(UrnaxEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
         stack.pushPose();
-        stack.scale(1.2f, 1.2f, 1.2f);
+        stack.scale(1f, 1f, 1f);
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
         stack.popPose();
     }
 
     @Override
     protected int getBlockLightLevel(UrnaxEntity p_114496_, BlockPos p_114497_) {
-        return 2;
+        return 7;
     }
 
 }

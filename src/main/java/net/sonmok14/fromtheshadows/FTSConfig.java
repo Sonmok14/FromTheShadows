@@ -51,7 +51,7 @@ public class FTSConfig {
             this.nehemoth_laser_damage = builder.translation("text.fromtheshadows.config.nehemoth_laser")
                     .defineInRange("Sets Nehemoth Laser Damage", 3, 1, Double.MAX_VALUE);
             this.nehemoth_melee_damage = builder.translation("text.fromtheshadows.config.nehemoth_melee")
-                    .defineInRange("Sets Nehemoth Melee Damage", 7, 1, Double.MAX_VALUE);
+                    .defineInRange("Sets Nehemoth Melee Damage", 8, 1, Double.MAX_VALUE);
             builder.pop();
             builder.push("Froglin");
             this.froglin_health = builder.translation("text.fromtheshadows.config.froglin_health")
@@ -63,7 +63,7 @@ public class FTSConfig {
             builder.pop();
             builder.push("Bulldrogioth");
             this.bulldrogioth_health = builder.translation("text.fromtheshadows.config.bulldrogioth_health")
-                    .defineInRange("Sets Bulldrogioth Max Health", 130, 1, Double.MAX_VALUE);
+                    .defineInRange("Sets Bulldrogioth Max Health", 150, 1, Double.MAX_VALUE);
             this.bulldrogioth_melee_damage = builder.translation("text.fromtheshadows.config.bulldrogioth_melee_damage")
                     .defineInRange("Sets Bulldrogioth Melee Damage", 15, 1, Double.MAX_VALUE);
             builder.pop();
@@ -85,9 +85,9 @@ public class FTSConfig {
             builder.pop();
             builder.push("SpawnRate");
             nehemothSpawnRate = builder.comment("Changed Nehemoth SpawnRate. [0 ~ 100]")
-                    .defineInRange("Nehemoth SpawnRate", 4, 0, 100);
+                    .defineInRange("Nehemoth SpawnRate", 2, 0, 100);
             bulldrogiothSpawnRate = builder.comment("Changed Bulldrogioth SpawnRate. [0 ~ 100]")
-                    .defineInRange("Bulldrogioth SpawnRate", 9, 0, 100);
+                    .defineInRange("Bulldrogioth SpawnRate", 5, 0, 100);
             froglinSpawnRate = builder.comment("Changed Froglin SpawnRate. [0 ~ 100]")
                     .defineInRange("Froglin SpawnRate", 2, 0, 100);
         }
