@@ -16,9 +16,11 @@ public class CommonProxy {
 
 
 
-        public void init(final IEventBus modbus) {
+        public void commonInit() {
         }
 
+        public void clientInit() {
+        }
         public Player getClientSidePlayer() {
                 return null;
         }

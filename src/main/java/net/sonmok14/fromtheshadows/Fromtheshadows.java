@@ -11,6 +11,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -43,11 +44,11 @@ public class Fromtheshadows
         FTSConfig.loadConfig(FTSConfig.SERVER_SPEC,
                 FMLPaths.CONFIGDIR.get().resolve("fromtheshadows-config.toml").toString());
         instance = this;
-
         GeckoLib.initialize();
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::setup);
-        PROXY.init(modEventBus);
+        PROXY.commonInit();
+        modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::setup);
         modEventBus.addListener(this::enqueueIMC);
         modEventBus.addListener(this::processIMC);
@@ -81,6 +82,9 @@ public class Fromtheshadows
         EffectRegistry.init();
     }
 
+    private void clientSetup(final FMLClientSetupEvent event) {
+        event.enqueueWork(() -> PROXY.clientInit());
+    }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
     {

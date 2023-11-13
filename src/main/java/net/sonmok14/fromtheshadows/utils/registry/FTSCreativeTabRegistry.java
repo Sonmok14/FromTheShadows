@@ -18,7 +18,7 @@ public static final RegistryObject<CreativeModeTab> ITEM = TABS.register("items"
     entries.accept(ItemRegistry.FROGLIN_SPAWN_EGG.get());
     entries.accept(ItemRegistry.BULLDROGIOTH_SPAWN_EGG.get());
     entries.accept(ItemRegistry.CLERIC_SPAWN_EGG.get());
-
+    entries.accept(ItemRegistry.URNAX_SPAWN_EGG.get());
         entries.accept(ItemRegistry.DIABOLIUM_HEAD.get());
         entries.accept(ItemRegistry.DIABOLIUM_CHEST.get());
         entries.accept(ItemRegistry.DIABOLIUM_LEGGINGS.get());

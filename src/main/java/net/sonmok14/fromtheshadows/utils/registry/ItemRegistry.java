@@ -65,4 +65,6 @@ public class ItemRegistry {
             () -> new ForgeSpawnEggItem(EntityRegistry.FROGLIN, 0x5AB333,0xB1E83D, new Item.Properties()));
     public static final RegistryObject<Item> NEHEMOTH_SPAWN_EGG = ITEMS.register("nehemoth_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.NEHEMOTH, 0x523647,0x674c59, new Item.Properties()));
+    public static final RegistryObject<Item> URNAX_SPAWN_EGG = ITEMS.register("urnax_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.URNAX, 0xDCD8DE,0xBF94F7, new Item.Properties()));
 }

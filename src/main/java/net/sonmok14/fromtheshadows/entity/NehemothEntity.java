@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -42,6 +43,7 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidType;
@@ -95,6 +97,13 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
 
     public NehemothEntity(EntityType<? extends NehemothEntity> type, Level world) {
         super(type, world);
+        this.getNavigation().setCanFloat(true);
+        this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, 8.0F);
+        this.setPathfindingMalus(BlockPathTypes.POWDER_SNOW, 8.0F);
+        this.setPathfindingMalus(BlockPathTypes.LAVA, 8.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
         xpReward = 30;
     }
     //animation
@@ -479,7 +488,15 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
     public boolean hasLineOfSight(Entity p_149755_) {
         return this.attackCooldown <= 0 || this.stunnedTick <= 0 && super.hasLineOfSight(p_149755_);
     }
-
+    @Override
+    public boolean killedEntity(ServerLevel p_216988_, LivingEntity p_216989_) {
+        if(isAlive())
+        {
+            biteCooldown = 0;
+          roarCooldown = 0;
+        }
+        return super.killedEntity(p_216988_, p_216989_);
+    }
     public static float updateRotation(float angle, float targetAngle, float maxIncrease) {
         float f = Mth.wrapDegrees(targetAngle - angle);
         if (f > maxIncrease) {
@@ -1039,7 +1056,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
 
         public void tick() {
  if(attackTarget != null)
-            if (attacktick < 38) {
+            if (attacktick < 9) {
                 if (attackTarget != null) {
                     getLookControl().setLookAt(attackTarget,30F, 90.0F);
                 }
@@ -1082,7 +1099,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
 
         public boolean canUse() {
             this.attackTarget = this.nehemoth.getTarget();
-            return attackTarget != null && this.nehemoth.attackID == 0 && distanceTo(attackTarget)  > 9.0D && onGround() && random.nextInt(15) == 0 && roarCooldown == 0;
+            return attackTarget != null && this.nehemoth.attackID == 0 && distanceTo(attackTarget)  > 9.0D && onGround() && roarCooldown == 0;
         }
 
         public void start() {
@@ -1106,7 +1123,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
 
         public void tick() {
                 if (attacktick < 25 && attackTarget.isAlive() && attackTarget != null) {
-                    lookAt(attackTarget, 30.0F, 90.0F);
+                    getLookControl().setLookAt(attackTarget,30F, 90.0F);
                 }
                 roar();
                 if (attacktick == 1) {

@@ -200,6 +200,10 @@ public class EndigoEntity extends Monster implements Enemy, GeoEntity {
         if (this.squeakyProgress > 0) {
             --this.squeakyProgress;
         }
+        if(attackID == 0)
+        {
+            setRight(false);
+        }
         if (this.squeakyProgress == 45 && isAlive())
         {
             this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.ENDIGO_IDLE.get(), SoundSource.HOSTILE, 1F, 0.9F + this.getRandom().nextFloat() * 0.1F);

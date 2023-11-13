@@ -57,7 +57,7 @@ public class UrnaxRenderer extends GeoEntityRenderer<UrnaxEntity> {
     @Override
     public void render(UrnaxEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
         stack.pushPose();
-        stack.scale(1f, 1f, 1f);
+        stack.scale(1.15f, 1.15f, 1.15f);
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
         stack.popPose();
     }
