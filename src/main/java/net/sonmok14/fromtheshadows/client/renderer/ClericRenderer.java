@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.sonmok14.fromtheshadows.client.models.ClericModel;
 import net.sonmok14.fromtheshadows.client.renderer.layer.ClericLayerRenderer;
-import net.sonmok14.fromtheshadows.entity.ClericEntity;
+import net.sonmok14.fromtheshadows.server.entity.ClericEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;

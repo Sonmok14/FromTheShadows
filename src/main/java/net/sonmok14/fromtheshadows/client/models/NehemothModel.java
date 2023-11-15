@@ -1,11 +1,9 @@
 package net.sonmok14.fromtheshadows.client.models;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.model.ZombieModel;
 import net.minecraft.resources.ResourceLocation;
-import net.sonmok14.fromtheshadows.Fromtheshadows;
-import net.sonmok14.fromtheshadows.entity.NehemothEntity;
-import software.bernie.example.client.model.entity.MutantZombieModel;
+import net.sonmok14.fromtheshadows.server.Fromtheshadows;
+import net.sonmok14.fromtheshadows.server.entity.NehemothEntity;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
@@ -49,6 +47,6 @@ public class NehemothModel extends GeoModel<NehemothEntity> {
         head.setRotX(entityData.headPitch() * 0.01F);
         head.setRotY(entityData.netHeadYaw() * 0.01F);
         head.setRotX(-1F);
-        head.updateScale(0.9f,0.9f,0.9f);
+        head.updateScale(0.95f,0.95f,0.95f);
     }
 }

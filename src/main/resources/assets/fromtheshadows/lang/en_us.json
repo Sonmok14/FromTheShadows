@@ -26,14 +26,6 @@
   "item.fromtheshadows.thirst_for_blood": "Thirst for Blood",
   "item.fromtheshadows.suspicious_cloth": "Suspicious Cloth",
 
-  "item.minecraft.potion.effect.short_suppression": "Potion of the Suppression",
-  "item.minecraft.splash_potion.effect.short_suppression": "Splash Potion of Suppression",
-  "item.minecraft.lingering_potion.effect.short_suppression": "Lingering Potion of Suppression",
-  "item.minecraft.tipped_arrow.effect.short_suppression": "Arrow of Suppression",
-  "item.minecraft.potion.effect.long_suppression": "Potion of the Suppression",
-  "item.minecraft.splash_potion.effect.long_suppression": "Splash Potion of Suppression",
-  "item.minecraft.lingering_potion.effect.long_suppression": "Lingering Potion of Suppression",
-  "item.minecraft.tipped_arrow.effect.long_suppression": "Arrow of Suppression",
   "item.minecraft.potion.effect.frenzy": "Potion of the Frenzy",
   "item.minecraft.splash_potion.effect.frenzy": "Splash Potion of Frenzy",
   "item.minecraft.lingering_potion.effect.frenzy": "Lingering Potion of Frenzy",
@@ -54,7 +46,6 @@
   "effect.fromtheshadows.plague": "Spreading Plague",
   "effect.fromtheshadows.heal_block": "Heal Block",
   "effect.fromtheshadows.bleeding": "Bleeding",
-  "effect.fromtheshadows.suppression": "Suppression",
 
   "death.attack.bleeding.player": "%s died of excessive bleeding.",
   "death.attack.incinerate.player": "%s has been incinerated.",

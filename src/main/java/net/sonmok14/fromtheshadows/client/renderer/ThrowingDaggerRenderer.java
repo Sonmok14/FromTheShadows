@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.sonmok14.fromtheshadows.client.models.ThrowingDaggerModel;
-import net.sonmok14.fromtheshadows.entity.projectiles.ThrowingDaggerEntity;
+import net.sonmok14.fromtheshadows.server.entity.projectiles.ThrowingDaggerEntity;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class ThrowingDaggerRenderer extends GeoEntityRenderer<ThrowingDaggerEntity> {

@@ -6,8 +6,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.sonmok14.fromtheshadows.client.models.FroglinVomitModel;
-import net.sonmok14.fromtheshadows.entity.NehemothEntity;
-import net.sonmok14.fromtheshadows.entity.projectiles.FrogVomit;
+import net.sonmok14.fromtheshadows.server.entity.projectiles.FrogVomit;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 

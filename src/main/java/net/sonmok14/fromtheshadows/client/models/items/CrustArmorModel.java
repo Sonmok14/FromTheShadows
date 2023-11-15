@@ -1,9 +1,8 @@
 package net.sonmok14.fromtheshadows.client.models.items;
 
 import net.minecraft.resources.ResourceLocation;
-import net.sonmok14.fromtheshadows.Fromtheshadows;
-import net.sonmok14.fromtheshadows.items.CrustArmorItem;
-import net.sonmok14.fromtheshadows.items.DiaboliumArmorItem;
+import net.sonmok14.fromtheshadows.server.Fromtheshadows;
+import net.sonmok14.fromtheshadows.server.items.CrustArmorItem;
 import software.bernie.geckolib.model.GeoModel;
 
 public class CrustArmorModel extends GeoModel<CrustArmorItem> {

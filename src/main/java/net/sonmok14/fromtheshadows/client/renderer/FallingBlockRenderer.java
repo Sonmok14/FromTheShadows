@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.sonmok14.fromtheshadows.entity.projectiles.FallingBlockEntity;
+import net.sonmok14.fromtheshadows.server.entity.projectiles.FallingBlockEntity;
 
 @OnlyIn(Dist.CLIENT)
 public class FallingBlockRenderer extends EntityRenderer<FallingBlockEntity> {

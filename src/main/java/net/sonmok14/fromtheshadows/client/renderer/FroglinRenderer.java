@@ -6,8 +6,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.particles.ParticleTypes;
 import net.sonmok14.fromtheshadows.client.models.FroglinModel;
-import net.sonmok14.fromtheshadows.entity.FroglinEntity;
-import net.sonmok14.fromtheshadows.entity.NehemothEntity;
+import net.sonmok14.fromtheshadows.server.entity.FroglinEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 

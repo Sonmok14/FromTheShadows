@@ -1,8 +1,8 @@
 package net.sonmok14.fromtheshadows.client.models.items;
 
 import net.minecraft.resources.ResourceLocation;
-import net.sonmok14.fromtheshadows.Fromtheshadows;
-import net.sonmok14.fromtheshadows.items.PlagueDoctorMaskItem;
+import net.sonmok14.fromtheshadows.server.Fromtheshadows;
+import net.sonmok14.fromtheshadows.server.items.PlagueDoctorMaskItem;
 import software.bernie.geckolib.model.GeoModel;
 
 public class PlagueDoctorMaskModel extends GeoModel<PlagueDoctorMaskItem> {

@@ -3,16 +3,12 @@ package net.sonmok14.fromtheshadows.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.WardenRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.particles.ParticleTypes;
 import net.sonmok14.fromtheshadows.client.models.NehemothModel;
 import net.sonmok14.fromtheshadows.client.renderer.layer.NehemothLayerRenderer;
-import net.sonmok14.fromtheshadows.entity.BulldrogiothEntity;
-import net.sonmok14.fromtheshadows.entity.NehemothEntity;
-import net.sonmok14.fromtheshadows.utils.registry.ParticleRegistry;
+import net.sonmok14.fromtheshadows.server.entity.NehemothEntity;
+import net.sonmok14.fromtheshadows.server.utils.registry.ParticleRegistry;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 

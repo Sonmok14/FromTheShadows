@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.sonmok14.fromtheshadows.client.models.CoralThornModel;
-import net.sonmok14.fromtheshadows.entity.projectiles.CoralThornEntity;
+import net.sonmok14.fromtheshadows.server.entity.projectiles.CoralThornEntity;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class CoralThornRenderer extends GeoEntityRenderer<CoralThornEntity> {

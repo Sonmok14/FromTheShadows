@@ -9,7 +9,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.sonmok14.fromtheshadows.client.models.BulldrogiothModel;
 import net.sonmok14.fromtheshadows.client.renderer.layer.BulldrogiothLayerRenderer;
-import net.sonmok14.fromtheshadows.entity.BulldrogiothEntity;
+import net.sonmok14.fromtheshadows.server.entity.BulldrogiothEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 

@@ -1,8 +1,8 @@
 package net.sonmok14.fromtheshadows.client.models;
 
 import net.minecraft.resources.ResourceLocation;
-import net.sonmok14.fromtheshadows.Fromtheshadows;
-import net.sonmok14.fromtheshadows.entity.projectiles.ThrowingDaggerEntity;
+import net.sonmok14.fromtheshadows.server.Fromtheshadows;
+import net.sonmok14.fromtheshadows.server.entity.projectiles.ThrowingDaggerEntity;
 import software.bernie.geckolib.model.GeoModel;
 
 public class ThrowingDaggerModel extends GeoModel<ThrowingDaggerEntity> {

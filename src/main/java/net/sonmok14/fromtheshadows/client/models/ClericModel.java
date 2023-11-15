@@ -1,9 +1,8 @@
 package net.sonmok14.fromtheshadows.client.models;
 
 import net.minecraft.resources.ResourceLocation;
-import net.sonmok14.fromtheshadows.Fromtheshadows;
-import net.sonmok14.fromtheshadows.entity.ClericEntity;
-import net.sonmok14.fromtheshadows.entity.FroglinEntity;
+import net.sonmok14.fromtheshadows.server.Fromtheshadows;
+import net.sonmok14.fromtheshadows.server.entity.ClericEntity;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;

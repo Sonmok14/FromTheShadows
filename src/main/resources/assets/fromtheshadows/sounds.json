@@ -11,10 +11,6 @@
     "sounds": [{"name": "fromtheshadows:soul_laser_ready", "stream": true}],
     "subtitle": "fromtheshadows.sound.subtitle.fromtheshadows.soul_laser_ready"
   },
-  "warning": {
-    "sounds": [{"name": "fromtheshadows:warning", "stream": true}],
-    "subtitle": "fromtheshadows.sound.subtitle.fromtheshadows.warning"
-  },
   "nehemoth_attack": {
     "sounds": [{"name": "fromtheshadows:nehemoth_attack", "stream": true}],
     "subtitle": "fromtheshadows.sound.subtitle.fromtheshadows.nehemoth_attack"
@@ -68,11 +64,6 @@
   "cultist_attack": {
     "sounds": [{"name": "fromtheshadows:cultistattack_1", "stream": true},{"name": "fromtheshadows:cultistattack_2", "stream": true}]
   },
-  "shock": {
-    "sounds": [{"name": "fromtheshadows:shock_1", "stream": true}
-    ,{"name": "fromtheshadows:shock_2", "stream": true}],
-    "subtitle": "fromtheshadows.sound.subtitle.fromtheshadows.shock"
-  },
   "nehemoth_stomp": {
   "sounds": [{"name": "fromtheshadows:stomp_1", "stream": true}
   ,{"name": "fromtheshadows:stomp_2", "stream": true}
@@ -84,11 +75,6 @@
     "sounds": [{"name": "fromtheshadows:bulldrogioth_idle_1", "stream": true}],
     "subtitle": "fromtheshadows.sound.subtitle.fromtheshadows.bulldrogioth_idle"
   },
-  "endigo_idle": {
-    "sounds": [{"name": "fromtheshadows:endigo_idle", "stream": true}],
-    "subtitle": "fromtheshadows.sound.subtitle.fromtheshadows.endigo_idle"
-  },
-
   "bulldrogioth_hurt": {
     "sounds": [{"name": "fromtheshadows:bulldrogioth_hurt_1", "stream": true},
       {"name": "fromtheshadows:bulldrogioth_hurt_2", "stream": true},
