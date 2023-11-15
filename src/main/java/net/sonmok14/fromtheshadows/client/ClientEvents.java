@@ -3,17 +3,12 @@ package net.sonmok14.fromtheshadows.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.ScreenShakeEntity;
 
-@OnlyIn(Dist.CLIENT)
-public enum ClientEvent {
+public class ClientEvents {
 
-    INSTANCE;
-    
     @SubscribeEvent
     public void onCameraSetup(ViewportEvent.ComputeCameraAngles event) {
         Player player = Minecraft.getInstance().player;

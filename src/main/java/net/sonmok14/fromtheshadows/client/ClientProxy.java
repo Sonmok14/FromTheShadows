@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.sonmok14.fromtheshadows.server.Fromtheshadows;
@@ -27,6 +28,7 @@ public class ClientProxy extends CommonProxy {
 
         public void clientInit() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        MinecraftForge.EVENT_BUS.register(new ClientEvents());
         EntityRenderers.register(EntityRegistry.THROWING_DAGGER.get(), ThrowingDaggerRenderer::new);
         EntityRenderers.register(EntityRegistry.CORAL_THORN.get(), CoralThornRenderer::new);
         EntityRenderers.register(EntityRegistry.BULLDROGIOTH.get(), BulldrogiothRenderer::new);

@@ -62,5 +62,7 @@ public class PlagueDoctorMaskItem extends ArmorItem implements GeoItem {
     public boolean isRepairable(ItemStack stack) {
         return super.isRepairable(stack);
     }
+
+
 }
 

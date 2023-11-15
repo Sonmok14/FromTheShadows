@@ -256,7 +256,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 }).setSoundKeyframeHandler(event -> {
                         if (event.getKeyframeData().getSound().matches("walksoundkey"))
                             if (this.level().isClientSide && !isInWater())
-                                this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(), SoundSource.HOSTILE, 0.2F, 0.9F + this.getRandom().nextFloat() * 0.1F, true);
+                                this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(), SoundSource.HOSTILE, 0.2F, 0.9F + this.getRandom().nextFloat() * 0.1F, false);
                     }));
 
         controllerRegistrar.add(
@@ -305,10 +305,10 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 }).setSoundKeyframeHandler(event -> {
                     if (event.getKeyframeData().getSound().matches("attackkey"))
                         if (this.level().isClientSide)
-                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_ATTACK.get(), SoundSource.HOSTILE, 0.5F, getVoicePitch() + this.getRandom().nextFloat() * 0.1F, true);
+                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_ATTACK.get(), SoundSource.HOSTILE, 0.5F, getVoicePitch() + this.getRandom().nextFloat() * 0.1F, false);
                             if (event.getKeyframeData().getSound().matches("combokey"))
                                 if (this.level().isClientSide)
-                                    this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_ATTACK.get(), SoundSource.HOSTILE, 0.5F, 0.3f + this.getRandom().nextFloat() * 0.1F, true);
+                                    this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_ATTACK.get(), SoundSource.HOSTILE, 0.5F, 0.3f + this.getRandom().nextFloat() * 0.1F, false);
                 }
                         ));
 
@@ -322,7 +322,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 }).setSoundKeyframeHandler(event -> {
                     if (event.getKeyframeData().getSound().matches("growlkey"))
                         if (this.level().isClientSide)
-                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_IDLE.get(), SoundSource.HOSTILE, 0.5F, getVoicePitch() + this.getRandom().nextFloat() * 0.1F, true);
+                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_IDLE.get(), SoundSource.HOSTILE, 0.5F, getVoicePitch() + this.getRandom().nextFloat() * 0.1F, false);
                 }));
         controllerRegistrar.add(
                 new AnimationController<>(this, "hurt", 20, event -> {
@@ -335,7 +335,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 }).setSoundKeyframeHandler(event -> {
                     if (event.getKeyframeData().getSound().matches("hurtkey"))
                         if (this.level().isClientSide)
-                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_HURT.get(), SoundSource.HOSTILE, 0.5F, getVoicePitch() + this.getRandom().nextFloat() * 0.1F, true);
+                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_HURT.get(), SoundSource.HOSTILE, 0.5F, getVoicePitch() + this.getRandom().nextFloat() * 0.1F, false);
                 }));
     }
 

@@ -13,7 +13,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 1.0,
-                "max": 2.0
+                "max": 6.0
               },
               "add": false
             },
@@ -36,28 +36,56 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 1,
-          "name": "fromtheshadows:crystallized_blood"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 2,
           "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": -1.0,
+                "max": 1.0
+              }
+            },
             {
               "function": "minecraft:looting_enchant",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
+                "min": 0.0,
+                "max": 1.0
               }
             }
           ],
-          "name": "minecraft:leather"
-        },
-        {
-          "type": "minecraft:empty"
+          "name": "fromtheshadows:crystallized_blood"
         }
       ]
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 5.0,
+                "min": 1
+              },
+              "function": "minecraft:set_count"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 0.0
+              },
+              "function": "minecraft:looting_enchant"
+            }
+          ],
+          "name": "minecraft:leather"
+        }
+      ],
+      "rolls": 1.0
     }
   ]
 }

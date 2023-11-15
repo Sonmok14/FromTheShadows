@@ -8,6 +8,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -57,10 +58,17 @@ public class ServerEvents {
                         if (compatibleEffects.size() > 0) {
                             MobEffectInstance selectedEffect = attacker.getEffect(compatibleEffects.get(attacker.level().random.nextInt(compatibleEffects.size())));
                             if (selectedEffect != null && !net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.living.MobEffectEvent.Remove(attacker, selectedEffect))) {
-                                boolean flag = attacker.removeEffect(selectedEffect.getEffect());
-                                if (flag) {
+                                if(attacker instanceof Player)
+                                {
                                     final ItemStack itemStack = attacker.getItemBySlot(EquipmentSlot.HEAD);
-                                    itemStack.hurtAndBreak(1, attacker, p -> p.broadcastBreakEvent(EquipmentSlot.HEAD));
+                                    if (!((Player) attacker).getCooldowns().isOnCooldown(itemStack.getItem()))
+                                    {
+                                        boolean flag = attacker.removeEffect(selectedEffect.getEffect());
+                                        if (flag) {
+                                                ((Player) attacker).getCooldowns().addCooldown(itemStack.getItem(), 400);
+                                            itemStack.hurtAndBreak(1, attacker, p -> p.broadcastBreakEvent(EquipmentSlot.HEAD));
+                                        }
+                                    }
                                 }
                             }
                         }
