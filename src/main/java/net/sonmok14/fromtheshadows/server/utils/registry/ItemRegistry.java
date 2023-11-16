@@ -7,11 +7,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.sonmok14.fromtheshadows.server.Fromtheshadows;
-import net.sonmok14.fromtheshadows.server.items.CrustArmorItem;
-import net.sonmok14.fromtheshadows.server.items.DiaboliumArmorItem;
+import net.sonmok14.fromtheshadows.server.items.*;
 import net.sonmok14.fromtheshadows.server.items.ArmorMaterials;
-import net.sonmok14.fromtheshadows.server.items.PlagueDoctorMaskItem;
-import net.sonmok14.fromtheshadows.server.items.ThirstforBloodItem;
 
 public class ItemRegistry {
 
@@ -39,6 +36,8 @@ public class ItemRegistry {
             () -> new CrustArmorItem(CRUST_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> DIABOLIUM_INGOT = ITEMS.register("diabolium_ingot",
             () -> new Item(new Item.Properties().fireResistant()));
+    public static final RegistryObject<Item> DEVIL_SPLITTER = ITEMS.register("devil_splitter", () -> new DevilSplitterItem(new Item.Properties().rarity(Rarity.UNCOMMON).fireResistant()));
+
     public static final RegistryObject<Item> THIRST_FOR_BLOOD = ITEMS.register("thirst_for_blood", () -> new ThirstforBloodItem(new Item.Properties().rarity(Rarity.UNCOMMON).fireResistant()));
     public static final RegistryObject<Item> DIABOLIUM_NUGGET = ITEMS.register("diabolium_nugget",
             () -> new Item(new Item.Properties().fireResistant()));

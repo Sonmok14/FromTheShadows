@@ -28,6 +28,7 @@ public static final RegistryObject<CreativeModeTab> ITEM = TABS.register("items"
 
     entries.accept(ItemRegistry.PLAGUE_DOCTOR_MASK.get());
 
+    entries.accept(ItemRegistry.DEVIL_SPLITTER.get());
     entries.accept(ItemRegistry.THIRST_FOR_BLOOD.get());
 
     entries.accept(ItemRegistry.DIABOLIUM_NUGGET.get());

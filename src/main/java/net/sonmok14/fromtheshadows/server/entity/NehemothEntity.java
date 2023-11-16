@@ -404,9 +404,6 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         {
             this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.NEHEMOTH_IDLE.get(),SoundSource.HOSTILE, 1F, 0.5F + this.getRandom().nextFloat() * 0.1F);
         }
-        if (!this.level().isClientSide ) {
-            this.setClimbing(this.horizontalCollision && this.getTarget() != null && this.getTarget().isAlive());
-        }
         if (this.attackCooldown > 0) {
             --this.attackCooldown;
         }
@@ -504,7 +501,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         int arcLen = Mth.ceil(distance * spread);
         if (this.isAlive()) {
             for(LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(3D))) {
-                if(livingentity != this) {
+                if(!(livingentity instanceof NehemothEntity)) {
                     livingentity.hurt(this.damageSources().mobAttack(this), FTSConfig.SERVER.nehemoth_ranged_damage.get().floatValue());
                     this.strongKnockback(livingentity);
                 }
@@ -650,8 +647,8 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
             for(LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(8D, 1D, 8D))) {
                 if(!(livingentity instanceof NehemothEntity)) {
                     livingentity.hurt(this.damageSources().mobAttack(this), FTSConfig.SERVER.nehemoth_ranged_damage.get().floatValue());
-                    livingentity.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 140, 0, false, false));
-                    livingentity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 260, 0, false, false));
+                    livingentity.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 70, 0, false, false));
+                    livingentity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 130, 0, false, false));
                     this.strongKnockback(livingentity);
                 }
             }
@@ -1034,7 +1031,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
                     getLookControl().setLookAt(attackTarget,30F, 90.0F);
                 }
 
-                if(attacktick > 8)
+                if(attacktick > 8 && attacktick < 52)
                 {
                     roar();
                 }

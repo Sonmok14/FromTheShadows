@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " #S",
+    " S ",
+    "/  "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:bone"
+    },
+    "S": {
+      "item": "fromtheshadows:diabolium_ingot"
+    },
+    "/": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "fromtheshadows:devil_splitter",
+    "count": 1
+  }
+}

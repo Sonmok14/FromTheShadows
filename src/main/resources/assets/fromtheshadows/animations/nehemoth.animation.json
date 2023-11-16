@@ -4089,11 +4089,6 @@
 						"vector": [0, "-1+math.sin(-55+query.anim_time*2000)*0.2", 0]
 					}
 				}
-			},
-			"sound_effects": {
-				"0.0": {
-					"effect": "growlkey"
-				}
 			}
 		},
 		"animation.nehemoth.climb": {

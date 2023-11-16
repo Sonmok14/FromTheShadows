@@ -24,6 +24,7 @@
   "item.fromtheshadows.diabolium_chest": "Diabolium Chestplate",
   "item.fromtheshadows.diabolium_leggings": "Diabolium Leggings",
   "item.fromtheshadows.thirst_for_blood": "Thirst for Blood",
+  "item.fromtheshadows.devil_splitter": "Devil Splitter",
   "item.fromtheshadows.suspicious_cloth": "Suspicious Cloth",
 
   "item.minecraft.potion.effect.frenzy": "Potion of the Frenzy",
@@ -73,6 +74,7 @@
 
   "fromtheshadows.thirst_for_blood.text": "When you kill the enemy with melee attack, the laser is loaded one by one.",
   "fromtheshadows.thirst_for_blood.text2": "Use the right-click to fire a laser that incinerates the enemy",
+  "fromtheshadows.devil_splitter.text": "It's effective when dealing with demons.",
   "fromtheshadows.diablium_armor.text": "If you wear all the armor and damage the enemy,",
   "fromtheshadows.diablium_armor.text2": "you will recover as much health as part of the damage."
 }

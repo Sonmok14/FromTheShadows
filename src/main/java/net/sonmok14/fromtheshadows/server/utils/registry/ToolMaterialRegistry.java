@@ -18,4 +18,10 @@ public class ToolMaterialRegistry {
                     BlockTags.create(new ResourceLocation(Fromtheshadows.MODID, "needs_thirstforblood")),
                     () -> Ingredient.of(Items.IRON_INGOT)),
             new ResourceLocation("thirstforblood"), List.of(Tiers.IRON), List.of(Tiers.DIAMOND));
+
+    public static final Tier DEVIL_SPLITTER = TierSortingRegistry.registerTier(
+            new ForgeTier(2, 350, 5.0F, 7.0F, 20,
+                    BlockTags.create(new ResourceLocation(Fromtheshadows.MODID, "needs_devilsplitter")),
+                    () -> Ingredient.of(Items.IRON_INGOT)),
+            new ResourceLocation("devilsplitter"), List.of(Tiers.IRON), List.of(Tiers.DIAMOND));
 }
