@@ -78,8 +78,10 @@ public class DevilSplitterItem extends SwordItem implements GeoItem {
             if (!target.isAlive()) {
                 p_43278_.hurtAndBreak(-5, attacker, p -> p.broadcastBreakEvent(attacker.getUsedItemHand()));
             }
-            target.hurt(attacker.damageSources().mobAttack(attacker), (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE)* 1.25f);
-            attacker.heal((float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) / 10);
+            if (attacker.isSprinting()) {
+                target.hurt(attacker.damageSources().mobAttack(attacker), (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.25f);
+                attacker.heal((float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) / 10);
+            }
         }
         return super.hurtEnemy(p_43278_, target, attacker);
     }
