@@ -1,15 +1,15 @@
 package net.sonmok14.fromtheshadows.client.models;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.sonmok14.fromtheshadows.server.Fromtheshadows;
 import net.sonmok14.fromtheshadows.server.entity.BulldrogiothEntity;
-import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.model.data.EntityModelData;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.processor.IBone;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
-public class BulldrogiothModel extends GeoModel<BulldrogiothEntity> {
+public class BulldrogiothModel extends AnimatedGeoModel<BulldrogiothEntity> {
 
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation(Fromtheshadows.MODID, "textures/entity/bulldrogioth.png");
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation(Fromtheshadows.MODID, "textures/entity/bulldrogioth_swamp.png");
@@ -39,12 +39,13 @@ public class BulldrogiothModel extends GeoModel<BulldrogiothEntity> {
     }
 
     @Override
-    public void setCustomAnimations(BulldrogiothEntity animatable, long instanceId, AnimationState<BulldrogiothEntity> animationState) {
-        super.setCustomAnimations(animatable, instanceId, animationState);
-        CoreGeoBone root = this.getAnimationProcessor().getBone("root");
-        CoreGeoBone head = this.getAnimationProcessor().getBone("head");
-        EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
-        head.setRotX(entityData.headPitch() * 0.01F);
-        head.setRotY(entityData.netHeadYaw() * 0.01F);
+    public void setCustomAnimations(BulldrogiothEntity animatable, int instanceId, AnimationEvent animationEvent) {
+        super.setCustomAnimations(animatable, instanceId, animationEvent);
+
+        IBone root = this.getAnimationProcessor().getBone("root");
+        IBone head = this.getAnimationProcessor().getBone("head");
+        EntityModelData extraData = (EntityModelData) animationEvent.getExtraDataOfType(EntityModelData.class).get(0);
+        head.setRotationX(extraData.headPitch * Mth.DEG_TO_RAD);
+        head.setRotationY(extraData.netHeadYaw * Mth.DEG_TO_RAD);
     }
 }

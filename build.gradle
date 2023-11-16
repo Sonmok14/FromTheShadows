@@ -2,10 +2,9 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle' version '[6.0.13, 6.2)'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.spongepowered.mixin' version '0.7.+'
 }
-
 apply plugin: 'org.spongepowered.mixin'
 
 version = mod_version
@@ -89,13 +88,19 @@ repositories {
 }
 
 dependencies {
+    compileOnly fg.deobf("curse.maven:just-enough-resources-jer-240630:4862430")
+    runtimeOnly fg.deobf("curse.maven:just-enough-resources-jer-240630:4862430")
+    compileOnly fg.deobf("curse.maven:immediatelyfast-686911:4776112")
+    runtimeOnly fg.deobf("curse.maven:immediatelyfast-686911:4776112")
+
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
-    implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:4689044")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${geckolib_version}")
-    minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
+
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.40')
+
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 }
 
 tasks.named('processResources', ProcessResources).configure {

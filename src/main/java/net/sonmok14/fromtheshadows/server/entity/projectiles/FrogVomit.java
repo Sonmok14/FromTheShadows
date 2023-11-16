@@ -3,6 +3,7 @@ package net.sonmok14.fromtheshadows.server.entity.projectiles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
@@ -19,13 +20,13 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.sonmok14.fromtheshadows.server.FTSConfig;
 import net.sonmok14.fromtheshadows.server.utils.registry.EntityRegistry;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class FrogVomit extends Projectile implements GeoEntity {
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+public class FrogVomit extends Projectile implements IAnimatable {
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public FrogVomit(EntityType<? extends FrogVomit> p_37224_, Level p_37225_) {
         super(p_37224_, p_37225_);
     }
@@ -39,7 +40,7 @@ public class FrogVomit extends Projectile implements GeoEntity {
     public void tick() {
         super.tick();
         Vec3 vec3 = this.getDeltaMovement();
-        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        HitResult hitresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
         if (hitresult.getType() != HitResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult))
             this.onHit(hitresult);
         double d0 = this.getX() + vec3.x;
@@ -48,7 +49,7 @@ public class FrogVomit extends Projectile implements GeoEntity {
         this.updateRotation();
         float f = 0.99F;
         float f1 = 0.06F;
-        if (this.level().getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
+        if (this.level.getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
             this.discard();
         } else if (this.isInWaterOrBubble()) {
             this.discard();
@@ -63,7 +64,7 @@ public class FrogVomit extends Projectile implements GeoEntity {
     }
 
     private void spawnLingeringCloud() {
-            AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level(), this.getX(), this.getY(), this.getZ());
+            AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level, this.getX(), this.getY(), this.getZ());
             areaeffectcloud.setRadius(2.5F);
             areaeffectcloud.setRadiusOnUse(-0.5F);
             areaeffectcloud.setWaitTime(10);
@@ -71,7 +72,7 @@ public class FrogVomit extends Projectile implements GeoEntity {
             areaeffectcloud.setRadiusPerTick(-areaeffectcloud.getRadius() / (float)areaeffectcloud.getDuration());
                 areaeffectcloud.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 90));
         areaeffectcloud.addEffect(new MobEffectInstance(MobEffects.POISON, 90));
-            this.level().addFreshEntity(areaeffectcloud);
+            this.level.addFreshEntity(areaeffectcloud);
         }
 
     protected void onHitEntity(EntityHitResult p_37241_) {
@@ -79,7 +80,7 @@ public class FrogVomit extends Projectile implements GeoEntity {
         Entity entity = this.getOwner();
 
         if (entity instanceof LivingEntity livingentity) {
-            boolean flag = p_37241_.getEntity().hurt(this.damageSources().mobProjectile(this, livingentity), FTSConfig.SERVER.froglin_vomit_damage.get().floatValue());
+            boolean flag = p_37241_.getEntity().hurt(DamageSource.indirectMobAttack(this, livingentity), FTSConfig.SERVER.froglin_vomit_damage.get().floatValue());
             if (flag) {
                 livingentity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 90), this);
             }
@@ -89,7 +90,7 @@ public class FrogVomit extends Projectile implements GeoEntity {
 
     protected void onHitBlock(BlockHitResult p_37239_) {
         super.onHitBlock(p_37239_);
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             spawnLingeringCloud();
             this.discard();
         }
@@ -107,20 +108,19 @@ public class FrogVomit extends Projectile implements GeoEntity {
 
         for(int i = 0; i < 7; ++i) {
             double d3 = 0.4D + 0.1D * (double)i;
-            this.level().addParticle(ParticleTypes.SPIT, this.getX(), this.getY(), this.getZ(), d0 * d3, d1, d2 * d3);
+            this.level.addParticle(ParticleTypes.SPIT, this.getX(), this.getY(), this.getZ(), d0 * d3, d1, d2 * d3);
         }
 
         this.setDeltaMovement(d0, d1, d2);
     }
-
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-
+    public void registerControllers(AnimationData data) {
+        
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 }
 

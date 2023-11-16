@@ -39,19 +39,22 @@ import net.sonmok14.fromtheshadows.server.utils.registry.EnchantmentRegistry;
 import net.sonmok14.fromtheshadows.server.utils.registry.ItemRegistry;
 import net.sonmok14.fromtheshadows.server.utils.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
+
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public class ClericEntity extends AbstractIllager implements GeoEntity {
+public class ClericEntity extends AbstractIllager implements IAnimatable {
     static final Predicate<Difficulty> DOOR_BREAKING_PREDICATE = (p_34082_) -> {
         return p_34082_ == Difficulty.NORMAL || p_34082_ == Difficulty.HARD;
     };
@@ -61,7 +64,7 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
     public float mumbleProgress;
     public static final byte MELEE_ATTACK = 1;
     public static final byte THROWING_ATTACK = 2;
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public ClericEntity(EntityType<ClericEntity> p_32105_, Level p_32106_) {
         super(p_32105_, p_32106_);
@@ -82,60 +85,69 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
 
     protected void customServerAiStep() {
         if (!this.isNoAi() && GoalUtils.hasGroundPathNavigation(this)) {
-            boolean flag = ((ServerLevel)this.level()).isRaided(this.blockPosition());
+            boolean flag = ((ServerLevel)this.level).isRaided(this.blockPosition());
             ((GroundPathNavigation)this.getNavigation()).setCanOpenDoors(flag);
         }
 
         super.customServerAiStep();
     }
 
-
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(
-                new AnimationController<>(this, "controller", 7, event -> {
-                    event.getController().setAnimationSpeed(0.5D);
-                    if (attackID == 2 && attacktick <= 13) {
-                        event.getController().setAnimationSpeed(1D);
-                        return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.cultist.throw_dagger_ready"));
-                    }
-                    if (attackID == 2 && attacktick > 13) {
-                        event.getController().setAnimationSpeed(1D);
-                        return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.cultist.throw_dagger"));
-                    }
-                    if (attackID == 1) {
-                        event.getController().setAnimationSpeed(1D);
-                        return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.cultist.melee_attack"));
-                    }
-                    if(this.attackID == 0)
-                    if (this.walkAnimation.speed() > 0.35F && isAggressive()) {
-                        event.getController().setAnimationSpeed(1D);
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.cultist.run"));
-                    }
-                    if (event.isMoving()) {
-                        event.getController().setAnimationSpeed(1D);
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.cultist.walk"));
+    public void registerControllers(AnimationData data) {
+        AnimationController<ClericEntity> controller = new AnimationController<>(this, "controller", 7,
+                this::controller);
+        AnimationController<ClericEntity> mumble = new AnimationController<>(this, "mumble", 15,
+                this::mumble);
+        data.addAnimationController(mumble);
+        data.addAnimationController(controller);
+    }
+    private <E extends IAnimatable> PlayState controller(AnimationEvent<E> event) {
+        if (attackID == 2 && attacktick <= 13){
+            event.getController().setAnimationSpeed(2);
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.throw_dagger_ready",ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        if (attackID == 2 && attacktick > 13) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.throw_dagger",ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        if (attackID == 1) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.melee_attack",ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        if(this.attackID == 0)
+            if (event.isMoving() && isAggressive()) {
+                event.getController().setAnimationSpeed(1);
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.run",ILoopType.EDefaultLoopTypes.LOOP));
+                return PlayState.CONTINUE;
+            }
+        if (event.isMoving()) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.walk",ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        event.getController()
+                .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.idle",ILoopType.EDefaultLoopTypes.LOOP));
 
-                    }
-                    return event.setAndContinue(RawAnimation.begin().thenLoop("animation.cultist.idle"));
-                }));
-        controllerRegistrar.add(
-                new AnimationController<>(this, "mumble", 15, event -> {
-                    event.getController().setAnimationSpeed(0.5D);
-                    if (mumbleProgress <= 35) {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.cultist.mumble"));
-                    }
-                    return PlayState.STOP;
-                }).setSoundKeyframeHandler(event -> {
-            if (event.getKeyframeData().getSound().matches("mumblekey"))
-                if (this.level().isClientSide)
-                    this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.CULTIST_IDLE.get(), SoundSource.HOSTILE, 1F, 0.5F + this.getRandom().nextFloat() * 0.1F, true);
-        }));
+        return PlayState.STOP;
+    }
+
+    private <E extends IAnimatable> PlayState mumble(AnimationEvent<E> event) {
+        if (mumbleProgress <= 35) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.mumble",ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        return PlayState.STOP;
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 
     public boolean canBeAffected(MobEffectInstance p_31495_) {
@@ -149,7 +161,7 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
         super.tick();
 
         this.xpReward = 10;
-        if (!level().isClientSide) {
+        if (!level.isClientSide) {
             this.removeEffect(EffectRegistry.PLAGUE.get());
         }
 
@@ -178,7 +190,7 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
     public void setAttackID(int id) {
         this.attackID = id;
         this.attacktick = 0;
-        this.level().broadcastEntityEvent(this, (byte) -id);
+        this.level.broadcastEntityEvent(this, (byte) -id);
     }
 
     public void travel(Vec3 p_32394_) {
@@ -222,7 +234,7 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
     }
     @Override
     public boolean doHurtTarget(Entity p_85031_1_) {
-        if (!this.level().isClientSide && this.attackID == 0) {
+        if (!this.level.isClientSide && this.attackID == 0) {
                 this.attackID = MELEE_ATTACK;
         }
         return true;
@@ -289,7 +301,7 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
 
 
 
-                ThrowingDaggerEntity throwingDaggerEntity = new ThrowingDaggerEntity(this.level(), this, null);
+                ThrowingDaggerEntity throwingDaggerEntity = new ThrowingDaggerEntity(this.level, this, null);
 
                 double f0 = getTarget().getX() - this.getX();
                 double f1 = getTarget().getY(0.3333333333333333D) - throwingDaggerEntity.getY();
@@ -298,8 +310,8 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
                 double x = d1 * Math.cos(angle) + d3 * Math.sin(angle);
                 double z = -d1 * Math.sin(angle) + d3 * Math.cos(angle);
 
-                throwingDaggerEntity.shoot(x, f1 + f3 * (double) 0.1F, z, 2, (float)(16 - this.level().getDifficulty().getId() * 4));
-                this.level().addFreshEntity(throwingDaggerEntity);
+                throwingDaggerEntity.shoot(x, f1 + f3 * (double) 0.1F, z, 2, (float)(16 - this.level.getDifficulty().getId() * 4));
+                this.level.addFreshEntity(throwingDaggerEntity);
             }
         }
     }
@@ -379,7 +391,7 @@ public class ClericEntity extends AbstractIllager implements GeoEntity {
                 push(f1 * 1, 0, f2 * 1);
             }
             if (attacktick == 20 && distanceTo(attackTarget) <= 3.5F) {
-                attackTarget.hurt(damageSources().mobAttack(clericEntity), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+                attackTarget.hurt(DamageSource.mobAttack(clericEntity), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
             }
             getNavigation().recomputePath();
         }

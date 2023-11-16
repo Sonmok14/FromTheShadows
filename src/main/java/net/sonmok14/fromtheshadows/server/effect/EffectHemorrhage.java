@@ -24,7 +24,7 @@ public class EffectHemorrhage extends MobEffect {
                 double d0 = p_19467_.getRandom().nextGaussian() * 3D;
                 double d1 = p_19467_.getRandom().nextGaussian() * 3D;
                 double d2 = p_19467_.getRandom().nextGaussian() * 3D;
-                p_19467_.level().addParticle(ParticleRegistry.BLOOD.get(), vec3.x, vec3.y, vec3.z, d0, d1, d2);
+                p_19467_.level.addParticle(ParticleRegistry.BLOOD.get(), vec3.x, vec3.y, vec3.z, d0, d1, d2);
             }
 
         }

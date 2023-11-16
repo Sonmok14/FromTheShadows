@@ -1,15 +1,15 @@
 package net.sonmok14.fromtheshadows.client.models;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.sonmok14.fromtheshadows.server.Fromtheshadows;
 import net.sonmok14.fromtheshadows.server.entity.ClericEntity;
-import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.model.data.EntityModelData;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.processor.IBone;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
-public class ClericModel extends GeoModel<ClericEntity> {
+public class ClericModel extends AnimatedGeoModel<ClericEntity> {
 
 
     @Override
@@ -26,14 +26,18 @@ public class ClericModel extends GeoModel<ClericEntity> {
     public ResourceLocation getAnimationResource(ClericEntity animatable) {
         return new ResourceLocation(Fromtheshadows.MODID, "animations/cultist.animation.json");
     }
-
     @Override
-    public void setCustomAnimations(ClericEntity animatable, long instanceId, AnimationState<ClericEntity> animationState) {
-        super.setCustomAnimations(animatable, instanceId, animationState);
-        CoreGeoBone head = this.getAnimationProcessor().getBone("head");
-        CoreGeoBone arms = this.getAnimationProcessor().getBone("arms");
-        CoreGeoBone right_arm = this.getAnimationProcessor().getBone("right_arm");
-        CoreGeoBone left_arm = this.getAnimationProcessor().getBone("left_arm");
+    public void setCustomAnimations(ClericEntity animatable, int instanceId, AnimationEvent animationEvent) {
+        super.setCustomAnimations(animatable, instanceId, animationEvent);
+        IBone head = this.getAnimationProcessor().getBone("head");
+        EntityModelData extraData = (EntityModelData) animationEvent.getExtraDataOfType(EntityModelData.class).get(0);
+        head.setRotationX(extraData.headPitch * Mth.DEG_TO_RAD);
+        head.setRotationY(extraData.netHeadYaw * Mth.DEG_TO_RAD);
+
+
+        IBone arms = this.getAnimationProcessor().getBone("arms");
+        IBone right_arm = this.getAnimationProcessor().getBone("right_arm");
+        IBone left_arm = this.getAnimationProcessor().getBone("left_arm");
         if(animatable.isAggressive() || animatable.attackID != 0)
         {
             arms.setHidden(true);
@@ -45,8 +49,5 @@ public class ClericModel extends GeoModel<ClericEntity> {
             right_arm.setHidden(true);
             left_arm.setHidden(true);
         }
-        EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
-        head.setRotX(entityData.headPitch() * 0.01F);
-        head.setRotY(entityData.netHeadYaw() * 0.01F);
     }
 }

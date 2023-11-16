@@ -3,9 +3,9 @@ package net.sonmok14.fromtheshadows.client.models;
 import net.minecraft.resources.ResourceLocation;
 import net.sonmok14.fromtheshadows.server.Fromtheshadows;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.CoralThornEntity;
-import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class CoralThornModel extends GeoModel<CoralThornEntity> {
+public class CoralThornModel extends AnimatedGeoModel<CoralThornEntity> {
     @Override
     public ResourceLocation getModelResource(CoralThornEntity animatable) {
         return new ResourceLocation(Fromtheshadows.MODID, "geo/coral_thorn.geo.json");

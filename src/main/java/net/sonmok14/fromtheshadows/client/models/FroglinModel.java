@@ -1,15 +1,15 @@
 package net.sonmok14.fromtheshadows.client.models;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.sonmok14.fromtheshadows.server.Fromtheshadows;
 import net.sonmok14.fromtheshadows.server.entity.FroglinEntity;
-import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.model.data.EntityModelData;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.processor.IBone;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
-public class FroglinModel extends GeoModel<FroglinEntity> {
+public class FroglinModel extends AnimatedGeoModel<FroglinEntity> {
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation(Fromtheshadows.MODID, "textures/entity/frog.png");
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation(Fromtheshadows.MODID, "textures/entity/frog_red.png");
     private static final ResourceLocation TEXTURE_2 = new ResourceLocation(Fromtheshadows.MODID, "textures/entity/frog_gray.png");
@@ -29,15 +29,14 @@ public class FroglinModel extends GeoModel<FroglinEntity> {
     }
 
     @Override
-    public void setCustomAnimations(FroglinEntity animatable, long instanceId, AnimationState<FroglinEntity> animationState) {
-        super.setCustomAnimations(animatable, instanceId, animationState);
-        CoreGeoBone head = this.getAnimationProcessor().getBone("head");
-        EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
-        head.setRotX(entityData.headPitch() * 0.01F);
-        head.setRotY(entityData.netHeadYaw() * 0.01F);
-        head.setRotX(0.5F);
+    public void setCustomAnimations(FroglinEntity animatable, int instanceId, AnimationEvent animationEvent) {
+        super.setCustomAnimations(animatable, instanceId, animationEvent);
+        IBone head = this.getAnimationProcessor().getBone("head");
+        EntityModelData extraData = (EntityModelData) animationEvent.getExtraDataOfType(EntityModelData.class).get(0);
+        head.setRotationX(extraData.headPitch * Mth.DEG_TO_RAD);
+        head.setRotationX(0.5F);
         if(animatable.attackID == 2) {
-            head.setRotX(1F);
+            head.setRotationX(1F);
         }
     }
 }

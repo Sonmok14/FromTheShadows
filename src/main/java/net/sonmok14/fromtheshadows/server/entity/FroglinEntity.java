@@ -44,19 +44,23 @@ import net.minecraftforge.common.Tags;
 import net.sonmok14.fromtheshadows.server.FTSConfig;
 import net.sonmok14.fromtheshadows.server.entity.ai.*;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.FrogVomit;
+import net.sonmok14.fromtheshadows.server.utils.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.EnumSet;
 import java.util.List;
 
-public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAquatic {
+public class FroglinEntity extends Monster implements Enemy, IAnimatable, ISemiAquatic {
     boolean searchingForLand;
     private boolean isLandNavigator;
     public float SwimProgress = 0;
@@ -73,7 +77,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
     public static final byte JUMP_ATTACK = 3;
     public static final byte STRIKE_ATTACK = 4;
     public static final byte SWALLOW_ATTACK = 5;
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public FroglinEntity(EntityType<FroglinEntity> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
@@ -99,102 +103,145 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
                 .add(Attributes.ATTACK_DAMAGE, FTSConfig.SERVER.froglin_melee_damage.get())
                 .add(Attributes.ARMOR, 2.0D);
     }
+
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(
-                new AnimationController<>(this, "controller", 4, event -> {
-            event.getController().setAnimationSpeed(0.5D);
-                    if (event.isMoving() && this.walkAnimation.speed() > 0.35F && attackID == 0) {
-                        event.getController().setAnimationSpeed(1D);
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.walk"));
-                    }
-                    if (event.isMoving() && attackID == 0) {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.walkslow"));
-                    }
-                    if (!event.isMoving() && attackID == 0) {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.idle"));
-                    }
-                    if (attackID == 3 && attacktick > 9) {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.dash"));
-                    }
-
-                    if (attackID == 5 && attacktick > 9) {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.swallow"));
-                    }
-
-                    if (attackID == 5 && attacktick < 9) {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.crouched"));
-                    }
-                    if (attackID == 3 && attacktick < 9) {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.crouched"));
-                    }
-                    if (attackID == 2 && attacktick > 10) {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.vomitattack"));
-                    }
-                    if (attackID == 2 && attacktick < 10) {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.vomitready"));
-                    }
-                    if (attackID == 4) {
-                        event.getController().setAnimationSpeed(0.4D);
-                        return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.frog.strike"));
-                    }
-                    if (attackID == 1) {
-                        event.getController().setAnimationSpeed(0.4D);
-                        if(isRight())
-                            return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.frog.mtright"));
-                        else
-                            return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.frog.mtleft"));
-                        }
-                    return PlayState.CONTINUE;
-                    }));
-
-        controllerRegistrar.add(
-                new AnimationController<>(this, "eye", 20, event -> {
-                    event.getController().setAnimationSpeed(0.2D);
-                    if (this.blinkProgress <= 10)
-                     {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.eye"));
-                    }
-                    return PlayState.STOP;
-                }).setSoundKeyframeHandler(event -> {
-                    if (event.getKeyframeData().getSound().matches("blinkSoundkey"))
-                        if (this.level().isClientSide)
-                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.SALMON_FLOP, SoundSource.HOSTILE, 1F, 0.5F, true);
-                }));
-
-        controllerRegistrar.add(
-                new AnimationController<>(this, "full", 20, event -> {
-                    event.getController().setAnimationSpeed(0.5D);
-                    if (this.isFull())
-                    {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.full"));
-                    }
-                    return PlayState.STOP;
-                }));
-
-        controllerRegistrar.add(
-                new AnimationController<>(this, "croaking", 20, event -> {
-                    event.getController().setAnimationSpeed(0.5D);
-                    if (this.croakingProgress <= 10)
-                    {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.croaking"));
-                    }
-                    return PlayState.STOP;
-                }).setSoundKeyframeHandler(event -> {
-                    if (event.getKeyframeData().getSound().matches("croakingSoundkey"))
-                        if (this.level().isClientSide)
-                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.FROG_AMBIENT, SoundSource.HOSTILE, 1F, 0.5F, true);
-                }));
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
+    public void registerControllers(AnimationData data) {
+        AnimationController<FroglinEntity> controller = new AnimationController<>(this, "controller", 4,
+                this::controller);
+        AnimationController<FroglinEntity> eye = new AnimationController<>(this, "eye", 20,
+                this::eye);
+        AnimationController<FroglinEntity> full = new AnimationController<>(this, "full", 20,
+                this::full);
+        AnimationController<FroglinEntity> croaking = new AnimationController<>(this, "croaking", 20,
+                this::croaking);
+        data.addAnimationController(full);
+        data.addAnimationController(eye);
+        data.addAnimationController(controller);
+        data.addAnimationController(croaking);
+        eye.registerSoundListener(this::eyesoundListener);
+        croaking.registerSoundListener(this::croakingsoundListener);
     }
 
+    private <ENTITY extends IAnimatable> void eyesoundListener(SoundKeyframeEvent<ENTITY> event) {
+        if (event.sound.matches("blinkSoundkey")) {
+            if (this.level.isClientSide()) {
+                this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.SALMON_FLOP, SoundSource.HOSTILE, 1F, 0.5F, true);
+            }
+        }
+    }
+
+    private <ENTITY extends IAnimatable> void croakingsoundListener(SoundKeyframeEvent<ENTITY> event) {
+        if (event.sound.matches("croakingSoundkey")) {
+            if (this.level.isClientSide()) {
+                this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.FROG_AMBIENT, SoundSource.HOSTILE, 1F, 0.5F, true);
+            }
+        }
+    }
+
+    private <E extends IAnimatable> PlayState controller(AnimationEvent<E> event) {
+        if (event.isMoving() && isAggressive() && animationSpeed > 0.35F && attackID == 0) {
+            event.getController().setAnimationSpeed(2D);
+            event.getController()
+             .setAnimation(new AnimationBuilder().addAnimation("animation.frog.walk", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        if (event.isMoving() && attackID == 0) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.frog.walkslow", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        if (!event.isMoving() && attackID == 0) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.frog.idle", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        if (attackID == 3 && attacktick > 9) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.frog.dash", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+
+        if (attackID == 5 && attacktick > 9) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.frog.swallow", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+
+        if (attackID == 5 && attacktick < 9) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.frog.crouched", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        if (attackID == 3 && attacktick < 9) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.frog.crouched", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        if (attackID == 2 && attacktick > 10) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.frog.vomitattack", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        if (attackID == 2 && attacktick < 10) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.frog.vomitready", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        if (attackID == 4) {
+            event.getController().setAnimationSpeed(0.9D);
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.frog.strike", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        if (attackID == 1) {
+            event.getController().setAnimationSpeed(0.9D);
+            if(isRight())
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.frog.mtlight", ILoopType.EDefaultLoopTypes.LOOP));
+            else
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.frog.mtleft", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        return PlayState.CONTINUE;
+    }
+
+    private <E extends IAnimatable> PlayState eye(AnimationEvent<E> event) {
+        if (this.blinkProgress <= 10)
+        {
+            event.getController().setAnimationSpeed(0.45D);
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.frog.eye", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        return PlayState.STOP;
+    }
+    private <E extends IAnimatable> PlayState full(AnimationEvent<E> event) {
+        if (this.isFull())
+        {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.frog.full", ILoopType.EDefaultLoopTypes.LOOP));
+        }
+        return PlayState.CONTINUE;
+    }
+
+    private <E extends IAnimatable> PlayState croaking(AnimationEvent<E> event) {
+        if (this.croakingProgress <= 10)
+        {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.frog.croaking", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        return PlayState.STOP;
+    }
     public void setAttackID(int id) {
         this.attackID = id;
         this.attacktick = 0;
-        this.level().broadcastEntityEvent(this, (byte) -id);
+        this.level.broadcastEntityEvent(this, (byte) -id);
     }
     private static boolean isBiomeSwamp(LevelAccessor worldIn, BlockPos position) {
         return worldIn.getBiome(position).is(Tags.Biomes.IS_SWAMP);
@@ -292,16 +339,16 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
 
     public void switchNavigator(boolean onLand) {
         if (onLand) {
-            this.navigation = new GroundPathNavigatorWide(this, level());
+            this.navigation = new GroundPathNavigatorWide(this, level);
             this.isLandNavigator = true;
         } else {
-            this.navigation = new SemiAquaticPathNavigator(this, level());
+            this.navigation = new SemiAquaticPathNavigator(this, level);
             this.isLandNavigator = false;
         }
     }
 
     public void checkDespawn() {
-        if (this.level().getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
+        if (this.level.getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
             this.discard();
         } else {
             this.noActionTime = 0;
@@ -310,7 +357,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
 
     @Override
     public boolean doHurtTarget(Entity p_85031_1_) {
-        if (!this.level().isClientSide && this.attackID == 0) {
+        if (!this.level.isClientSide && this.attackID == 0) {
             if (this.random.nextInt(4) != 0) {
                 this.attackID = MELEE_ATTACK;
             } else {
@@ -412,7 +459,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) && (entityRelativeAngle >= 360 - arc / 2 == entityRelativeAngle <= -360 + arc / 2)) {
                 if (!(entityHit instanceof FroglinEntity)) {
-                    entityHit.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.3f);
+                    entityHit.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.3f);
 
                 }
 
@@ -425,18 +472,18 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
     }
 
     public <T extends Entity> List<T> getEntitiesNearby(Class<T> entityClass, double dX, double dY, double dZ, double r) {
-        return level().getEntitiesOfClass(entityClass, getBoundingBox().inflate(dX, dY, dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
+        return level.getEntitiesOfClass(entityClass, getBoundingBox().inflate(dX, dY, dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        if (!level().isClientSide) {
+        if (!level.isClientSide) {
             this.removeEffect(MobEffects.POISON);
         }
 
-        this.setMaxUpStep(1.0F);
+        this.maxUpStep = 1;
         if(attackID == 0)
         {
             setRight(false);
@@ -467,7 +514,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
             if (this.SwimProgress > 0F)
                 this.SwimProgress--;
         }
-        ++this.tickCount;
+
         if (this.attackID != 0) {
             yBodyRot = yHeadRot;
             setYRot(yBodyRot);
@@ -493,7 +540,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(5, new FroglinGoToBeachGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new FroglinSwimUpGoal(this, 1.0D, this.level().getSeaLevel()));
+        this.goalSelector.addGoal(6, new FroglinSwimUpGoal(this, 1.0D, this.level.getSeaLevel()));
         this.goalSelector.addGoal(4, new MobAIFindWater(this,1.0D));
         this.goalSelector.addGoal(4, new MobAILeaveWater(this));
         this.goalSelector.addGoal(0, new FroglinSwallowAttackGoal(this));
@@ -515,14 +562,15 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.5D, 25, true));
         super.registerGoals();
     }
+
     @Override
-    public boolean killedEntity(ServerLevel p_216988_, LivingEntity p_216989_) {
+    public boolean wasKilled(ServerLevel p_216988_, LivingEntity p_216989_) {
         if(!isFull() && p_216989_.getBbHeight() < 1F && random.nextInt(3) == 0)
         {
             this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
             setFull(true);
         }
-        return super.killedEntity(p_216988_, p_216989_);
+        return super.wasKilled(p_216988_, p_216989_);
     }
     class FroglinMeleeAttackGoal extends Goal {
         private final FroglinEntity froglinEntity;
@@ -566,7 +614,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
                     push(f1 * 0.3, 0, f2 * 0.3);
                 }
                 if (attacktick == 10 && distanceTo(attackTarget) <= 3.5F) {
-                    attackTarget.hurt(damageSources().mobAttack(froglinEntity), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    attackTarget.hurt(DamageSource.mobAttack(froglinEntity), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
                 }
             getNavigation().recomputePath();
         }
@@ -627,7 +675,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
 
         public boolean canUse() {
             this.attackTarget = this.froglinEntity.getTarget();
-            return attackTarget != null && this.froglinEntity.attackID == 0 && (distanceTo(attackTarget) > 5.0D  && onGround() && random.nextInt(5) == 0 && isFull());
+            return attackTarget != null && this.froglinEntity.attackID == 0 && (distanceTo(attackTarget) > 5.0D  && onGround && random.nextInt(5) == 0 && isFull());
         }
 
         public void start() {
@@ -654,25 +702,25 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
             if(attacktick == 10)
             {
                 froglinEntity.playSound(SoundEvents.PLAYER_BURP, 2f, 0.2F + froglinEntity.getRandom().nextFloat() * 0.1F);
-                FrogVomit frogVomit = new FrogVomit(froglinEntity.level(), froglinEntity);
+                FrogVomit frogVomit = new FrogVomit(froglinEntity.level, froglinEntity);
                 double d0 = attackTarget.getX() - froglinEntity.getX();
                 double d1 = attackTarget.getY(0.3333333333333333D) - frogVomit.getY();
                 double d2 = attackTarget.getZ() - froglinEntity.getZ();
                 double d3 = Math.sqrt(d0 * d0 + d2 * d2) * (double)0.4F;
                 frogVomit.shoot(d0, d1 + d3, d2, 1F, 5.0F);
-                froglinEntity.level().addFreshEntity(frogVomit);
+                froglinEntity.level.addFreshEntity(frogVomit);
             }
             if(attacktick == 20)
             {
                 froglinEntity.playSound(SoundEvents.PLAYER_BURP, 1f, 0.8F + froglinEntity.getRandom().nextFloat() * 0.1F);
-                FrogVomit llamaspit = new FrogVomit(froglinEntity.level(), froglinEntity);
+                FrogVomit llamaspit = new FrogVomit(froglinEntity.level, froglinEntity);
                 double d0 = attackTarget.getX() - froglinEntity.getX();
                 double d1 = attackTarget.getY(0.3333333333333333D) - llamaspit.getY();
                 double d2 = attackTarget.getZ() - froglinEntity.getZ();
                 double d3 = Math.sqrt(d0 * d0 + d2 * d2) * (double)0.4F;
                 llamaspit.shoot(d0, d1 + d3, d2, 1F, 5.0F);
                 setFull(false);
-                froglinEntity.level().addFreshEntity(llamaspit);
+                froglinEntity.level.addFreshEntity(llamaspit);
             }
 
 
@@ -744,7 +792,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
 
         public boolean canUse() {
             this.attackTarget = this.froglinEntity.getTarget();
-            return attackTarget != null && this.froglinEntity.attackID == 0 && (distanceTo(attackTarget) > 4.0D && onGround() && random.nextInt(15) == 0);
+            return attackTarget != null && this.froglinEntity.attackID == 0 && (distanceTo(attackTarget) > 4.0D && onGround && random.nextInt(15) == 0);
         }
 
         public void start() {
@@ -791,7 +839,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
         }
 
         public boolean canUse() {
-            return super.canUse() && this.froglinEntity.level().isRaining() && this.froglinEntity.isInWater() && this.froglinEntity.getY() >= (double)(this.froglinEntity.level().getSeaLevel() - 3);
+            return super.canUse() && this.froglinEntity.level.isRaining() && this.froglinEntity.isInWater() && this.froglinEntity.getY() >= (double)(this.froglinEntity.level.getSeaLevel() - 3);
         }
 
         public boolean canContinueToUse() {
@@ -825,7 +873,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
         }
 
         public boolean canUse() {
-            return (this.froglinEntity.level().isRaining() || this.froglinEntity.isInWater())&& this.froglinEntity.getY() < (double)(this.seaLevel - 2);
+            return (this.froglinEntity.level.isRaining() || this.froglinEntity.isInWater())&& this.froglinEntity.getY() < (double)(this.seaLevel - 2);
         }
 
         public boolean canContinueToUse() {
@@ -904,7 +952,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
                 this.froglinEntity.setSpeed(f2);
                 this.froglinEntity.setDeltaMovement(this.froglinEntity.getDeltaMovement().add((double)f2 * d0 * 0.005D, (double)f2 * d1 * 0.1D, (double)f2 * d2 * 0.005D));
             } else {
-                if (!this.froglinEntity.onGround()) {
+                if (!this.froglinEntity.onGround) {
                     this.froglinEntity.setDeltaMovement(this.froglinEntity.getDeltaMovement().add(0.0D, -0.008D, 0.0D));
                 }
 

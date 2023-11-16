@@ -1,5 +1,6 @@
 package net.sonmok14.fromtheshadows.server.effect;
 
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -15,9 +16,9 @@ public class EffectPlague extends MobEffect {
     @Override
     public void applyEffectTick(LivingEntity p_19467_, int p_19468_) {
         if(p_19467_.getHealth() > 1) {
-           p_19467_.hurt(p_19467_.damageSources().magic(), 1);
+           p_19467_.hurt(DamageSource.MAGIC, 1);
         }
-        for (LivingEntity livingentity : p_19467_.level().getEntitiesOfClass(LivingEntity.class, p_19467_.getBoundingBox().inflate(2D))) {
+        for (LivingEntity livingentity : p_19467_.level.getEntitiesOfClass(LivingEntity.class, p_19467_.getBoundingBox().inflate(2D))) {
             if (livingentity != p_19467_) {
                 if(!livingentity.hasEffect(EffectRegistry.PLAGUE.get()))
                 livingentity.addEffect(new MobEffectInstance(EffectRegistry.PLAGUE.get(), 200), p_19467_);

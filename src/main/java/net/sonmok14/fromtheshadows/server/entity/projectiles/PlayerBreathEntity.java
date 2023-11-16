@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -96,11 +95,11 @@ public class PlayerBreathEntity extends Entity {
         xo = getX();
         yo = getY();
         zo = getZ();
-        if (tickCount == 1 && level().isClientSide) {
-            caster = (LivingEntity) level().getEntity(getCasterID());
+        if (tickCount == 1 && level.isClientSide) {
+            caster = (LivingEntity) level.getEntity(getCasterID());
         }
 
-        if (!level().isClientSide) {
+        if (!level.isClientSide) {
             if (caster instanceof ServerPlayer) {
                 this.updateWithPlayer();
             }
@@ -124,20 +123,20 @@ public class PlayerBreathEntity extends Entity {
 
         if (tickCount > 2) {
             this.calculateEndPos();
-            List<LivingEntity> hit = raytraceEntities(level(), new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ), false, true, true).entities;
+            List<LivingEntity> hit = raytraceEntities(level, new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ), false, true, true).entities;
             if (blockSide != null) {
-                if (!this.level().isClientSide) {
+                if (!this.level.isClientSide) {
                     for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(collidePosX - 0.5F), Mth.floor(collidePosY - 0.5F), Mth.floor(collidePosZ - 0.5F), Mth.floor(collidePosX + 0.5F), Mth.floor(collidePosY + 0.5F), Mth.floor(collidePosZ + 0.5F))) {
-                        BlockState block = level().getBlockState(pos);
+                        BlockState block = level.getBlockState(pos);
                     }
                     for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(collidePosX - 2.5F), Mth.floor(collidePosY - 2.5F), Mth.floor(collidePosZ - 2.5F), Mth.floor(collidePosX + 2.5F), Mth.floor(collidePosY + 2.5F), Mth.floor(collidePosZ + 2.5F))) {
-                        BlockState block = level().getBlockState(pos);
+                        BlockState block = level.getBlockState(pos);
                     }
                     if(this.getFire()) {
                         BlockPos blockpos1 = new BlockPos.MutableBlockPos(collidePosX, collidePosY, collidePosZ);
-                            if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
-                                if (this.level().isEmptyBlock(blockpos1)) {
-                                    this.level().setBlockAndUpdate(blockpos1, BaseFireBlock.getState(this.level(), blockpos1));
+                            if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+                                if (this.level.isEmptyBlock(blockpos1)) {
+                                    this.level.setBlockAndUpdate(blockpos1, BaseFireBlock.getState(this.level, blockpos1));
                                 }
                             }
 
@@ -145,7 +144,7 @@ public class PlayerBreathEntity extends Entity {
                     }
                 }
             }
-            if (!level().isClientSide) {
+            if (!level.isClientSide) {
                 for (LivingEntity target : hit) {
                     if (target != this.caster) {
 
@@ -236,12 +235,12 @@ public class PlayerBreathEntity extends Entity {
     protected void addAdditionalSaveData(CompoundTag nbt) {}
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     private void calculateEndPos() {
-        if (level().isClientSide()) {
+        if (level.isClientSide()) {
             endPosX = getX() + RADIUS * Math.cos(renderYaw) * Math.cos(renderPitch);
             endPosZ = getZ() + RADIUS * Math.sin(renderYaw) * Math.cos(renderPitch);
             endPosY = getY() + RADIUS * Math.sin(renderPitch);

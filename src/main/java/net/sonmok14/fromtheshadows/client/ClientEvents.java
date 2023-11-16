@@ -17,7 +17,7 @@ public class ClientEvents {
         if (player != null) {
 
                 float shakeAmplitude = 0;
-                for (ScreenShakeEntity ScreenShake : player.level().getEntitiesOfClass(ScreenShakeEntity.class, player.getBoundingBox().inflate(20, 20, 20))) {
+                for (ScreenShakeEntity ScreenShake : player.level.getEntitiesOfClass(ScreenShakeEntity.class, player.getBoundingBox().inflate(20, 20, 20))) {
                     if (ScreenShake.distanceTo(player) < ScreenShake.getRadius()) {
                         shakeAmplitude += ScreenShake.getShakeAmount(player, delta);
                     }

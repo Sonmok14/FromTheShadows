@@ -3,9 +3,9 @@ package net.sonmok14.fromtheshadows.client.models.items;
 import net.minecraft.resources.ResourceLocation;
 import net.sonmok14.fromtheshadows.server.Fromtheshadows;
 import net.sonmok14.fromtheshadows.server.items.CrustArmorItem;
-import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class CrustArmorModel extends GeoModel<CrustArmorItem> {
+public class CrustArmorModel extends AnimatedGeoModel<CrustArmorItem> {
     @Override
     public ResourceLocation getModelResource(CrustArmorItem object) {
         return new ResourceLocation(Fromtheshadows.MODID, "geo/crust_armor.geo.json");

@@ -27,45 +27,25 @@ import net.sonmok14.fromtheshadows.server.entity.projectiles.ScreenShakeEntity;
 import net.sonmok14.fromtheshadows.server.utils.registry.EntityRegistry;
 import net.sonmok14.fromtheshadows.server.utils.registry.SoundRegistry;
 import net.sonmok14.fromtheshadows.server.utils.registry.ToolMaterialRegistry;
-import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class ThirstforBloodItem extends SwordItem implements GeoItem {
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+public class ThirstforBloodItem extends SwordItem implements IAnimatable {
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private final Multimap<Attribute, AttributeModifier> attributeModifierMultimap;
     public ThirstforBloodItem(Item.Properties properties) {
         super(ToolMaterialRegistry.THIRST_FOR_BLOOD, 1, -2.4F, properties);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 8.0D, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.4F, AttributeModifier.Operation.ADDITION));
-        builder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(UUID.fromString("914C2B49-1AD0-451A-A2F3-2ED609F0F291"), "Tool modifier", 2.0F, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(UUID.fromString("914C2B49-1AD0-451A-A2F3-2ED609F0F291"), "Tool modifier", 2.0F, AttributeModifier.Operation.ADDITION));
         this.attributeModifierMultimap = builder.build();
-    }
-
-    @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            private ThirstforBloodRenderer renderer;
-
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (this.renderer == null)
-                    this.renderer = new ThirstforBloodRenderer();
-
-                return this.renderer;
-            }
-        });
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-
     }
 
     @Override
@@ -77,6 +57,18 @@ public class ThirstforBloodItem extends SwordItem implements GeoItem {
         return equipmentSlot == EquipmentSlot.MAINHAND ? this.attributeModifierMultimap : super.getDefaultAttributeModifiers(equipmentSlot);
     }
 
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        super.initializeClient(consumer);
+        consumer.accept(new IClientItemExtensions() {
+            private final BlockEntityWithoutLevelRenderer renderer = new ThirstforBloodRenderer();
+
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return renderer;
+            }
+        });
+    }
 
     public boolean mineBlock(ItemStack p_43282_, Level p_43283_, BlockState p_43284_, BlockPos p_43285_, LivingEntity p_43286_) {
         if (p_43284_.getDestroySpeed(p_43283_, p_43285_) != 0.0F) {
@@ -115,7 +107,7 @@ public class ThirstforBloodItem extends SwordItem implements GeoItem {
                 float radius1 = 0.2f;
                 if (!world.isClientSide) {
                     ScreenShakeEntity.ScreenShake(world, user.position(), 5, 0.03f, 15, 10);
-                    PlayerBreathEntity beam = new PlayerBreathEntity(EntityRegistry.PLAYER_BREATH.get(), user.level(), user, user.getX(), user.getY() + 1.2f, user.getZ(), (float) ((user.yHeadRot + 90) * Math.PI / 180), (float) (-user.getXRot() * Math.PI / 180), 10);
+                    PlayerBreathEntity beam = new PlayerBreathEntity(EntityRegistry.PLAYER_BREATH.get(), user.level, user, user.getX(), user.getY() + 1.2f, user.getZ(), (float) ((user.yHeadRot + 90) * Math.PI / 180), (float) (-user.getXRot() * Math.PI / 180), 10);
                     world.addFreshEntity(beam);
 
                     itemStack.hurtAndBreak(1, user, p -> p.broadcastBreakEvent(user.getUsedItemHand()));
@@ -132,20 +124,17 @@ public class ThirstforBloodItem extends SwordItem implements GeoItem {
     }
 
     @Override
-    public boolean canGrindstoneRepair(ItemStack stack) {
-        return false;
-    }
-
-
-
-    @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return enchantment.category != EnchantmentCategory.BREAKABLE && enchantment.category == EnchantmentCategory.WEAPON;
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
+    public void registerControllers(AnimationData data) {
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 
 

@@ -1,6 +1,6 @@
 package net.sonmok14.fromtheshadows.server.utils.registry;
 
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -15,28 +15,24 @@ public class TagRegistry {
     public static final TagKey<Biome> BULLDROGIOTH_SPAWN = registerBiomeTag("bulldrogioth_spawn");
     public static final TagKey<Biome> FROGLIN_SPAWN = registerBiomeTag("froglin_spawn");
 
-    public static final TagKey<Item> CAN_HIT_NEHEMOTH_STATUE = registerItemTag("can_hit_nehemoth_statue");
-    public static final TagKey<Item> NEHEMOTH_STATUE_LOOT = registerItemTag("nehemoth_statue_loot");
-
 
 
     private static TagKey<EntityType<?>> registerEntityTag(String name) {
-        return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(Fromtheshadows.MODID, name));
+        return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(Fromtheshadows.MODID, name));
     }
-
     private static TagKey<Item> registerItemTag(String name) {
-        return TagKey.create(Registries.ITEM, new ResourceLocation(Fromtheshadows.MODID, name));
+        return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(Fromtheshadows.MODID, name));
     }
 
     private static TagKey<Block> registerBlockTag(String name) {
-        return TagKey.create(Registries.BLOCK, new ResourceLocation(Fromtheshadows.MODID, name));
+        return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(Fromtheshadows.MODID, name));
     }
 
     private static TagKey<Biome> registerBiomeTag(String name) {
-        return TagKey.create(Registries.BIOME, new ResourceLocation(Fromtheshadows.MODID, name));
+        return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Fromtheshadows.MODID, name));
     }
 
     private static TagKey<Structure> registerStructureTag(String name) {
-        return TagKey.create(Registries.STRUCTURE, new ResourceLocation(Fromtheshadows.MODID, name));
+        return TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(Fromtheshadows.MODID, name));
     }
 }

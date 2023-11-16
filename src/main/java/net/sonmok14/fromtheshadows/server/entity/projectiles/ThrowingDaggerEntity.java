@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -16,16 +17,15 @@ import net.minecraft.world.phys.Vec3;
 import net.sonmok14.fromtheshadows.server.FTSConfig;
 import net.sonmok14.fromtheshadows.server.utils.registry.EffectRegistry;
 import net.sonmok14.fromtheshadows.server.utils.registry.EntityRegistry;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 
-public class ThrowingDaggerEntity extends AbstractArrow implements GeoEntity {
-
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+public class ThrowingDaggerEntity extends AbstractArrow implements IAnimatable {
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public ThrowingDaggerEntity(EntityType<ThrowingDaggerEntity> p_36721_, Level p_36722_) {
         super(p_36721_, p_36722_);
     }
@@ -51,7 +51,7 @@ public class ThrowingDaggerEntity extends AbstractArrow implements GeoEntity {
 
         if (this.isNoPhysics() && entity != null) {
             if (!this.isAcceptibleReturnOwner()) {
-                if (!this.level().isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
+                if (!this.level.isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
                     this.spawnAtLocation(this.getPickupItem(), 0.1F);
                 }
 
@@ -60,7 +60,7 @@ public class ThrowingDaggerEntity extends AbstractArrow implements GeoEntity {
                 this.setNoPhysics(true);
                 Vec3 vec3 = entity.getEyePosition().subtract(this.position());
                 this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015D, this.getZ());
-                if (this.level().isClientSide) {
+                if (this.level.isClientSide) {
                     this.yOld = this.getY();
                 }
             }
@@ -89,7 +89,7 @@ public class ThrowingDaggerEntity extends AbstractArrow implements GeoEntity {
         Entity entity = this.getOwner();
         Entity entity2 = p_37573_.getEntity();
         if (entity instanceof LivingEntity livingentity) {
-            flag = entity2.hurt(this.damageSources().mobProjectile(this, livingentity), FTSConfig.SERVER.cleric_projectile_damage.get().floatValue() / 2);
+            flag = entity2.hurt(DamageSource.indirectMobAttack(this, livingentity), FTSConfig.SERVER.cleric_projectile_damage.get().floatValue() / 2);
             if (flag && entity2 instanceof LivingEntity livingEntity2) {
                 if (entity.isAlive() && entity2 != null) {
                     this.playSound(soundevent, 0.5f, 1.0F);
@@ -128,12 +128,13 @@ public class ThrowingDaggerEntity extends AbstractArrow implements GeoEntity {
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-
+    public void registerControllers(AnimationData data) {
+        
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
+
 }

@@ -31,6 +31,6 @@ public class SoundRegistry{
     public static final RegistryObject<SoundEvent> STOMP = createSoundEvent("nehemoth_stomp");
 
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {
-        return MOD_SOUNDS.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Fromtheshadows.MODID, soundName)));
+        return MOD_SOUNDS.register(soundName, () -> new SoundEvent(new ResourceLocation(Fromtheshadows.MODID, soundName)));
     }
 }

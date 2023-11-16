@@ -45,7 +45,7 @@ public class ServerEvents {
                 boolean isWearingAll = armorList
                         .containsAll(Arrays.asList(ItemRegistry.PLAGUE_DOCTOR_MASK.get()));
                 if (isWearingAll) {
-                    if (!attacker.level().isClientSide) {
+                    if (!attacker.level.isClientSide) {
                         Iterator<MobEffectInstance> itr = attacker.getActiveEffects().iterator();
                         ArrayList<MobEffect> compatibleEffects = new ArrayList<>();
 
@@ -56,7 +56,7 @@ public class ServerEvents {
                             }
                         }
                         if (compatibleEffects.size() > 0) {
-                            MobEffectInstance selectedEffect = attacker.getEffect(compatibleEffects.get(attacker.level().random.nextInt(compatibleEffects.size())));
+                            MobEffectInstance selectedEffect = attacker.getEffect(compatibleEffects.get(attacker.level.random.nextInt(compatibleEffects.size())));
                             if (selectedEffect != null && !net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.living.MobEffectEvent.Remove(attacker, selectedEffect))) {
                                 if(attacker instanceof Player)
                                 {

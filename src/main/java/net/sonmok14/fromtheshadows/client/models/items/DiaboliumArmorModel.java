@@ -3,9 +3,9 @@ package net.sonmok14.fromtheshadows.client.models.items;
 import net.minecraft.resources.ResourceLocation;
 import net.sonmok14.fromtheshadows.server.Fromtheshadows;
 import net.sonmok14.fromtheshadows.server.items.DiaboliumArmorItem;
-import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class DiaboliumArmorModel extends GeoModel<DiaboliumArmorItem> {
+public class DiaboliumArmorModel extends AnimatedGeoModel<DiaboliumArmorItem> {
     @Override
     public ResourceLocation getModelResource(DiaboliumArmorItem object) {
         return new ResourceLocation(Fromtheshadows.MODID, "geo/diabolium_armor.geo.json");

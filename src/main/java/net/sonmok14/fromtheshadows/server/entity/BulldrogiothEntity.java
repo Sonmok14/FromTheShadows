@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -50,18 +49,21 @@ import net.sonmok14.fromtheshadows.server.entity.projectiles.CoralThornEntity;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.ScreenShakeEntity;
 import net.sonmok14.fromtheshadows.server.utils.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.EnumSet;
 import java.util.List;
 
-public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISemiAquatic {
+public class BulldrogiothEntity extends Monster implements Enemy, IAnimatable, ISemiAquatic {
 
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(BulldrogiothEntity.class, EntityDataSerializers.INT);
     public float growlingProgress;
@@ -86,7 +88,8 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
     public static final byte CORAL_THORN = 5;
     public static final byte CORAL_THORN_COMBO = 6;
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    
     public BulldrogiothEntity(EntityType<BulldrogiothEntity> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
         switchNavigator(false);
@@ -98,7 +101,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
     public void setAttackID(int id) {
         this.attackID = id;
         this.attacktick = 0;
-        this.level().broadcastEntityEvent(this, (byte) -id);
+        this.level.broadcastEntityEvent(this, (byte) -id);
     }
 
     @Override
@@ -229,114 +232,162 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(
-                new AnimationController<>(this, "controller", 7, event -> {
-                    if (dead || getHealth() < 0.01 || isDeadOrDying()) {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.death"));
-                    }
-                        if (this.wasEyeInWater && attackID == 0) {
-                            return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.swim"));
-                        }
-                        if (event.isMoving() && !isAggressive() && attackID == 0) {
-                            return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.walk"));
-                        }
-                        if (attackID != 0) {
-                            event.resetCurrentAnimation();
-                        }
-                        if (this.wasEyeInWater && this.walkAnimation.speed() > 0.35F && isAggressive() && attackID == 0) {
-                            return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.swim"));
-                        }
+    public AnimationFactory getFactory() {
+        return factory;
+    }
 
-                        if (this.walkAnimation.speed() > 0.35F && isAggressive() && attackID == 0) {
-                            event.getController().setAnimationSpeed(1.25D);
-                            return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.walk"));
-                        }
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.idle"));
-                }).setSoundKeyframeHandler(event -> {
-                        if (event.getKeyframeData().getSound().matches("walksoundkey"))
-                            if (this.level().isClientSide && !isInWater())
-                                this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(), SoundSource.HOSTILE, 0.2F, 0.9F + this.getRandom().nextFloat() * 0.1F, false);
-                    }));
+    @Override
+    public void registerControllers(AnimationData data) {
+        AnimationController<BulldrogiothEntity> controller = new AnimationController<>(this, "controller", 7,
+                this::controller);
+        AnimationController<BulldrogiothEntity> attack = new AnimationController<>(this, "attack", 15,
+                this::attack);
+        AnimationController<BulldrogiothEntity> growling = new AnimationController<>(this, "growling", 20,
+                this::growling);
+        AnimationController<BulldrogiothEntity> hurt = new AnimationController<>(this, "hurt", 20,
+                this::hurt);
+        data.addAnimationController(controller);
+        data.addAnimationController(attack);
+        data.addAnimationController(growling);
+        data.addAnimationController(hurt);
+        controller.registerSoundListener(this::soundListener);
+        attack.registerSoundListener(this::attackListener);
+        growling.registerSoundListener(this::growlingListener);
+        hurt.registerSoundListener(this::hurtListener);
+    }
+    private <ENTITY extends IAnimatable> void hurtListener(SoundKeyframeEvent<ENTITY> event) {
+        if (event.sound.matches("hurtkey")) {
+            if (this.level.isClientSide()) {
+                this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_HURT.get(), SoundSource.HOSTILE, 0.5F, getVoicePitch() + this.getRandom().nextFloat() * 0.1F, false);
+            }
+        }
+    }
+    private <ENTITY extends IAnimatable> void soundListener(SoundKeyframeEvent<ENTITY> event) {
+        if (event.sound.matches("walksoundkey")) {
+            if (this.level.isClientSide()) {
+                this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(), SoundSource.HOSTILE, 0.5F, 0.5F + this.getRandom().nextFloat() * 0.1F, false);
+            }
+        }
+    }
+    private <ENTITY extends IAnimatable> void attackListener(SoundKeyframeEvent<ENTITY> event) {
+        if (event.sound.matches("attackkey")) {
+            if (this.level.isClientSide()) {
+                this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_ATTACK.get(), SoundSource.HOSTILE, 0.5F, getVoicePitch() + this.getRandom().nextFloat() * 0.1F, false);
+            }
+            if (event.sound.matches("combokey"))
+                if (this.level.isClientSide())
+                    this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_ATTACK.get(), SoundSource.HOSTILE, 0.5F, 0.3f + this.getRandom().nextFloat() * 0.1F, false);
+        }
+    }
+    private <ENTITY extends IAnimatable> void growlingListener(SoundKeyframeEvent<ENTITY> event) {
+        if (event.sound.matches("growlkey"))
+            if (this.level.isClientSide())
+                this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_IDLE.get(), SoundSource.HOSTILE, 0.5F, getVoicePitch() + this.getRandom().nextFloat() * 0.1F, false);
+    }
+    private <E extends IAnimatable> PlayState controller(AnimationEvent<E> event) {
+        if (dead || getHealth() < 0.01 || isDeadOrDying()) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.death",ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE; }
+        if (this.wasEyeInWater && attackID == 0) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.swim",ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE; }
+        if (event.isMoving() && !isAggressive() && attackID == 0) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.walk",ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE; }
+        if (attackID != 0) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.none",ILoopType.EDefaultLoopTypes.LOOP));
+        }
+        if (event.isMoving() && this.wasEyeInWater && isAggressive() && attackID == 0) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.swim",ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;  }
+        if (event.isMoving() && isAggressive() && attackID == 0) {
+            event.getController().setAnimationSpeed(1.25D);
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.walk",ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;  }
+        if (!event.isMoving() && attackID == 0){
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.idle", ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        return PlayState.STOP;
+    }
 
-        controllerRegistrar.add(
-                new AnimationController<>(this, "attack", 15, event -> {
-                    if(isAlive()) {
-                        if (attackID == 0) {
-                            event.resetCurrentAnimation();
-                        }
-                        if (attackID == 1) {
+    private <E extends IAnimatable> PlayState attack(AnimationEvent<E> event) {
+        if (isAlive()) {
+            if (attackID == 0) {
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.none", ILoopType.EDefaultLoopTypes.LOOP));
+            }
+            if (attackID == 1) {
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.normal",ILoopType.EDefaultLoopTypes.LOOP));
+                return PlayState.CONTINUE;   }
+            if (attackID == 2 && !isRight()) {
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.claw_left",ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+                return PlayState.CONTINUE; }
+            if (attackID == 2 && isRight()) {
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.claw_right",ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+                return PlayState.CONTINUE; }
+            if (attackID == 5 && isRight()) {
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.thorn_right",ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+                return PlayState.CONTINUE; }
+            if (attackID == 5 && !isRight()) {
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.thorn_left",ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+                return PlayState.CONTINUE; }
+            if (this.attackID == 3) {
+                if (isRight()) {
+                    event.getController()
+                            .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.combo_right",ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+                    return PlayState.CONTINUE; }
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.combo_left",ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+                return PlayState.CONTINUE;  }
+            if (this.attackID == 4) {
+                if (isRight()) {
+                    event.getController()
+                            .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.bite_right",ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+                    return PlayState.CONTINUE;  }
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.bite_left",ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+                return PlayState.CONTINUE;  }
+            if (this.attackID == 6) {
+                if (isRight()) {
+                    event.getController()
+                            .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.thorn_combo_right",ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+                    return PlayState.CONTINUE;   }
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.thorn_combo_left",ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+                return PlayState.CONTINUE; }
+        }
+        return PlayState.STOP;
+    }
 
-                            return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.normal"));
-                        }
-                        if (attackID == 2 && !isRight()) {
-                            return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.claw_left"));
-                        }
-                        if (attackID == 2 && isRight()) {
-                            return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.claw_right"));
-                        }
-                        if (attackID == 5 && isRight()) {
-                            return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.thorn_right"));
-                        }
-                        if (attackID == 5 && !isRight()) {
-                            return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.thorn_left"));
-                        }
+    private <E extends IAnimatable> PlayState growling(AnimationEvent<E> event) {
+        if (this.growlingProgress <= 30 && isAlive())
+        {  event.getController()
+             .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.growl",ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE; }
+        return PlayState.STOP;
+    }
 
-                        if(this.attackID == 3) {
-                            if(isRight()) {
-                            return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.combo_right"));
-                        }
-                            return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.combo_left"));
-                        }
-                        if(this.attackID == 4) {
-                            if(isRight()) {
-                                return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.bite_right"));
-                            }
-                            return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.bite_left"));
-                        }
-                        if(this.attackID == 6) {
-                            if(isRight()) {
-                                return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.thorn_combo_right"));
-                            }
-                            return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.bulldrogioth.thorn_combo_left"));
-                        }
-                    }
-                    return PlayState.STOP;
-                }).setSoundKeyframeHandler(event -> {
-                    if (event.getKeyframeData().getSound().matches("attackkey"))
-                        if (this.level().isClientSide)
-                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_ATTACK.get(), SoundSource.HOSTILE, 0.5F, getVoicePitch() + this.getRandom().nextFloat() * 0.1F, false);
-                            if (event.getKeyframeData().getSound().matches("combokey"))
-                                if (this.level().isClientSide)
-                                    this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_ATTACK.get(), SoundSource.HOSTILE, 0.5F, 0.3f + this.getRandom().nextFloat() * 0.1F, false);
-                }
-                        ));
-
-        controllerRegistrar.add(
-                new AnimationController<>(this, "growling", 20, event -> {
-                    if (this.growlingProgress <= 30 && isAlive())
-                    {
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.growl"));
-                    }
-                    return PlayState.STOP;
-                }).setSoundKeyframeHandler(event -> {
-                    if (event.getKeyframeData().getSound().matches("growlkey"))
-                        if (this.level().isClientSide)
-                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_IDLE.get(), SoundSource.HOSTILE, 0.5F, getVoicePitch() + this.getRandom().nextFloat() * 0.1F, false);
-                }));
-        controllerRegistrar.add(
-                new AnimationController<>(this, "hurt", 20, event -> {
-
-                    if (this.hurtTime > 0 && isAlive()) {
-                        event.getController().setAnimationSpeed(0.5D);
-                        return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.hurt"));
-                    }
-                    return PlayState.STOP;
-                }).setSoundKeyframeHandler(event -> {
-                    if (event.getKeyframeData().getSound().matches("hurtkey"))
-                        if (this.level().isClientSide)
-                            this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.BULLDROGIOTH_HURT.get(), SoundSource.HOSTILE, 0.5F, getVoicePitch() + this.getRandom().nextFloat() * 0.1F, false);
-                }));
+    private <E extends IAnimatable> PlayState hurt(AnimationEvent<E> event) {
+        if (this.hurtTime > 0 && isAlive()) {
+            event.getController().setAnimationSpeed(0.5D);
+            event.getController()
+                .setAnimation(new AnimationBuilder().addAnimation("animation.bulldrogioth.hurt",ILoopType.EDefaultLoopTypes.LOOP));
+            return PlayState.CONTINUE;
+        }
+        return PlayState.STOP;
     }
 
 
@@ -361,19 +412,16 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
 
     @Override
     public boolean hurt(DamageSource p_21016_, float p_21017_) {
-        if (p_21016_.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+        if (p_21016_.isBypassInvul()) {
             return super.hurt(p_21016_, p_21017_);
         }
-        if (p_21016_.is(DamageTypeTags.IS_PROJECTILE)) {
+        if (p_21016_.isProjectile()) {
             return super.hurt(p_21016_, p_21017_ / 2);
         }
-        if (p_21016_.is(DamageTypeTags.IS_FIRE)) {
+        if (p_21016_.isFire()) {
             return super.hurt(p_21016_, p_21017_ * 2);
         }
-        if (p_21016_.is(DamageTypeTags.IS_LIGHTNING)) {
-            return super.hurt(p_21016_, p_21017_ * 4);
-        }
-        if (p_21016_.is(DamageTypeTags.IS_EXPLOSION)) {
+        if (p_21016_.isExplosion()) {
             return super.hurt(p_21016_, p_21017_ / 4);
         }
         return super.hurt(p_21016_, p_21017_);
@@ -396,11 +444,11 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) && (entityRelativeAngle >= 360 - arc / 2 == entityRelativeAngle <= -360 + arc / 2)) {
                 if (!(entityHit instanceof BulldrogiothEntity)) {
-                    entityHit.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    entityHit.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                     strongKnockback(entityHit);
                 }
                 if (!(entityHit instanceof BulldrogiothEntity) && attackID == BITE) {
-                    entityHit.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) / 3);
+                    entityHit.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) / 3);
 
                 }
 
@@ -426,19 +474,18 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) && (entityRelativeAngle >= 360 - arc / 2 == entityRelativeAngle <= -360 + arc / 2)) {
                 if (!(entityHit instanceof BulldrogiothEntity)) {
-                   entityHit.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                   entityHit.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 }
 
             }
         }
     }
-
     public  List<LivingEntity> getEntityLivingBaseNearby(double distanceX, double distanceY, double distanceZ, double radius) {
         return getEntitiesNearby(LivingEntity.class, distanceX, distanceY, distanceZ, radius);
     }
 
     public <T extends Entity> List<T> getEntitiesNearby(Class<T> entityClass, double dX, double dY, double dZ, double r) {
-        return level().getEntitiesOfClass(entityClass, getBoundingBox().inflate(dX, dY, dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
+        return level.getEntitiesOfClass(entityClass, getBoundingBox().inflate(dX, dY, dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
     }
 
 
@@ -446,7 +493,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
 
     @Override
     public boolean doHurtTarget(Entity target) {
-        if (!this.level().isClientSide && this.attackID == 0) {
+        if (!this.level.isClientSide && this.attackID == 0) {
             if (this.random.nextInt(4) != 0) {
                 this.attackID = CLAW;
             }
@@ -461,7 +508,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
     public void tick() {
 
         super.tick();
-        this.setMaxUpStep(1.0F);
+        this.maxUpStep = 1;
         if (this.growlingProgress == 0) {
             this.growlingProgress = 150;
         }
@@ -490,19 +537,19 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 this.SwimProgress--;
         }
 
-        if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+        if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
             boolean flag = false;
             AABB aabb = this.getBoundingBox().inflate(0.2D);
 
             for(BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
-                BlockState blockstate = this.level().getBlockState(blockpos);
+                BlockState blockstate = this.level.getBlockState(blockpos);
                 Block block = blockstate.getBlock();
                 if (block instanceof LeavesBlock) {
-                    flag = this.level().destroyBlock(blockpos, true, this) || flag;
+                    flag = this.level.destroyBlock(blockpos, true, this) || flag;
                 }
             }
 
-            if (!flag && this.onGround()) {
+            if (!flag && this.onGround) {
                 this.jumpFromGround();
             }
         }
@@ -603,7 +650,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
 
 
 
-               CoralThornEntity coralThornEntity = new CoralThornEntity(this.level(), this, null);
+               CoralThornEntity coralThornEntity = new CoralThornEntity(this.level, this, null);
 
                double f0 = getTarget().getX() - this.getX();
                double f1 = getTarget().getY(0.3333333333333333D) - coralThornEntity.getY();
@@ -612,8 +659,8 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                double x = d1 * Math.cos(angle) + d3 * Math.sin(angle);
                double z = -d1 * Math.sin(angle) + d3 * Math.cos(angle);
 
-               coralThornEntity.shoot(x, f1 + f3 * (double) 0.2F, z, 1.5F, (float)(16 - this.level().getDifficulty().getId() * 4));
-               this.level().addFreshEntity(coralThornEntity);
+               coralThornEntity.shoot(x, f1 + f3 * (double) 0.2F, z, 1.5F, (float)(16 - this.level.getDifficulty().getId() * 4));
+               this.level.addFreshEntity(coralThornEntity);
            }
        }
     }
@@ -632,7 +679,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
 
 
 
-                CoralThornEntity coralThornEntity = new CoralThornEntity(this.level(), this, null);
+                CoralThornEntity coralThornEntity = new CoralThornEntity(this.level, this, null);
 
                 double f0 = getTarget().getX() - this.getX();
                 double f1 = getTarget().getY(0.3333333333333333D) - coralThornEntity.getY();
@@ -641,8 +688,8 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 double x = d1 * Math.cos(angle) + d3 * Math.sin(angle);
                 double z = -d1 * Math.sin(angle) + d3 * Math.cos(angle);
 
-                coralThornEntity.shoot(x, f1 + f3 * (double) 0.2F, z, 1.5F, (float)(16 - this.level().getDifficulty().getId() * 4));
-                this.level().addFreshEntity(coralThornEntity);
+                coralThornEntity.shoot(x, f1 + f3 * (double) 0.2F, z, 1.5F, (float)(16 - this.level.getDifficulty().getId() * 4));
+                this.level.addFreshEntity(coralThornEntity);
             }
         }
     }
@@ -653,7 +700,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
     }
     public void breakBlock()
     {
-        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
             int j1 = Mth.floor(this.getY());
             int i2 = Mth.floor(this.getX());
             int j2 = Mth.floor(this.getZ());
@@ -666,15 +713,15 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                         int l = j1 + k;
                         int i1 = j2 + k2;
                         BlockPos blockpos = new BlockPos(l2, l, i1);
-                        BlockState blockstate = this.level().getBlockState(blockpos);
-                        if (blockstate.canEntityDestroy(this.level(), blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
-                            flag = this.level().destroyBlock(blockpos, true, this) || flag;
+                        BlockState blockstate = this.level.getBlockState(blockpos);
+                        if (blockstate.canEntityDestroy(this.level, blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                            flag = this.level.destroyBlock(blockpos, true, this) || flag;
                         }
                     }
                 }
             }
             if (flag) {
-                this.level().levelEvent((Player)null, 1022, this.blockPosition(), 0);
+                this.level.levelEvent((Player)null, 1022, this.blockPosition(), 0);
             }
         }
     }
@@ -694,7 +741,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
         this.targetSelector.addGoal(0, (new RightClawAttackGoal()));
         this.targetSelector.addGoal(0, (new BulldrogiothMeleeAttackGoal()));
         this.goalSelector.addGoal(5, new BulldrogiothGoToBeachGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new BulldrogiothSwimUpGoal(this, 1.3D, this.level().getSeaLevel()));
+        this.goalSelector.addGoal(6, new BulldrogiothSwimUpGoal(this, 1.3D, this.level.getSeaLevel()));
         this.goalSelector.addGoal(8, new MobAIFindWater(this,1.0D));
         this.goalSelector.addGoal(8, new MobAILeaveWater(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
@@ -707,11 +754,6 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(11, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
     }
 
     public void travel(Vec3 travelVector) {
@@ -734,16 +776,16 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
 
     public void switchNavigator(boolean onLand) {
         if (onLand) {
-            this.navigation = new GroundPathNavigatorWide(this, level());
+            this.navigation = new GroundPathNavigatorWide(this, level);
             this.isLandNavigator = true;
         } else {
-            this.navigation = new SemiAquaticPathNavigator(this, level());
+            this.navigation = new SemiAquaticPathNavigator(this, level);
             this.isLandNavigator = false;
         }
     }
 
     public void checkDespawn() {
-        if (this.level().getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
+        if (this.level.getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
             this.discard();
         } else {
             this.noActionTime = 0;
@@ -802,7 +844,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 if (attacktick == 32) {
                     breakBlock();
                     meleeattack();
-                    ScreenShakeEntity.ScreenShake(level(), position(), 5, 0.4f, 5, 3);
+                    ScreenShakeEntity.ScreenShake(level, position(), 5, 0.4f, 5, 3);
                     playSound(SoundEvents.WITHER_BREAK_BLOCK, 1.0F, 1.0F);
                 }
 
@@ -810,8 +852,8 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             double dist = (double)distanceTo(attackTarget);
             if (attacktick == 32 && dist <= 4 && attackTarget != null) {
                 strongKnockback(attackTarget);
-                attackTarget.hurt(damageSources().mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
-                if (!attackTarget.hurt(damageSources().mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE))) {
+                attackTarget.hurt(DamageSource.mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+                if (!attackTarget.hurt(DamageSource.mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE))) {
                     if (getTarget() instanceof Player) {
                         Player player = (Player) getTarget();
                         if (player.isBlocking())
@@ -878,7 +920,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 }
             }
             if (attacktick == 23 && dist <= 4 && attackTarget != null) {
-                attackTarget.hurt(damageSources().mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 2);
+                attackTarget.hurt(DamageSource.mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 2);
             }
         }
     }
@@ -1024,10 +1066,10 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 breakBlock();
             }
             if (attacktick == 28 && dist <= 4 && attackTarget != null) {
-                attackTarget.hurt(damageSources().mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 2);
+                attackTarget.hurt(DamageSource.mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 2);
             }
             if (attacktick == 43 && dist <= 4 && attackTarget != null) {
-                attackTarget.hurt(damageSources().mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 2);
+                attackTarget.hurt(DamageSource.mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 2);
             }
         }
         }
@@ -1072,7 +1114,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 }
             double dist = distanceTo(attackTarget);
             if (attacktick == 23 && dist <= 4 && attackTarget != null) {
-                attackTarget.hurt(damageSources().mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 3);
+                attackTarget.hurt(DamageSource.mobAttack(BulldrogiothEntity.this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 3);
             }
         }
     }
@@ -1084,7 +1126,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             this.bulldrogiothEntity = p_32409_;
         }
         public boolean canUse() {
-            return super.canUse() && this.bulldrogiothEntity.level().isRaining() && this.bulldrogiothEntity.isInWater() && this.bulldrogiothEntity.getY() >= (double)(this.bulldrogiothEntity.level().getSeaLevel() - 3);
+            return super.canUse() && this.bulldrogiothEntity.level.isRaining() && this.bulldrogiothEntity.isInWater() && this.bulldrogiothEntity.getY() >= (double)(this.bulldrogiothEntity.level.getSeaLevel() - 3);
         }
         public boolean canContinueToUse() {
             return super.canContinueToUse();
@@ -1113,7 +1155,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             this.seaLevel = p_32442_;
         }
         public boolean canUse() {
-            return (this.bulldrogiothEntity.level().isRaining() || this.bulldrogiothEntity.isInWater())&& this.bulldrogiothEntity.getY() < (double)(this.seaLevel - 2);
+            return (this.bulldrogiothEntity.level.isRaining() || this.bulldrogiothEntity.isInWater())&& this.bulldrogiothEntity.getY() < (double)(this.seaLevel - 2);
         }
         public boolean canContinueToUse() {
             return this.canUse() && !this.stuck;
@@ -1183,7 +1225,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                 this.bulldrogiothEntity.setSpeed(f2);
                 this.bulldrogiothEntity.setDeltaMovement(this.bulldrogiothEntity.getDeltaMovement().add((double)f2 * d0 * 0.005D, (double)f2 * d1 * 0.1D, (double)f2 * d2 * 0.005D));
             } else {
-                if (!this.bulldrogiothEntity.onGround()) {
+                if (!this.bulldrogiothEntity.onGround) {
                     this.bulldrogiothEntity.setDeltaMovement(this.bulldrogiothEntity.getDeltaMovement().add(0.0D, -0.008D, 0.0D));
                 }
                 super.tick();

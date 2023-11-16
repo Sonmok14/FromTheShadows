@@ -24,7 +24,7 @@ import net.sonmok14.fromtheshadows.server.utils.event.ServerEvents;
 import net.sonmok14.fromtheshadows.server.utils.registry.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import software.bernie.geckolib.GeckoLib;
+import software.bernie.geckolib3.GeckoLib;
 
 import java.util.Locale;
 
@@ -62,7 +62,6 @@ public class Fromtheshadows
         EffectRegistry.POTION.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         ModBiomeModifiers.BIOME_MODIFIER_SERIALIZERS.register(modEventBus);
-        FTSCreativeTabRegistry.TABS.register(modEventBus);
         final DeferredRegister<Codec<? extends BiomeModifier>> serializers = DeferredRegister
                 .create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, MODID);
         serializers.register(modEventBus);

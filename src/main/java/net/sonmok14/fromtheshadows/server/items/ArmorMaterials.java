@@ -1,7 +1,7 @@
 package net.sonmok14.fromtheshadows.server.items;
 
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -41,13 +41,13 @@ public class ArmorMaterials implements ArmorMaterial {
 
 
     @Override
-    public int getDurabilityForType(ArmorItem.Type type) {
-        return MAX_DAMAGE_ARRAY[type.getSlot().getIndex()] * this.durability;
+    public int getDurabilityForSlot(EquipmentSlot p_40410_) {
+        return MAX_DAMAGE_ARRAY[p_40410_.getIndex()] * this.durability;
     }
 
     @Override
-    public int getDefenseForType(ArmorItem.Type type) {
-        return this.damageReduction[type.getSlot().getIndex()];
+    public int getDefenseForSlot(EquipmentSlot p_40411_) {
+        return this.damageReduction[p_40411_.getIndex()];
     }
 
     @Override

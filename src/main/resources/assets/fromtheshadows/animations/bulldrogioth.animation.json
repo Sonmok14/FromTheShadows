@@ -5391,6 +5391,9 @@
 				}
 			}
 		},
+		"animation.bulldrogioth.none": {
+			"loop": true
+		},
 		"animation.bulldrogioth.thorn_combo_left": {
 			"animation_length": 2.25,
 			"bones": {

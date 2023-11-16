@@ -5,7 +5,6 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.Packet;
@@ -27,7 +26,10 @@ import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ConcretePowderBlock;
+import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -106,45 +108,45 @@ public class FallingBlockEntity extends Entity {
             }
 
             this.move(MoverType.SELF, this.getDeltaMovement());
-            if (!this.level().isClientSide) {
+            if (!this.level.isClientSide) {
                 BlockPos blockpos = this.blockPosition();
                 boolean flag = this.blockState.getBlock() instanceof ConcretePowderBlock;
-                boolean flag1 = flag && this.level().getFluidState(blockpos).is(FluidTags.WATER);
+                boolean flag1 = flag && this.level.getFluidState(blockpos).is(FluidTags.WATER);
                 double d0 = this.getDeltaMovement().lengthSqr();
                 if (flag && d0 > 1.0D) {
-                    BlockHitResult blockhitresult = this.level().clip(new ClipContext(new Vec3(this.xo, this.yo, this.zo), this.position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.SOURCE_ONLY, this));
-                    if (blockhitresult.getType() != HitResult.Type.MISS && this.level().getFluidState(blockhitresult.getBlockPos()).is(FluidTags.WATER)) {
+                    BlockHitResult blockhitresult = this.level.clip(new ClipContext(new Vec3(this.xo, this.yo, this.zo), this.position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.SOURCE_ONLY, this));
+                    if (blockhitresult.getType() != HitResult.Type.MISS && this.level.getFluidState(blockhitresult.getBlockPos()).is(FluidTags.WATER)) {
                         blockpos = blockhitresult.getBlockPos();
                         flag1 = true;
                     }
                 }
 
-                if (!this.onGround() && !flag1) {
-                    if (!this.level().isClientSide && (this.time > 100 && (blockpos.getY() <= this.level().getMinBuildHeight() || blockpos.getY() > this.level().getMaxBuildHeight()) || this.time > 600)) {
-                        if (this.dropItem && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+                if (!this.onGround && !flag1) {
+                    if (!this.level.isClientSide && (this.time > 100 && (blockpos.getY() <= this.level.getMinBuildHeight() || blockpos.getY() > this.level.getMaxBuildHeight()) || this.time > 600)) {
+                        if (this.dropItem && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
                             this.spawnAtLocation(block);
                         }
 
                         this.discard();
                     }
                 } else {
-                    BlockState blockstate = this.level().getBlockState(blockpos);
+                    BlockState blockstate = this.level.getBlockState(blockpos);
                     this.setDeltaMovement(this.getDeltaMovement().multiply(0.7D, -0.5D, 0.7D));
                     if (!blockstate.is(Blocks.MOVING_PISTON)) {
                         if (!this.cancelDrop) {
-                            boolean flag2 = blockstate.canBeReplaced(new DirectionalPlaceContext(this.level(), blockpos, Direction.DOWN, ItemStack.EMPTY, Direction.UP));
-                            boolean flag3 = FallingBlock.isFree(this.level().getBlockState(blockpos.below())) && (!flag || !flag1);
-                            boolean flag4 = this.blockState.canSurvive(this.level(), blockpos) && !flag3;
+                            boolean flag2 = blockstate.canBeReplaced(new DirectionalPlaceContext(this.level, blockpos, Direction.DOWN, ItemStack.EMPTY, Direction.UP));
+                            boolean flag3 = FallingBlock.isFree(this.level.getBlockState(blockpos.below())) && (!flag || !flag1);
+                            boolean flag4 = this.blockState.canSurvive(this.level, blockpos) && !flag3;
                             if (flag2 && flag4) {
-                                if (this.blockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.level().getFluidState(blockpos).getType() == Fluids.WATER) {
+                                if (this.blockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.level.getFluidState(blockpos).getType() == Fluids.WATER) {
                                     this.blockState = this.blockState.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true));
                                 }
 
-                                if (this.level().setBlock(blockpos, this.blockState, 3)) {
-                                    ((ServerLevel)this.level()).getChunkSource().chunkMap.broadcast(this, new ClientboundBlockUpdatePacket(blockpos, this.level().getBlockState(blockpos)));
+                                if (this.level.setBlock(blockpos, this.blockState, 3)) {
+                                    ((ServerLevel)this.level).getChunkSource().chunkMap.broadcast(this, new ClientboundBlockUpdatePacket(blockpos, this.level.getBlockState(blockpos)));
                                     this.discard();
                                     if (this.blockData != null && this.blockState.hasBlockEntity()) {
-                                        BlockEntity blockentity = this.level().getBlockEntity(blockpos);
+                                        BlockEntity blockentity = this.level.getBlockEntity(blockpos);
                                         if (blockentity != null) {
                                             CompoundTag compoundtag = blockentity.saveWithoutMetadata();
 
@@ -161,13 +163,13 @@ public class FallingBlockEntity extends Entity {
                                             blockentity.setChanged();
                                         }
                                     }
-                                } else if (this.dropItem && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+                                } else if (this.dropItem && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
                                     this.discard();
                                     this.spawnAtLocation(block);
                                 }
                             } else {
                                 this.discard();
-                                if (this.dropItem && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+                                if (this.dropItem && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
                                     this.spawnAtLocation(block);
                                 }
                             }
@@ -202,7 +204,7 @@ public class FallingBlockEntity extends Entity {
     }
 
     protected void readAdditionalSaveData(CompoundTag p_31964_) {
-        this.blockState = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), p_31964_.getCompound("BlockState"));
+        this.blockState = NbtUtils.readBlockState(p_31964_.getCompound("BlockState"));
         this.time = p_31964_.getInt("Time");
         if (p_31964_.contains("HurtEntities", 99)) {
             this.hurtEntities = p_31964_.getBoolean("HurtEntities");

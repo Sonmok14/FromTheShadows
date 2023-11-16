@@ -113,10 +113,9 @@ public class ScreenShakeEntity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
-
     public static void ScreenShake(Level world, Vec3 position, float radius, float magnitude, int duration, int fadeDuration) {
         if (!world.isClientSide) {
             ScreenShakeEntity ScreenShake = new ScreenShakeEntity(world, position, radius, magnitude, duration, fadeDuration);
