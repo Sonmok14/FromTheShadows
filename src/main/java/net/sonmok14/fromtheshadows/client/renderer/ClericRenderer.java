@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.sonmok14.fromtheshadows.client.models.ClericModel;
 import net.sonmok14.fromtheshadows.client.renderer.layer.ClericLayerRenderer;
 import net.sonmok14.fromtheshadows.server.entity.ClericEntity;
+import net.sonmok14.fromtheshadows.server.entity.NehemothEntity;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 import software.bernie.geckolib3.util.RenderUtils;
@@ -39,6 +40,14 @@ public class ClericRenderer extends GeoEntityRenderer<ClericEntity> {
     public void render(ClericEntity animatable, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         super.render(animatable, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
+
+    @Override
+    public RenderType getRenderType(ClericEntity animatable, float partialTick, PoseStack poseStack,
+                                    MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight,
+                                    ResourceLocation texture) {
+        return RenderType.entityTranslucent(getTextureLocation(animatable));
+    }
+
 
     @Override
     public void renderRecursively(GeoBone bone, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

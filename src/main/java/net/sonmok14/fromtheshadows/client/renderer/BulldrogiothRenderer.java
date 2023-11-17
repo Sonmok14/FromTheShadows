@@ -7,10 +7,12 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.sonmok14.fromtheshadows.client.models.BulldrogiothModel;
 import net.sonmok14.fromtheshadows.client.renderer.layer.BulldrogiothLayerRenderer;
 import net.sonmok14.fromtheshadows.server.entity.BulldrogiothEntity;
+import net.sonmok14.fromtheshadows.server.entity.NehemothEntity;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
@@ -34,6 +36,14 @@ public class BulldrogiothRenderer extends GeoEntityRenderer<BulldrogiothEntity> 
     protected float getDeathMaxRotation(BulldrogiothEntity animatable) {
         return 0;
     }
+
+    @Override
+    public RenderType getRenderType(BulldrogiothEntity animatable, float partialTick, PoseStack poseStack,
+                                    MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight,
+                                    ResourceLocation texture) {
+        return RenderType.entityTranslucent(getTextureLocation(animatable));
+    }
+
 
     @Override
     public void render(GeoModel model, BulldrogiothEntity animatable, float partialTick, RenderType type,

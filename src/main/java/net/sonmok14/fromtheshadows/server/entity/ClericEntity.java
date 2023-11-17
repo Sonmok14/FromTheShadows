@@ -118,21 +118,25 @@ public class ClericEntity extends AbstractIllager implements IAnimatable {
                     .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.melee_attack",ILoopType.EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
-        if(this.attackID == 0)
+        if(this.attackID == 0) {
             if (event.isMoving() && isAggressive()) {
                 event.getController().setAnimationSpeed(1);
                 event.getController()
-                        .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.run",ILoopType.EDefaultLoopTypes.LOOP));
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.run", ILoopType.EDefaultLoopTypes.LOOP));
+
                 return PlayState.CONTINUE;
             }
-        if (event.isMoving()) {
-            event.getController()
-                    .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.walk",ILoopType.EDefaultLoopTypes.LOOP));
-            return PlayState.CONTINUE;
+            if (event.isMoving()) {
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.walk", ILoopType.EDefaultLoopTypes.LOOP));
+                return PlayState.CONTINUE;
+            }
+            if (!event.isMoving()) {
+                event.getController()
+                        .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.idle", ILoopType.EDefaultLoopTypes.LOOP));
+                return PlayState.CONTINUE;
+            }
         }
-        event.getController()
-                .setAnimation(new AnimationBuilder().addAnimation("animation.cultist.idle",ILoopType.EDefaultLoopTypes.LOOP));
-
         return PlayState.STOP;
     }
 
