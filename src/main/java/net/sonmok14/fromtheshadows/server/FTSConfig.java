@@ -18,10 +18,6 @@ public class FTSConfig {
         SERVER_SPEC = commonSpecPair.getRight();
     }
     public static class Server {
-        public final ConfigValue<Double> endigo_health;
-        public final ConfigValue<Double> endigo_projectile_damage;
-        public final ConfigValue<Double> endigo_melee_damage;
-
         public final ConfigValue<Double> nehemoth_health;
         public final ConfigValue<Double> nehemoth_laser_damage;
         public final ConfigValue<Double> nehemoth_ranged_damage;
@@ -77,23 +73,16 @@ public class FTSConfig {
             this.cleric_melee_damage = builder.translation("text.fromtheshadows.config.cleric_melee_damage")
                     .defineInRange("Sets Cleric Melee Damage", 1, 1, Double.MAX_VALUE);
             builder.pop();
-            builder.push("Endigo");
-            this.endigo_health = builder.translation("text.fromtheshadows.config.endigo_health")
-                    .defineInRange("Sets Endigo Max Health", 30, 1, Double.MAX_VALUE);
-            this.endigo_melee_damage = builder.translation("text.fromtheshadows.config.endigo_projectile_damage")
-                    .defineInRange("Sets Endigo Projectile Damage", 5, 1, Double.MAX_VALUE);
-            this.endigo_projectile_damage = builder.translation("text.fromtheshadows.config.endigo_melee_damage")
-                    .defineInRange("Sets Endigo Melee Damage", 1, 1, Double.MAX_VALUE);
-            builder.pop();
             builder.push("SpawnRate");
             soulfirenehemothSpawnRate = builder.comment("Changed Soulfire Nehemoth SpawnRate. [0 ~ 100]")
-                    .defineInRange("Nehemoth SpawnRate", 2, 0, 100);
+                    .defineInRange("SoulFire Nehemoth SpawnRate", 2, 0, 100);
             nehemothSpawnRate = builder.comment("Changed Nehemoth SpawnRate. [0 ~ 100]")
                     .defineInRange("Nehemoth SpawnRate", 8, 0, 100);
             bulldrogiothSpawnRate = builder.comment("Changed Bulldrogioth SpawnRate. [0 ~ 100]")
                     .defineInRange("Bulldrogioth SpawnRate", 5, 0, 100);
             froglinSpawnRate = builder.comment("Changed Froglin SpawnRate. [0 ~ 100]")
                     .defineInRange("Froglin SpawnRate", 2, 0, 100);
+            builder.pop();
         }
     }
 

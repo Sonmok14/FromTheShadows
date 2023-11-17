@@ -38,7 +38,7 @@ public class FTSBiomeModifier implements BiomeModifier {
         }
         if (FTSConfig.SERVER.soulfirenehemothSpawnRate.get() > 0) {
             if (biome.is(Biomes.SOUL_SAND_VALLEY)) {
-                builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(EntityRegistry.NEHEMOTH.get(), FTSConfig.SERVER.nehemothSpawnRate.get(), 1, 1));
+                builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(EntityRegistry.NEHEMOTH.get(), FTSConfig.SERVER.soulfirenehemothSpawnRate.get(), 1, 1));
             }
         }
     }
