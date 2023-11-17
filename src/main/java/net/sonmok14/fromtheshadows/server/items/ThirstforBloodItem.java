@@ -116,8 +116,6 @@ public class ThirstforBloodItem extends SwordItem implements IAnimatable {
         return InteractionResultHolder.pass(itemStack);
         }
 
-
-
     @Override
     public int getUseDuration(ItemStack stack) {
         return 72000;

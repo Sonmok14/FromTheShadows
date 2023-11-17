@@ -5,12 +5,15 @@ import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -23,7 +26,11 @@ import net.minecraftforge.common.ForgeMod;
 import net.sonmok14.fromtheshadows.client.renderer.items.DevilSplitterRenderer;
 import net.sonmok14.fromtheshadows.client.renderer.items.ThirstforBloodRenderer;
 import net.sonmok14.fromtheshadows.server.entity.FTSMobType;
+import net.sonmok14.fromtheshadows.server.entity.projectiles.PlayerBreathEntity;
+import net.sonmok14.fromtheshadows.server.entity.projectiles.ScreenShakeEntity;
+import net.sonmok14.fromtheshadows.server.utils.registry.EntityRegistry;
 import net.sonmok14.fromtheshadows.server.utils.registry.ItemRegistry;
+import net.sonmok14.fromtheshadows.server.utils.registry.SoundRegistry;
 import net.sonmok14.fromtheshadows.server.utils.registry.ToolMaterialRegistry;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -66,7 +73,7 @@ public class DevilSplitterItem extends SwordItem implements IAnimatable {
                 p_43278_.hurtAndBreak(-5, attacker, p -> p.broadcastBreakEvent(attacker.getUsedItemHand()));
             }
             if (attacker.isSprinting()) {
-                target.hurt(DamageSource.mobAttack(attacker), (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.25f);
+                target.hurt(DamageSource.mobAttack(attacker), (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5f);
                 attacker.heal((float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) / 10);
             }
         }
@@ -77,7 +84,6 @@ public class DevilSplitterItem extends SwordItem implements IAnimatable {
     public int getEnchantmentValue() {
         return 18;
     }
-
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
         return equipmentSlot == EquipmentSlot.MAINHAND ? this.attributeModifierMultimap : super.getDefaultAttributeModifiers(equipmentSlot);
     }
