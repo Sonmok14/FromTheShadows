@@ -39,6 +39,8 @@ public class FTSConfig {
         public final ConfigValue<Double> cleric_projectile_damage;
         public final ConfigValue<Double> cleric_melee_damage;
         public final ConfigValue<Double> cleric_health;
+
+        public final ForgeConfigSpec.IntValue soulfirenehemothSpawnRate;
         public final ForgeConfigSpec.IntValue nehemothSpawnRate;
         public final ForgeConfigSpec.IntValue bulldrogiothSpawnRate;
         public final ForgeConfigSpec.IntValue froglinSpawnRate;
@@ -84,8 +86,10 @@ public class FTSConfig {
                     .defineInRange("Sets Endigo Melee Damage", 1, 1, Double.MAX_VALUE);
             builder.pop();
             builder.push("SpawnRate");
-            nehemothSpawnRate = builder.comment("Changed Nehemoth SpawnRate. [0 ~ 100]")
+            soulfirenehemothSpawnRate = builder.comment("Changed Soulfire Nehemoth SpawnRate. [0 ~ 100]")
                     .defineInRange("Nehemoth SpawnRate", 2, 0, 100);
+            nehemothSpawnRate = builder.comment("Changed Nehemoth SpawnRate. [0 ~ 100]")
+                    .defineInRange("Nehemoth SpawnRate", 8, 0, 100);
             bulldrogiothSpawnRate = builder.comment("Changed Bulldrogioth SpawnRate. [0 ~ 100]")
                     .defineInRange("Bulldrogioth SpawnRate", 5, 0, 100);
             froglinSpawnRate = builder.comment("Changed Froglin SpawnRate. [0 ~ 100]")
