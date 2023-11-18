@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -312,7 +313,7 @@ public class NehemothEntity extends Monster implements Enemy, IAnimatable {
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
             reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        if(this.isBiomeNether(worldIn, this.blockPosition())){
+        if(this.isBiomeSoulSandValley(worldIn, this.blockPosition())){
             this.setVariant(1);
         }else{
             this.setVariant(0);
@@ -322,7 +323,10 @@ public class NehemothEntity extends Monster implements Enemy, IAnimatable {
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
-    private static boolean isBiomeNether(LevelAccessor worldIn, BlockPos position) {
+    private static boolean isNether(ServerLevelAccessor worldIn, BlockPos position) {
+        return worldIn.getBiome(position).is(BiomeTags.IS_NETHER);
+    }
+    private static boolean isBiomeSoulSandValley(LevelAccessor worldIn, BlockPos position) {
         return worldIn.getBiome(position).is(Biomes.SOUL_SAND_VALLEY);
     }
 
@@ -331,12 +335,16 @@ public class NehemothEntity extends Monster implements Enemy, IAnimatable {
     }
 
     public static <T extends Mob> boolean canNehemothSpawn(EntityType<NehemothEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        if (isBiomeNether(iServerWorld, pos))
+        if (isNether(iServerWorld, pos))
         {
-            return reason == MobSpawnType.SPAWNER || checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && random.nextInt(4) == 0;
+            if(isBiomeSoulSandValley(iServerWorld, pos))
+            {
+                return reason == MobSpawnType.SPAWNER || checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && random.nextInt(18) == 0;
+            }
+            return reason == MobSpawnType.SPAWNER || checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
         }
         else
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+            return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
     }
     @Override
     public MobType getMobType() {
