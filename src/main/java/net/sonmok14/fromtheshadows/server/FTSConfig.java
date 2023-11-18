@@ -7,7 +7,6 @@ import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
-import java.util.function.Supplier;
 
 public class FTSConfig {
     public static final Server SERVER;
