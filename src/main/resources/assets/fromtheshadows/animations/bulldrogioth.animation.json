@@ -97,14 +97,6 @@
 						"vector": [0, "math.sin(20+query.anim_time*200)*-2", "math.cos(-50+query.anim_time*200)*2"]
 					}
 				}
-			},
-			"sound_effects": {
-				"0.5417": {
-					"effect": "walksoundkey"
-				},
-				"1.4583": {
-					"effect": "walksoundkey"
-				}
 			}
 		},
 		"animation.bulldrogioth.swim": {

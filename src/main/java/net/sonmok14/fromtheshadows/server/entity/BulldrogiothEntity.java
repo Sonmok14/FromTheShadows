@@ -253,11 +253,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
                             return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.walk"));
                         }
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.bulldrogioth.idle"));
-                }).setSoundKeyframeHandler(event -> {
-                        if (event.getKeyframeData().getSound().matches("walksoundkey"))
-                            if (this.level().isClientSide && !isInWater())
-                                this.getCommandSenderWorld().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(), SoundSource.HOSTILE, 0.2F, 0.9F + this.getRandom().nextFloat() * 0.1F, false);
-                    }));
+                }));
 
         controllerRegistrar.add(
                 new AnimationController<>(this, "attack", 15, event -> {
@@ -556,6 +552,19 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
             --this.growlingProgress;
         }
 
+    }
+
+    protected float nextStep() {
+        if(this.isAggressive())
+        {
+            return this.moveDist + 2.5F;
+        }
+        else
+            return this.moveDist + 3F;
+    }
+
+    protected void playStepSound(BlockPos p_33350_, BlockState p_33351_) {
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(),SoundSource.HOSTILE, 1F, 0.5F + this.getRandom().nextFloat() * 0.1F);
     }
 
     public static <T extends Mob> boolean canBulldrogiothSpawn(EntityType<BulldrogiothEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {

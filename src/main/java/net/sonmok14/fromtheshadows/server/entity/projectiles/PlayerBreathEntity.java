@@ -27,6 +27,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.sonmok14.fromtheshadows.client.models.ControlledAnimation;
+import net.sonmok14.fromtheshadows.server.FTSConfig;
 import net.sonmok14.fromtheshadows.server.utils.registry.DamageRegistry;
 
 import java.util.ArrayList;
@@ -149,11 +150,19 @@ public class PlayerBreathEntity extends Entity {
                 for (LivingEntity target : hit) {
                     if (target != this.caster) {
 
-                        boolean flag = target.hurt(DamageRegistry.causeIncinerateDamage(caster), 9);
+                        boolean flag = target.hurt(DamageRegistry.causeIncinerateDamage(caster), FTSConfig.SERVER.thirst_for_blood_laser_damage.get().floatValue());
                             if (flag) {
                                 target.setSecondsOnFire(5);
                             }
-
+                        if(!target.isAlive())
+                        {
+                            for(LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(4D))) {
+                                if(livingentity != caster) {
+                                    livingentity.hurt(DamageRegistry.causeIncinerateDamage(caster), 4);
+                                    livingentity.setSecondsOnFire(40);
+                                }
+                            }
+                        }
                     }
 
 

@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -203,13 +204,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.nehemoth.none"));
                     }
                     return PlayState.STOP;
-                }).setSoundKeyframeHandler(event -> {
-                    if (event.getKeyframeData().getSound().matches("stompkey")) {
-                        if (this.level().isClientSide) {
-                            this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(), SoundSource.HOSTILE, 0.5F, 0.5F + this.getRandom().nextFloat() * 0.1F, false);
-                        }
-                    }
-    }));
+                }));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -287,7 +282,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
             reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        if(this.isBiomeNether(worldIn, this.blockPosition())){
+        if(this.isBiomeSoulSandValley(worldIn, this.blockPosition())){
             this.setVariant(1);
         }else{
             this.setVariant(0);
@@ -297,7 +292,10 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
-    private static boolean isBiomeNether(LevelAccessor worldIn, BlockPos position) {
+    private static boolean isNether(ServerLevelAccessor worldIn, BlockPos position) {
+        return worldIn.getBiome(position).is(BiomeTags.IS_NETHER);
+    }
+    private static boolean isBiomeSoulSandValley(LevelAccessor worldIn, BlockPos position) {
         return worldIn.getBiome(position).is(Biomes.SOUL_SAND_VALLEY);
     }
 
@@ -306,9 +304,9 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
     }
 
     public static <T extends Mob> boolean canNehemothSpawn(EntityType<NehemothEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        if (isBiomeNether(iServerWorld, pos))
+    if (isNether(iServerWorld, pos))
         {
-            return reason == MobSpawnType.SPAWNER || checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && random.nextInt(4) == 0;
+            return reason == MobSpawnType.SPAWNER || checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && random.nextInt(6) == 0;
         }
         else
         return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
@@ -325,6 +323,25 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
             return MobType.UNDEAD;
         }
         return FTSMobType.DEMON;
+    }
+
+    protected float nextStep() {
+        if(this.isAggressive())
+        {
+            return this.moveDist + 2F;
+        }
+        else
+            return this.moveDist + 3.3F;
+    }
+
+    protected void playStepSound(BlockPos p_33350_, BlockState p_33351_) {
+        if(this.isStone())
+        {
+            super.playStepSound(p_33350_, p_33351_);
+        }
+        else
+
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(),SoundSource.HOSTILE, 1F, 0.5F + this.getRandom().nextFloat() * 0.1F);
     }
 
     public boolean canBeSeenAsEnemy() {
@@ -556,7 +573,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         double d0 = p_33340_.getX() - this.getX();
         double d1 = p_33340_.getZ() - this.getZ();
         double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
-        p_33340_.push(d0 / d2, 0.2D, d1 / d2);
+        p_33340_.push(d0 / d2, 0.05D, d1 / d2);
     }
     protected void blockedByShield(LivingEntity p_33361_) {
             if (this.random.nextDouble() < 0.5D && this.attackID == BITE_ATTACK) {
@@ -1164,6 +1181,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
                 nehemoth.level().addFreshEntity(doomBreath);
             }
             if (nehemoth.attacktick == 18) {
+                ScreenShakeEntity.ScreenShake(level(), position(), 30, 0.1f, 30, 30);
                 nehemoth.playSound(SoundRegistry.SOUL_LASER.get(), 3f, 0.8F + nehemoth.getRandom().nextFloat() * 0.1F);
             }
             if (nehemoth.attacktick >= 15) {

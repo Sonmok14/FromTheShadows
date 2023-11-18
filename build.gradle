@@ -93,6 +93,7 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+    implementation fg.deobf("curse.maven:jade-324717:4768593")
     implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:4689044")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${geckolib_version}")
     minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"

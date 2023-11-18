@@ -2101,14 +2101,6 @@
 						"vector": [0, 0, -7.5]
 					}
 				}
-			},
-			"sound_effects": {
-				"0.4583": {
-					"effect": "stompkey"
-				},
-				"1.3333": {
-					"effect": "stompkey"
-				}
 			}
 		},
 		"animation.nehemoth.smash": {
@@ -3859,14 +3851,6 @@
 					"position": {
 						"vector": ["-math.clamp(math.sin(-50+query.anim_time*400)*2,-2,2)", 0, 0]
 					}
-				}
-			},
-			"sound_effects": {
-				"0.2917": {
-					"effect": "stompkey"
-				},
-				"0.75": {
-					"effect": "stompkey"
 				}
 			}
 		},

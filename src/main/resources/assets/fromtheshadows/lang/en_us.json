@@ -4,6 +4,12 @@
   "entity.fromtheshadows.froglin": "Froglin",
   "entity.fromtheshadows.bulldrogioth": "Bulldrogioth",
   "entity.fromtheshadows.coral_thorn": "Coral Thorn",
+  "entity.fromtheshadows.player_breath": "Player Breath",
+  "entity.fromtheshadows.doom_breath": "Doom Breath",
+  "entity.fromtheshadows.falling_block": "Falling Block",
+  "entity.fromtheshadows.screen_shake": "Screen Shake Effect",
+  "entity.fromtheshadows.throwing_dagger": "Throwing Dagger",
+  "entity.fromtheshadows.froglin_vomit": "Froglin Vomit",
 
   "item.fromtheshadows.cultist_spawn_egg": "Cultist spawn egg",
   "item.fromtheshadows.froglin_spawn_egg": "Froglin spawn egg",
