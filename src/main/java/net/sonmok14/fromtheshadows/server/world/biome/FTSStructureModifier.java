@@ -13,7 +13,7 @@ import net.sonmok14.fromtheshadows.server.utils.registry.WorldRegistry;
 
 
 public class FTSStructureModifier implements StructureModifier {
-    private static final RegistryObject<Codec<? extends StructureModifier>> SERIALIZER = RegistryObject.create(new ResourceLocation(Fromtheshadows.MODID, "am_structure_spawns"), ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, Fromtheshadows.MODID);
+    private static final RegistryObject<Codec<? extends StructureModifier>> SERIALIZER = RegistryObject.create(new ResourceLocation(Fromtheshadows.MODID, "fts_structure_spawns"), ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, Fromtheshadows.MODID);
 
     public FTSStructureModifier() {
     }
