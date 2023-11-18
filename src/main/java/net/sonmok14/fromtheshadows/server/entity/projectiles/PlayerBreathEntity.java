@@ -11,9 +11,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,7 +28,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.sonmok14.fromtheshadows.client.models.ControlledAnimation;
 import net.sonmok14.fromtheshadows.server.FTSConfig;
-import net.sonmok14.fromtheshadows.server.entity.NehemothEntity;
 import net.sonmok14.fromtheshadows.server.utils.registry.DamageRegistry;
 
 import java.util.ArrayList;
@@ -163,7 +159,7 @@ public class PlayerBreathEntity extends Entity {
             if (!level.isClientSide) {
                 for (LivingEntity target : hit) {
                     if (target != this.caster) {
-                        boolean flag = target.hurt(DamageRegistry.causeIncinerateDamage(caster), 9);
+                        boolean flag = target.hurt(DamageRegistry.causeIncinerateDamage(caster), FTSConfig.SERVER.thirst_for_blood_laser_damage.get().floatValue());
                             if (flag) {
                                 target.setSecondsOnFire(5);
                             }

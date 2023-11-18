@@ -7,6 +7,7 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.sonmok14.fromtheshadows.server.FTSConfig;
 import net.sonmok14.fromtheshadows.server.Fromtheshadows;
 import net.sonmok14.fromtheshadows.server.items.*;
 import net.sonmok14.fromtheshadows.server.items.ArmorMaterials;
@@ -14,9 +15,9 @@ import org.checkerframework.checker.units.qual.C;
 
 public class ItemRegistry {
 
-    public static ArmorMaterials CRUST_ARMOR_MATERIAL = new ArmorMaterials("crust", 40, new int[]{3, 5, 7, 3}, 12, SoundEvents.ARMOR_EQUIP_NETHERITE, 6, 0.4f);
-    public static ArmorMaterials DIABOLIUM_ARMOR_MATERIAL = new ArmorMaterials("diabolium", 24, new int[]{3, 6, 8, 3}, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, 3, 0.2f);
-    public static ArmorMaterials PLAGUE_ARMOR_MATERIAL = new ArmorMaterials("plague", 8, new int[]{2, 3, 3, 2}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0, 0f);
+    public static ArmorMaterials CRUST_ARMOR_MATERIAL = new ArmorMaterials("crust", FTSConfig.SERVER.crust_armor_durability.get().intValue(), new int[]{FTSConfig.SERVER.crust_helmet_armor_value.get().intValue(), FTSConfig.SERVER.crust_leggings_armor_value.get().intValue(), FTSConfig.SERVER.crust_chestplate_armor_value.get().intValue(), FTSConfig.SERVER.crust_helmet_armor_value.get().intValue()}, 12, SoundEvents.ARMOR_EQUIP_NETHERITE, 6, 0.4f);
+    public static ArmorMaterials DIABOLIUM_ARMOR_MATERIAL = new ArmorMaterials("diabolium", 24, new int[]{FTSConfig.SERVER.diabolium_helmet_armor_value.get().intValue(), FTSConfig.SERVER.diabolium_leggings_armor_value.get().intValue(), FTSConfig.SERVER.diabolium_chestplate_armor_value.get().intValue(), FTSConfig.SERVER.diabolium_helmet_armor_value.get().intValue()}, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, 3, 0.2f);
+    public static ArmorMaterials PLAGUE_ARMOR_MATERIAL = new ArmorMaterials("plague", FTSConfig.SERVER.plague_mask_durability.get().intValue(), new int[]{2, 3, 3, FTSConfig.SERVER.plague_mask_armor_value.get().intValue()}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0, 0f);
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Fromtheshadows.MODID);
 
