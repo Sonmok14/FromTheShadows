@@ -51,6 +51,12 @@ public class EntityRegistry {
             .setUpdateInterval(Integer.MAX_VALUE)
             .build(Fromtheshadows.MODID + ":player_breath"));
 
+    public static final RegistryObject<EntityType<PlayerProjectileEntity>> PLAYER_PROJECTILE = ENTITY_TYPES.register("player_projectile", () -> EntityType.Builder.<PlayerProjectileEntity>of(PlayerProjectileEntity::new, MobCategory.MISC)
+            .noSummon()
+            .sized(1.0f, 1.0f)
+            .setUpdateInterval(Integer.MAX_VALUE)
+            .build(Fromtheshadows.MODID + ":player_projectile"));
+
     public static final RegistryObject<EntityType<CoralThornEntity>> CORAL_THORN = ENTITY_TYPES.register("coral_thorn", () -> EntityType.Builder.<CoralThornEntity>of(CoralThornEntity::new, MobCategory.MISC)
             .sized(1.0f, 1.0f)
             .noSummon()

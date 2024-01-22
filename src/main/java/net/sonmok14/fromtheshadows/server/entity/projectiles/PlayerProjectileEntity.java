@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PlayerBreathEntity extends Entity {
+public class PlayerProjectileEntity extends Entity {
     public static final double RADIUS = 30;
     public LivingEntity caster;
     public double endPosX, endPosY, endPosZ;
@@ -47,19 +47,19 @@ public class PlayerBreathEntity extends Entity {
 
     public Direction blockSide = null;
 
-    private static final EntityDataAccessor<Float> YAW = SynchedEntityData.defineId(PlayerBreathEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> PITCH = SynchedEntityData.defineId(PlayerBreathEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(PlayerBreathEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> CASTER = SynchedEntityData.defineId(PlayerBreathEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> HEAD = SynchedEntityData.defineId(PlayerBreathEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> FIRE = SynchedEntityData.defineId(PlayerBreathEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> YAW = SynchedEntityData.defineId(PlayerProjectileEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> PITCH = SynchedEntityData.defineId(PlayerProjectileEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(PlayerProjectileEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> CASTER = SynchedEntityData.defineId(PlayerProjectileEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> HEAD = SynchedEntityData.defineId(PlayerProjectileEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> FIRE = SynchedEntityData.defineId(PlayerProjectileEntity.class, EntityDataSerializers.BOOLEAN);
     public float prevYaw;
     public float prevPitch;
 
     @OnlyIn(Dist.CLIENT)
     private Vec3[] attractorPos;
 
-    public PlayerBreathEntity(EntityType<? extends PlayerBreathEntity> type, Level world) {
+    public PlayerProjectileEntity(EntityType<? extends PlayerProjectileEntity> type, Level world) {
         super(type, world);
         noCulling = true;
         if (world.isClientSide) {
@@ -67,7 +67,7 @@ public class PlayerBreathEntity extends Entity {
         }
     }
 
-    public PlayerBreathEntity(EntityType<? extends PlayerBreathEntity> type, Level world, LivingEntity caster, double x, double y, double z, float yaw, float pitch, int duration) {
+    public PlayerProjectileEntity(EntityType<? extends PlayerProjectileEntity> type, Level world, LivingEntity caster, double x, double y, double z, float yaw, float pitch, int duration) {
         this(type, world);
         this.caster = caster;
         this.setYaw(yaw);
@@ -154,6 +154,15 @@ public class PlayerBreathEntity extends Entity {
                             if (flag) {
                                 target.setSecondsOnFire(5);
                             }
+                        if(!target.isAlive())
+                        {
+                            for(LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(4D))) {
+                                if(livingentity != caster) {
+                                    livingentity.hurt(DamageRegistry.causeIncinerateDamage(caster), 4);
+                                    livingentity.setSecondsOnFire(40);
+                                }
+                            }
+                        }
                     }
 
 

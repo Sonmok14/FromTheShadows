@@ -95,11 +95,11 @@ public class FTSConfig {
             clericSpawnRate = builder.comment("Changed Cleric SpawnRate. [0 ~ 100]")
                     .defineInRange("Cleric SpawnRate", 5, 0, 100);
             soulfirenehemothSpawnRate = builder.comment("Changed Soulfire Nehemoth SpawnRate. [0 ~ 100]")
-                    .defineInRange("SoulFire Nehemoth SpawnRate", 2, 0, 100);
+                    .defineInRange("SoulFire Nehemoth SpawnRate", 1, 0, 100);
             nehemothSpawnRate = builder.comment("Changed Nehemoth SpawnRate. [0 ~ 100]")
-                    .defineInRange("Nehemoth SpawnRate", 8, 0, 100);
+                    .defineInRange("Nehemoth SpawnRate", 2, 0, 100);
             nehemothFortressSpawnRate = builder.comment("Changed Nehemoth SpawnRate in Fortress. [0 ~ 100]")
-                    .defineInRange("Nehemoth SpawnRate in Fortress", 5, 0, 100);
+                    .defineInRange("Nehemoth SpawnRate in Fortress", 1, 0, 100);
             bulldrogiothShipwreckSpawnRate = builder.comment("Changed Bulldrogioth SpawnRate in Ocean Ruin. [0 ~ 100]")
                     .defineInRange("Bulldrogioth SpawnRate in Ocean Ruin", 5, 0, 100);
             bulldrogiothSpawnRate = builder.comment("Changed Bulldrogioth SpawnRate. [0 ~ 100]")

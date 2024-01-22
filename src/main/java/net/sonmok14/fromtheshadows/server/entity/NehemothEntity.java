@@ -48,6 +48,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidType;
 import net.sonmok14.fromtheshadows.server.FTSConfig;
+import net.sonmok14.fromtheshadows.server.Fromtheshadows;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.DoomBreathEntity;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.FallingBlockEntity;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.ScreenShakeEntity;
@@ -209,7 +210,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.FOLLOW_RANGE, 32.0D)
+                .add(Attributes.FOLLOW_RANGE, 26.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.35D)
                 .add(Attributes.MAX_HEALTH, FTSConfig.SERVER.nehemoth_health.get())
                 .add(Attributes.ATTACK_DAMAGE, FTSConfig.SERVER.nehemoth_melee_damage.get())
@@ -278,6 +279,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         this.entityData.set(VARIANT, Integer.valueOf(variant));
     }
 
+
     @Override
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
@@ -299,6 +301,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         return worldIn.getBiome(position).is(Biomes.SOUL_SAND_VALLEY);
     }
 
+
     public int getMaxSpawnClusterSize() {
         return 1;
     }
@@ -308,13 +311,14 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         {
             if(isBiomeSoulSandValley(iServerWorld, pos))
                 {
-                    return reason == MobSpawnType.SPAWNER || checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && random.nextInt(18) == 0;
+                    return reason == MobSpawnType.SPAWNER || checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && random.nextInt(20) == 0;
                 }
-            return reason == MobSpawnType.SPAWNER || checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+            return reason == MobSpawnType.SPAWNER || checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random) && random.nextInt(20) == 0;
         }
         else
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 0 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && random.nextInt(10) == 0 && pos.getY() <= 0 && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
     }
+
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -345,7 +349,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         }
         else
 
-            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(),SoundSource.HOSTILE, 1F, 0.5F + this.getRandom().nextFloat() * 0.1F);
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(),SoundSource.HOSTILE, 0.25F, 0.25F + this.getRandom().nextFloat() * 0.1F);
     }
 
     public boolean canBeSeenAsEnemy() {
@@ -423,7 +427,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         this.setMaxUpStep(1.0F);
         if (this.growlProgress == 80 && isAlive() && !isStone() && this.getTarget() == null)
         {
-            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.NEHEMOTH_IDLE.get(),SoundSource.HOSTILE, 1F, 0.5F + this.getRandom().nextFloat() * 0.1F);
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.NEHEMOTH_IDLE.get(),SoundSource.HOSTILE, 0.5F, 0.5F + this.getRandom().nextFloat() * 0.1F);
         }
         if (this.attackCooldown > 0) {
             --this.attackCooldown;
@@ -434,6 +438,13 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         }
         if (level().isNight()) {
            setStone(false);
+        }
+        if(level().isClientSide)
+        {
+            if(isAlive() && getTarget() != null){
+                Fromtheshadows.PROXY.playWorldSound(this, (byte) 0);
+            }
+
         }
         if (this.attackID != 0) {
             ++this.attacktick;
@@ -460,7 +471,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
             this.breathCooldown = 300;
         }
         if (this.roarCooldown == 0 && this.attackID == ROAR_ATTACK) {
-            this.roarCooldown = 600;
+            this.roarCooldown = 1500;
         }
         if (this.growlProgress == 0) {
             this.growlProgress = 150;
@@ -483,6 +494,12 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
             }
     }
         }
+
+    public void remove(Entity.RemovalReason removalReason) {
+        Fromtheshadows.PROXY.clearSoundCacheFor(this);
+        super.remove(removalReason);
+    }
+
 
     protected PathNavigation createNavigation(Level p_33802_) {
         return new WallClimberNavigation(this, p_33802_);
@@ -667,7 +684,6 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
         if (this.isAlive()) {
             for(LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(8D, 1D, 8D))) {
                 if(!(livingentity instanceof NehemothEntity)) {
-                    livingentity.hurt(this.damageSources().mobAttack(this), FTSConfig.SERVER.nehemoth_ranged_damage.get().floatValue());
                     livingentity.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 70, 0, false, false));
                     livingentity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 130, 0, false, false));
                     this.strongKnockback(livingentity);
@@ -758,14 +774,6 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
     public boolean dampensVibrations() {
         return true;
     }
-    public void checkDespawn() {
-        if (this.level().getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
-            this.discard();
-        } else {
-            this.noActionTime = 0;
-        }
-    }
-
     @Override
     public boolean canRiderInteract() {
         return false;
@@ -1061,7 +1069,7 @@ public class NehemothEntity extends Monster implements Enemy, GeoEntity {
                     float f1 = (float) Math.cos(Math.toRadians(getYRot() + 90));
                     float f2 = (float) Math.sin(Math.toRadians(getYRot() + 90));
                     push(f1 * 0.3, 0, f2 * 0.3);
-                    nehemoth.level().playSound(null, nehemoth.getX(), nehemoth.getY(), nehemoth.getZ(), SoundRegistry.NEHEMOTH_ROAR.get(),SoundSource.HOSTILE, 2f, 0.7F + getRandom().nextFloat() * 0.1F);
+                    nehemoth.level().playSound(null, nehemoth.getX(), nehemoth.getY(), nehemoth.getZ(), SoundRegistry.NEHEMOTH_ROAR.get(),SoundSource.HOSTILE, 1.5f, 0.7F + getRandom().nextFloat() * 0.1F);
                     ScreenShakeEntity.ScreenShake(level(), position(), 50, 0.1f, 30, 30);
                 }
 

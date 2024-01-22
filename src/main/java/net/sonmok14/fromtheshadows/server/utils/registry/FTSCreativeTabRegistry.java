@@ -21,7 +21,6 @@ public static final RegistryObject<CreativeModeTab> ITEM = TABS.register("items"
         entries.accept(ItemRegistry.DIABOLIUM_HEAD.get());
         entries.accept(ItemRegistry.DIABOLIUM_CHEST.get());
         entries.accept(ItemRegistry.DIABOLIUM_LEGGINGS.get());
-
     entries.accept(ItemRegistry.CRUST_HEAD.get());
     entries.accept(ItemRegistry.CRUST_CHEST.get());
     entries.accept(ItemRegistry.CRUST_LEGGINGS.get());

@@ -103,9 +103,9 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(
                 new AnimationController<>(this, "controller", 4, event -> {
-            event.getController().setAnimationSpeed(0.5D);
+
                     if (event.isMoving() && this.walkAnimation.speed() > 0.35F && attackID == 0) {
-                        event.getController().setAnimationSpeed(1D);
+                        event.getController().setAnimationSpeed(1.5D);
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.walk"));
                     }
                     if (event.isMoving() && attackID == 0) {
@@ -135,11 +135,9 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.vomitready"));
                     }
                     if (attackID == 4) {
-                        event.getController().setAnimationSpeed(0.4D);
                         return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.frog.strike"));
                     }
                     if (attackID == 1) {
-                        event.getController().setAnimationSpeed(0.4D);
                         if(isRight())
                             return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.frog.mtright"));
                         else
@@ -150,7 +148,6 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
 
         controllerRegistrar.add(
                 new AnimationController<>(this, "eye", 20, event -> {
-                    event.getController().setAnimationSpeed(0.2D);
                     if (this.blinkProgress <= 10)
                      {
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.eye"));
@@ -164,7 +161,6 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
 
         controllerRegistrar.add(
                 new AnimationController<>(this, "full", 20, event -> {
-                    event.getController().setAnimationSpeed(0.5D);
                     if (this.isFull())
                     {
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.full"));
@@ -174,7 +170,6 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
 
         controllerRegistrar.add(
                 new AnimationController<>(this, "croaking", 20, event -> {
-                    event.getController().setAnimationSpeed(0.5D);
                     if (this.croakingProgress <= 10)
                     {
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.croaking"));
@@ -467,7 +462,6 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
             if (this.SwimProgress > 0F)
                 this.SwimProgress--;
         }
-        ++this.tickCount;
         if (this.attackID != 0) {
             yBodyRot = yHeadRot;
             setYRot(yBodyRot);
@@ -559,13 +553,13 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
 
 
         public void tick() {
-                if (attacktick == 5) {
+                if (attacktick == 4) {
                     float f1 = (float) Math.cos(Math.toRadians(getYRot() + 90));
                     float f2 = (float) Math.sin(Math.toRadians(getYRot() + 90));
 
                     push(f1 * 0.3, 0, f2 * 0.3);
                 }
-                if (attacktick == 10 && distanceTo(attackTarget) <= 3.5F) {
+                if (attacktick == 9 && distanceTo(attackTarget) <= 3.5F) {
                     attackTarget.hurt(damageSources().mobAttack(froglinEntity), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
                 }
             getNavigation().recomputePath();

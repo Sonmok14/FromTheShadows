@@ -564,7 +564,7 @@ public class BulldrogiothEntity extends Monster implements Enemy, GeoEntity, ISe
     }
 
     protected void playStepSound(BlockPos p_33350_, BlockState p_33351_) {
-            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(),SoundSource.HOSTILE, 1F, 0.5F + this.getRandom().nextFloat() * 0.1F);
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.STOMP.get(),SoundSource.HOSTILE, 0.25F, 0.35F + this.getRandom().nextFloat() * 0.1F);
     }
 
     public static <T extends Mob> boolean canBulldrogiothSpawn(EntityType<BulldrogiothEntity> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
