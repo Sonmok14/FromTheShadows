@@ -21,6 +21,7 @@ import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.sonmok14.fromtheshadows.client.ClientProxy;
+import net.sonmok14.fromtheshadows.server.config.FTSConfig;
 import net.sonmok14.fromtheshadows.server.utils.event.ServerEvents;
 import net.sonmok14.fromtheshadows.server.utils.registry.*;
 import net.sonmok14.fromtheshadows.server.world.biome.FTSStructureModifier;
@@ -34,6 +35,7 @@ import java.util.Locale;
 @Mod(Fromtheshadows.MODID)
 public class Fromtheshadows
 {
+
     public static Fromtheshadows instance;
     public static final String MODID = "fromtheshadows";
     public static final Logger LOGGER = LogManager.getLogger();
@@ -42,6 +44,7 @@ public class Fromtheshadows
     public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     public Fromtheshadows()
     {
+
         FTSConfig.loadConfig(FTSConfig.SERVER_SPEC,
                 FMLPaths.CONFIGDIR.get().resolve("fromtheshadows-config.toml").toString());
         instance = this;

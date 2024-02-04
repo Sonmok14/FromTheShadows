@@ -41,7 +41,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.Tags;
-import net.sonmok14.fromtheshadows.server.FTSConfig;
+import net.sonmok14.fromtheshadows.server.config.FTSConfig;
 import net.sonmok14.fromtheshadows.server.entity.ai.*;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.FrogVomit;
 import org.jetbrains.annotations.Nullable;
@@ -150,6 +150,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
                 new AnimationController<>(this, "eye", 20, event -> {
                     if (this.blinkProgress <= 10)
                      {
+                         event.getController().setAnimationSpeed(0.5D);
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.eye"));
                     }
                     return PlayState.STOP;
@@ -170,7 +171,7 @@ public class FroglinEntity extends Monster implements Enemy, GeoEntity, ISemiAqu
 
         controllerRegistrar.add(
                 new AnimationController<>(this, "croaking", 20, event -> {
-                    if (this.croakingProgress <= 10)
+                    if (this.croakingProgress < 4)
                     {
                         return event.setAndContinue(RawAnimation.begin().thenLoop("animation.frog.croaking"));
                     }

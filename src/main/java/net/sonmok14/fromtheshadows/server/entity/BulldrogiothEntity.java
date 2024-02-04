@@ -44,7 +44,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.sonmok14.fromtheshadows.server.FTSConfig;
+import net.sonmok14.fromtheshadows.server.config.FTSConfig;
 import net.sonmok14.fromtheshadows.server.entity.ai.*;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.CoralThornEntity;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.ScreenShakeEntity;

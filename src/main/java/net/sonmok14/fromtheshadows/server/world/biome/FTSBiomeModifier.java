@@ -10,7 +10,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
-import net.sonmok14.fromtheshadows.server.FTSConfig;
+import net.sonmok14.fromtheshadows.server.config.FTSConfig;
 import net.sonmok14.fromtheshadows.server.utils.registry.EntityRegistry;
 import net.sonmok14.fromtheshadows.server.utils.registry.ModBiomeModifiers;
 

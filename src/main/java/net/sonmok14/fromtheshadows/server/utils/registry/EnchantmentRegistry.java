@@ -11,7 +11,9 @@ import net.sonmok14.fromtheshadows.server.enchantment.FreezingEnchantment;
 import net.sonmok14.fromtheshadows.server.enchantment.RetributionEnchantment;
 
 public class EnchantmentRegistry {
+    private static final EquipmentSlot[] ARMOR_SLOTS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     public static final DeferredRegister<Enchantment> ENCHANTMENT = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, Fromtheshadows.MODID);
+
     public static final RegistryObject<Enchantment> DIVINITY = ENCHANTMENT.register("divinity", () -> new DivinityEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> RETRIBUTION = ENCHANTMENT.register("retribution", () -> new RetributionEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND));
     public static final RegistryObject<Enchantment> FREEZING = ENCHANTMENT.register("freezing", () -> new FreezingEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND));

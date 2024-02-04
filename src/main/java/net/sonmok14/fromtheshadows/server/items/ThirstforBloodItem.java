@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 import net.sonmok14.fromtheshadows.client.renderer.items.ThirstforBloodRenderer;
-import net.sonmok14.fromtheshadows.server.FTSConfig;
+import net.sonmok14.fromtheshadows.server.config.FTSConfig;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.PlayerBreathEntity;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.ScreenShakeEntity;
 import net.sonmok14.fromtheshadows.server.utils.registry.EntityRegistry;

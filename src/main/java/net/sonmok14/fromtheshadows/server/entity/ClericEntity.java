@@ -32,7 +32,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import net.sonmok14.fromtheshadows.server.FTSConfig;
+import net.sonmok14.fromtheshadows.server.config.FTSConfig;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.ThrowingDaggerEntity;
 import net.sonmok14.fromtheshadows.server.utils.registry.EffectRegistry;
 import net.sonmok14.fromtheshadows.server.utils.registry.EnchantmentRegistry;

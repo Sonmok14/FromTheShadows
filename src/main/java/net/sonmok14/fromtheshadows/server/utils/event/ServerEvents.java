@@ -1,5 +1,6 @@
 package net.sonmok14.fromtheshadows.server.utils.event;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,14 +28,24 @@ import java.util.List;
 
 public class ServerEvents {
     @SubscribeEvent
+    public void livingTick(LivingEvent.LivingTickEvent event) {
+        BlockPos blockpos = new BlockPos.MutableBlockPos(event.getEntity().getX(), event.getEntity().getEyeY(), event.getEntity().getZ());
+        if (!event.getEntity().level().isClientSide && !event.getEntity().isDeadOrDying()) {
+            int i = event.getEntity().getTicksFrozen();
+            if (event.getEntity().level().getBiome(event.getEntity().chunkPosition().getWorldPosition()).is(Tags.Biomes.IS_COLD)) {
+                if(event.getEntity().level().isRaining() && event.getEntity().level().canSeeSky(blockpos) && event.getEntity().getTicksFrozen() <= 200) {
+                       if(event.getEntity() instanceof Player)
+                        event.getEntity().setTicksFrozen(i + 5);
+                    }
+                }
+            }
+        }
+    @SubscribeEvent
     public void onLivingUpdateEvent(LivingEvent.LivingTickEvent event) {
-
-
         if (event.getEntity() instanceof LivingEntity) {
             LivingEntity attacker = (LivingEntity) event.getEntity();
             List<Item> equipmentList = new ArrayList<>();
             attacker.getAllSlots().forEach((x) -> equipmentList.add(x.getItem()));
-
             List<Item> armorList = new ArrayList<>(1);
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (slot.getType() == EquipmentSlot.Type.ARMOR) {
@@ -41,14 +53,12 @@ public class ServerEvents {
                         armorList.add(attacker.getItemBySlot(slot).getItem());
                     }
                 }
-
                 boolean isWearingAll = armorList
                         .containsAll(Arrays.asList(ItemRegistry.PLAGUE_DOCTOR_MASK.get()));
                 if (isWearingAll) {
                     if (!attacker.level().isClientSide) {
                         Iterator<MobEffectInstance> itr = attacker.getActiveEffects().iterator();
                         ArrayList<MobEffect> compatibleEffects = new ArrayList<>();
-
                         while (itr.hasNext()) {
                             MobEffectInstance effect = itr.next();
                             if (effect.getEffect().getCategory().equals(MobEffectCategory.HARMFUL) && effect.isCurativeItem(new ItemStack(Items.MILK_BUCKET))) {
@@ -75,6 +85,7 @@ public class ServerEvents {
                     }
                 }
             }
+
         }
     }
     @SubscribeEvent

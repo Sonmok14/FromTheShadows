@@ -24,6 +24,10 @@ public static final RegistryObject<CreativeModeTab> ITEM = TABS.register("items"
     entries.accept(ItemRegistry.CRUST_HEAD.get());
     entries.accept(ItemRegistry.CRUST_CHEST.get());
     entries.accept(ItemRegistry.CRUST_LEGGINGS.get());
+    entries.accept(ItemRegistry.POLAR_EXPLORER_HELMET.get());
+    entries.accept(ItemRegistry.POLAR_EXPLORER_CHESTPLATE.get());
+    entries.accept(ItemRegistry.POLAR_EXPLORER_LEGGINGS.get());
+    entries.accept(ItemRegistry.POLAR_EXPLORER_BOOTS.get());
 
     entries.accept(ItemRegistry.PLAGUE_DOCTOR_MASK.get());
 

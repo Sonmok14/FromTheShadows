@@ -25,7 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-import net.sonmok14.fromtheshadows.server.FTSConfig;
+import net.sonmok14.fromtheshadows.server.config.FTSConfig;
 import net.sonmok14.fromtheshadows.client.models.ControlledAnimation;
 import net.sonmok14.fromtheshadows.server.entity.NehemothEntity;
 import net.sonmok14.fromtheshadows.server.utils.registry.DamageRegistry;

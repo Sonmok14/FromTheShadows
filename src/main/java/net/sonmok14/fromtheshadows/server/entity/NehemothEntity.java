@@ -47,7 +47,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidType;
-import net.sonmok14.fromtheshadows.server.FTSConfig;
+import net.sonmok14.fromtheshadows.server.config.FTSConfig;
 import net.sonmok14.fromtheshadows.server.Fromtheshadows;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.DoomBreathEntity;
 import net.sonmok14.fromtheshadows.server.entity.projectiles.FallingBlockEntity;

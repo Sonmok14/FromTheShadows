@@ -6,13 +6,14 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.sonmok14.fromtheshadows.server.FTSConfig;
+import net.sonmok14.fromtheshadows.server.config.FTSConfig;
 import net.sonmok14.fromtheshadows.server.Fromtheshadows;
 import net.sonmok14.fromtheshadows.server.items.*;
 import net.sonmok14.fromtheshadows.server.items.ArmorMaterials;
 
 public class ItemRegistry {
 
+    public static ArmorMaterials POLAR_EXPLORER_ARMOR_MATERIAL = new ArmorMaterials("polar_explorer", FTSConfig.SERVER.diabolium_armor_durability.get().intValue(), new int[]{FTSConfig.SERVER.diabolium_helmet_armor_value.get().intValue(), FTSConfig.SERVER.diabolium_leggings_armor_value.get().intValue(), FTSConfig.SERVER.diabolium_chestplate_armor_value.get().intValue(), FTSConfig.SERVER.diabolium_helmet_armor_value.get().intValue()}, 18, SoundEvents.ARMOR_EQUIP_LEATHER, 1, 0f);
     public static ArmorMaterials CRUST_ARMOR_MATERIAL = new ArmorMaterials("crust", FTSConfig.SERVER.crust_armor_durability.get().intValue(), new int[]{FTSConfig.SERVER.crust_helmet_armor_value.get().intValue(), FTSConfig.SERVER.crust_leggings_armor_value.get().intValue(), FTSConfig.SERVER.crust_chestplate_armor_value.get().intValue(), FTSConfig.SERVER.crust_helmet_armor_value.get().intValue()}, 12, SoundEvents.ARMOR_EQUIP_NETHERITE, 6, 0.4f);
     public static ArmorMaterials DIABOLIUM_ARMOR_MATERIAL = new ArmorMaterials("diabolium", FTSConfig.SERVER.diabolium_armor_durability.get().intValue(), new int[]{FTSConfig.SERVER.diabolium_helmet_armor_value.get().intValue(), FTSConfig.SERVER.diabolium_leggings_armor_value.get().intValue(), FTSConfig.SERVER.diabolium_chestplate_armor_value.get().intValue(), FTSConfig.SERVER.diabolium_helmet_armor_value.get().intValue()}, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, 3, 0.2f);
     public static ArmorMaterials PLAGUE_ARMOR_MATERIAL = new ArmorMaterials("plague", FTSConfig.SERVER.plague_mask_durability.get().intValue(), new int[]{2, 0, 0, FTSConfig.SERVER.plague_mask_armor_value.get().intValue()}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0, 0f);
@@ -26,7 +27,14 @@ public class ItemRegistry {
     public static final RegistryObject<DiaboliumArmorItem> DIABOLIUM_LEGGINGS = ITEMS.register("diabolium_leggings",
             () -> new DiaboliumArmorItem(DIABOLIUM_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
 
-
+    public static final RegistryObject<PolarExplorerArmorItem> POLAR_EXPLORER_HELMET = ITEMS.register("polar_explorer_helmet",
+            () -> new PolarExplorerArmorItem(DIABOLIUM_ARMOR_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<PolarExplorerArmorItem> POLAR_EXPLORER_CHESTPLATE = ITEMS.register("polar_explorer_chestplate",
+            () -> new PolarExplorerArmorItem(POLAR_EXPLORER_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<PolarExplorerArmorItem> POLAR_EXPLORER_LEGGINGS = ITEMS.register("polar_explorer_leggings",
+            () -> new PolarExplorerArmorItem(POLAR_EXPLORER_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<PolarExplorerArmorItem> POLAR_EXPLORER_BOOTS = ITEMS.register("polar_explorer_boots",
+            () -> new PolarExplorerArmorItem(POLAR_EXPLORER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<CrustArmorItem> CRUST_HEAD = ITEMS.register("crust_helmet",
             () -> new CrustArmorItem(CRUST_ARMOR_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<CrustArmorItem> CRUST_CHEST = ITEMS.register("crust_chest",
